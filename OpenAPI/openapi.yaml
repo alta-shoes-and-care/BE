@@ -1,0 +1,101 @@
+openapi: "3.0.2"
+info:
+  title: Final Project
+  description: Dokumentasi Final Project
+  contact:
+    name: Final Project
+    email: yusufnurwahid.contact@gmail.com
+  version: "1.0.0"
+servers:
+  - url: http://3.1.211.120:8081/
+tags:
+  - name: Auth
+    description: Autorisasi users
+  - name: Users
+    description: Daftar users
+paths:
+  /login:
+    post:
+      tags:
+        - Auth
+      summary: Login user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+                  format: password
+              example:
+                email: ucup@ucup.com
+                password: ucup123
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      email:
+                        type: string
+                      token:
+                        type: string
+              example:
+                code: 200
+                message: berhasil masuk, mendapatkan token baru
+                data:
+                  email: ucup@ucup.com
+                  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                code: 400
+                message: input dari user tidak sesuai, email atau password tidak boleh kosong
+                data: null
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                code: 500
+                message: email atau password tidak valid
+                data: null
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

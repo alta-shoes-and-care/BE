@@ -2,11 +2,11 @@
 
 <div>
     <!-- Project Logo -->
-    <div style="text-align:center">
+    <div align="center">
         <a href="https://images.unsplash.com/photo-1580902215262-9b941bc6eab3">
             <img src="https://images.unsplash.com/photo-1580902215262-9b941bc6eab3" alt="logo" width="400">
         </a>
-        <h3 style="text-align:center">
+        <h3 align="center">
             Washing Shoes Platform
         </h3>
     </div>

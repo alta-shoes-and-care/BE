@@ -27,7 +27,7 @@ var synchronizer = &sync.Mutex{}
 var appConfig *AppConfig
 
 func GetConfig(isTest bool) *AppConfig {
-	synchronizer.Unlock()
+	synchronizer.Lock()
 	defer synchronizer.Unlock()
 
 	if appConfig == nil {

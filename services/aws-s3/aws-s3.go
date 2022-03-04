@@ -63,7 +63,7 @@ func DoUpload(sess *session.Session, region string, file multipart.FileHeader) (
 	}
 
 	url := "https://%s.s3.%s.amazonaws.com/%s"
-	link := fmt.Sprintf(url, os.Getenv("S3-BUCKET"), region, file.Filename)
+	link := fmt.Sprintf(url, os.Getenv("S3_BUCKET"), region, file.Filename)
 	return link, nil
 }
 

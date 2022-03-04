@@ -37,8 +37,10 @@ func GetConfig(isTest bool) *AppConfig {
 }
 
 func initConfig(isTest bool) *AppConfig {
-	if err := godotenv.Load(".env"); err != nil {
-		log.Info(err)
+	if os.Getenv("username") == "cakcup" {
+		if err := godotenv.Load(".env"); err != nil {
+			log.Info(err)
+		}
 	}
 
 	var defaultAppConfig AppConfig
@@ -62,16 +64,16 @@ func getEnv(appConfig *AppConfig, isTest bool) {
 	}
 
 	appConfig.PORT = int16(port)
-	appConfig.DB_DRIVER = os.Getenv("DB_Driver")
+	appConfig.DB_DRIVER = os.Getenv("DB_DRIVER")
 	appConfig.DB_NAME = os.Getenv("DB_NAME")
 	appConfig.DB_PORT = int16(db_port)
 	appConfig.DB_HOST = os.Getenv("DB_HOST")
 	appConfig.DB_USERNAME = os.Getenv("DB_USERNAME")
 	appConfig.DB_PASSWORD = os.Getenv("DB_PASSWORD")
 	appConfig.DB_LOC = os.Getenv("DB_LOC")
-	appConfig.S3_REGION = os.Getenv("S3-REGION")
-	appConfig.S3_KEY = os.Getenv("S3-KEY")
-	appConfig.S3_SECRET = os.Getenv("S3-SECRET")
+	appConfig.S3_REGION = os.Getenv("S3_REGION")
+	appConfig.S3_KEY = os.Getenv("S3_KEY")
+	appConfig.S3_SECRET = os.Getenv("S3_SECRET")
 
 	if isTest {
 		appConfig.DB_NAME = "immersive6"

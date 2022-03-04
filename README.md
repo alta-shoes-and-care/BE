@@ -36,10 +36,10 @@
 - [How to Contribute](#how-to-contribute)
 - [Contacts](#contacts)
 
-<p style="text-align:right">(<a href="#top">back to top</a>)</p>
+<p align="right">(<a href="#top">back to top</a>)</p>
 
 # High Level Architecture
-<p style="text-align:right">(<a href="#top">back to top</a>)</p>
+<p align="right">(<a href="#top">back to top</a>)</p>
 
 # Technology Stack
 ## Framework
@@ -63,7 +63,7 @@
 ## Collaboration
 - [Trello (Work Management Tool)](https://trello.com/)
 - [GitHub (Version Control System Platform)](https://github.com/)
-<p style="text-align:right">(<a href="#top">back to top</a>)</p>
+<p align="right">(<a href="#top">back to top</a>)</p>
 
 # Project Structure
 ```
@@ -104,15 +104,15 @@ BE
 ├── go.sum
 └── README.md
 ```
-<p style="text-align:right">(<a href="#top">back to top</a>)</p>
+<p align="right">(<a href="#top">back to top</a>)</p>
 
 # Unit Test
-<p style="text-align:right">(<a href="#top">back to top</a>)</p>
+<p align="right">(<a href="#top">back to top</a>)</p>
 
 # How to Contribute
-<p style="text-align:right">(<a href="#top">back to top</a>)</p>
+<p align="right">(<a href="#top">back to top</a>)</p>
 
 # Contacts
-- Yusuf Nur Wahid | [GitHub](https://github.com/ynwahid) • [LinkedIn](https://www.linked.com/in/ynwahid)
+- Yusuf Nur Wahid | [GitHub](https://github.com/ynwahid) • [LinkedIn](https://www.linkedin.com/in/ynwahid)
 - Frans Ihsan | [GitHub](https://github.com/fransihsan) • [LinkedIn](https://www.linkedin.com/in/fransihsan/)
-<p style="text-align:right">(<a href="#top">back to top</a>)</p>
+<p align="right">(<a href="#top">back to top</a>)</p>

@@ -13,6 +13,8 @@ tags:
     description: Autorisasi users
   - name: Users
     description: Operasi tentang users
+  - name: Payment Methods
+    description: Operasi tentang payment method
 paths:
   /login:
     post:
@@ -433,6 +435,176 @@ paths:
               example:
                 code: 500
                 message: gagal menjadikan user sebagai admin
+                data: null
+  /payment-methods:
+    post:
+      summary: Tambahkan payment method baru
+      tags:
+        - Payment Methods
+      requestBody:
+        required: true
+        description: Menambah payment method dengan input yang sesuai
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+              example:
+                name: BCA Klikpay
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                example:
+                  code: 201
+                  message: sukses menambahkan payment method baru
+                  data:
+                    name: BCA Klikpay
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                code: 400
+                message: input dari user tidak sesuai, nama payment method tidak boleh kosong
+                data: null
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                code: 500
+                message: terjadi error di dalam server, gagal membuat payment method baru
+                data: null
+    get:
+      summary: Dapatkan semua payment method
+      tags:
+        - Payment Methods
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                example:
+                  code: 200
+                  message: sukses mendapatkan semua payment method
+                  data:
+                    - name: BCA Klikpay
+                    - name: Gopay
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                code: 500
+                message: tidak terdapat payment method sama sekali
+                data: null
+    delete:
+      summary: Menghapus payment method
+      tags:
+        - Payment Methods
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+                example:
+                  code: 200
+                  message: sukses menghapus payment method
+                  data: null
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                code: 500
+                message: tidak ada payment method yang dihapus
                 data: null
 components:
   responses:

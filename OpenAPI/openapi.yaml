@@ -115,10 +115,13 @@ paths:
                 password:
                   type: string
                   format: password
+                is_admin: 
+                  type: boolean
               example:
                 name: ucup
                 email: ucup@ucup.com
                 password: ucup123
+                is_admin: false
       responses:
         '201':
           description: OK
@@ -235,15 +238,15 @@ paths:
                     type: object
               example:
                 code: 500
-                message: record not found
+                message: data user tidak ditemukan
                 data: null
     put:
-      summary: Mengubah data user
+      summary: Mengupdate data user
       tags:
         - Users
       requestBody:
         required: true
-        description: Mengubah data user dengan input yang sesuai
+        description: Mengupdate data user dengan input yang sesuai
         content:
           application/json:
             schema:

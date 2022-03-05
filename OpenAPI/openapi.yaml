@@ -13,6 +13,8 @@ tags:
     description: Autorisasi users
   - name: Users
     description: Operasi tentang users
+  - name: Services
+    description: Operasi tentang payment services
   - name: Payment Methods
     description: Operasi tentang payment method
 paths:
@@ -548,6 +550,329 @@ paths:
               example:
                 code: 500
                 message: tidak ada payment method yang dihapus
+                data: null
+  /services:
+    post:
+      summary: Tambahkan service baru
+      tags:
+        - Services
+      requestBody:
+        required: true
+        description: Menambah service dengan input yang sesuai
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+                price:
+                  type: integer
+            example:
+                title: Regular Cleaning
+                description: Layanan cuci sepatu reguler
+                price: 20000
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+              example:
+                file: sneakers.jpg
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      user_id:
+                        type: integer
+                      title:
+                        type: string
+                      description:
+                        type: string
+                      price:
+                        type: integer
+                      image:
+                        type: string
+                example:
+                  code: 201
+                  message: sukses menambahkan service baru
+                  data:
+                    user_id: 1
+                    title: Regular Cleaning
+                    description: Layanan cuci sepatu reguler
+                    price: 20000
+                    image: https://awsucup.s3.ap-southeast-1.amazonaws.com/sneakers.jpg
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                code: 400
+                message: input dari user tidak sesuai, title, description, atau price tidak boleh kosong
+                data: null
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                code: 500
+                message: terjadi error di dalam server, gagal membuat service baru
+                data: null
+    get:
+      summary: Dapatkan semua service
+      tags:
+        - Services
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        user_id:
+                          type: integer
+                        title:
+                          type: string
+                        description:
+                          type: string
+                        price:
+                          type: integer
+                        image:
+                          type: string
+                example:
+                  code: 200
+                  message: sukses mendapatkan semua service
+                  data:
+                    - id: 1
+                      user_id: 1
+                      title: Regular Cleaning
+                      description: Layanan cuci sepatu reguler
+                      price: 20000
+                      image: https://awsucup.s3.ap-southeast-1.amazonaws.com/sneakers.jpg
+                    - id: 2
+                      user_id: 1
+                      title: Premium Cleaning
+                      description: Layanan cuci sepatu premium
+                      price: 30000
+                      image: https://awsucup.s3.ap-southeast-1.amazonaws.com/sneakers2.jpg
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                code: 500
+                message: tidak terdapat service sama sekali
+                data: null
+  /services/{id}:
+    put:
+      summary: Mengupdate service berdasarkan id
+      tags:
+        - Services
+      parameters:
+        - name: id
+          in: path
+          description: ID service hasil generate dari sistem
+          required: true
+          schema:
+            type: integer
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        description: Memperbarui service dengan input yang sesuai
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+                price:
+                  type: integer
+            example:
+                title: Regular Cleaning Plus
+                description: Layanan cuci sepatu reguler plus
+                price: 20000
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+              example:
+                title: Regular Cleaning Plus
+                description: Layanan cuci sepatu reguler plus
+                file: sneakers.jpg
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      user_id:
+                        type: integer
+                      title:
+                        type: string
+                      description:
+                        type: string
+                      price:
+                        type: integer
+                      image:
+                        type: string
+                example:
+                  code: 200
+                  message: sukses memperbarui data service
+                  data:
+                    id: 1
+                    user_id: 1
+                    title: Regular Cleaning Plus
+                    description: Layanan cuci sepatu reguler plus
+                    price: 20000
+                    image: https://awsucup.s3.ap-southeast-1.amazonaws.com/sneakers.jpg
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                code: 500
+                message: tidak ada data service yang diperbarui
+                data: null
+    delete:
+      summary: Menghapus service berdasarkan id
+      tags:
+        - Services
+      parameters:
+        - name: id
+          in: path
+          description: ID service hasil generate dari sistem
+          required: true
+          schema:
+            type: integer
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+                example:
+                  code: 200
+                  message: sukses menghapus service
+                  data: null
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                code: 500
+                message: tidak ada service yang dihapus
                 data: null
 components:
   responses:

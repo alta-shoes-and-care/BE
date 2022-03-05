@@ -10,9 +10,9 @@ servers:
   - url: http://3.1.211.120:8081/
 tags:
   - name: Auth
-    description: Autorisasi user
+    description: Autorisasi users
   - name: Users
-    description: Operasi tentang user
+    description: Operasi tentang users
 paths:
   /login:
     post:
@@ -415,23 +415,6 @@ paths:
                     name: ucup
                     email: ucup@ucup.com
                     is_admin: true
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  code:
-                    type: integer
-                  message:
-                    type: string
-                  data:
-                    type: object
-              example:
-                code: 400
-                message: terdapat kesalahan input dari client
-                data: null
         '401':
           $ref: '#/components/responses/UnauthorizedError'
         '500':
@@ -449,7 +432,7 @@ paths:
                     type: object
               example:
                 code: 500
-                message: tidak ada perubahan pada data user
+                message: gagal menjadikan user sebagai admin
                 data: null
 components:
   responses:

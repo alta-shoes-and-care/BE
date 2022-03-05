@@ -1,24 +1,24 @@
 openapi: "3.0.2"
 info:
-  title: Final Project
-  description: Dokumentasi Final Project
+  title: Shoes Service Station
+  description: Dokumentasi Final Project - Shoes Service Station
   contact:
-    name: Final Project
+    name: BE Team
     email: yusufnurwahid.contact@gmail.com
   version: "1.0.0"
 servers:
   - url: http://3.1.211.120:8081/
 tags:
   - name: Auth
-    description: Autorisasi users
+    description: Autorisasi user
   - name: Users
-    description: Daftar users
+    description: Operasi tentang user
 paths:
   /login:
     post:
       tags:
         - Auth
-      summary: Login user
+      summary: Login untuk user
       requestBody:
         required: true
         content:
@@ -91,9 +91,379 @@ paths:
                     type: object
               example:
                 code: 500
-                message: email atau password tidak valid
+                message: email atau password tidak cocok
+                data: null
+  /users:
+    post:
+      summary: Tambahkan user baru
+      tags:
+        - Users
+      requestBody:
+        required: true
+        description: Menambah user baru dengan input yang sesuai
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+                  format: password
+              example:
+                name: ucup
+                email: ucup@ucup.com
+                password: ucup123
+      responses:
+        '201':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      email:
+                        type: string
+                      is_admin:
+                        type: boolean
+                example:
+                  code: 201
+                  message: sukses menambahkan user baru
+                  data:
+                    name: ucup
+                    email: ucup@ucup.com
+                    is_admin: false
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                code: 400
+                message: input dari user tidak sesuai, nama, email atau password tidak boleh kosong
+                data: null
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                code: 500
+                message: terjadi error di dalam server, gagal membuat user baru
+                data: null
+    get:
+      summary: Dapatkan data user
+      tags:
+        - Users
+      parameters:
+        - name: id
+          in: path
+          description: ID user hasil generate dari sistem
+          required: true
+          schema:
+            type: integer
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                      email:
+                        type: string
+                      is_admin:
+                        type: boolean
+                example:
+                  code: 200
+                  message: sukses mendapatkan data user
+                  data:
+                    id: 1
+                    name: ucup
+                    email: ucup@ucup.com
+                    is_admin: false
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                code: 500
+                message: record not found
+                data: null
+    put:
+      summary: Mengubah data user
+      tags:
+        - Users
+      requestBody:
+        required: true
+        description: Mengubah data user dengan input yang sesuai
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+                  format: password
+              example:
+                name: Ucup_Updated
+                email: ucup_Updated@ucup.com
+                password: ucup1234
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                      email:
+                        type: string
+                      is_admin:
+                        type: boolean
+                example:
+                  code: 200
+                  message: sukses update user
+                  data:
+                    id: 1
+                    name: Ucup_Updated
+                    email: ucup_Updated@ucup.com
+                    is_admin: false
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                code: 400
+                message: terdapat kesalahan input dari client
+                data: null
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                code: 500
+                message: tidak ada perubahan pada data user
+                data: null
+    delete:
+      summary: Menghapus data user
+      tags:
+        - Users
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+                example:
+                  code: 200
+                  message: sukses menghapus user
+                  data: null
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                code: 500
+                message: tidak ada user yang dihapus
+                data: null
+  /users/setadmin:
+    put:
+      summary: Menjadikan user sebagai admin
+      tags:
+        - Users
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                      email:
+                        type: string
+                      is_admin:
+                        type: boolean
+                example:
+                  code: 200
+                  message: sukses menjadikan user sebagai admin
+                  data:
+                    id: 1
+                    name: ucup
+                    email: ucup@ucup.com
+                    is_admin: true
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                code: 400
+                message: terdapat kesalahan input dari client
+                data: null
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                code: 500
+                message: tidak ada perubahan pada data user
                 data: null
 components:
+  responses:
+    UnauthorizedError:
+      description: Access token is missing or invalid
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+          example:
+            missing or malformed JWT
   securitySchemes:
     bearerAuth:
       type: http

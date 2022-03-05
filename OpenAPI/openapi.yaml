@@ -185,13 +185,6 @@ paths:
       summary: Dapatkan data user
       tags:
         - Users
-      parameters:
-        - name: id
-          in: path
-          description: ID user hasil generate dari sistem
-          required: true
-          schema:
-            type: integer
       security:
         - bearerAuth: []
       responses:
@@ -378,63 +371,6 @@ paths:
               example:
                 code: 500
                 message: tidak ada user yang dihapus
-                data: null
-  /users/setadmin:
-    put:
-      summary: Menjadikan user sebagai admin
-      tags:
-        - Users
-      security:
-        - bearerAuth: []
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  code:
-                    type: integer
-                  message:
-                    type: string
-                  data:
-                    type: object
-                    properties:
-                      id:
-                        type: integer
-                      name:
-                        type: string
-                      email:
-                        type: string
-                      is_admin:
-                        type: boolean
-                example:
-                  code: 200
-                  message: sukses menjadikan user sebagai admin
-                  data:
-                    id: 1
-                    name: ucup
-                    email: ucup@ucup.com
-                    is_admin: true
-        '401':
-          $ref: '#/components/responses/UnauthorizedError'
-        '500':
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  code:
-                    type: integer
-                  message:
-                    type: string
-                  data:
-                    type: object
-              example:
-                code: 500
-                message: gagal menjadikan user sebagai admin
                 data: null
   /payment-methods:
     post:

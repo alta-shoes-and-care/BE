@@ -536,14 +536,18 @@ paths:
                     items:
                       type: object
                       properties:
+                        id:
+                          type: integer
                         name:
                           type: string
                 example:
                   code: 200
                   message: sukses mendapatkan semua payment method
                   data:
-                    - name: BCA Klikpay
-                    - name: Gopay
+                    - id: 1
+                      name: BCA Klikpay
+                    - id: 2
+                      name: Gopay
         '401':
           $ref: '#/components/responses/UnauthorizedError'
         '500':
@@ -605,6 +609,64 @@ paths:
               example:
                 code: 500
                 message: tidak ada payment method yang dihapus
+                data: null
+  /payment-methods/{id}:
+    get:
+      summary: Dapatkan payment method berdasarkan id
+      tags:
+        - Payment Methods
+      security:
+        - bearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        description: ID payment method hasil generate dari sistem
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                example:
+                  code: 200
+                  message: sukses mendapatkan payment method
+                  data:
+                    id: 1
+                    name: BCA Klikpay
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                code: 500
+                message: payment method tidak ditemukan
                 data: null
 components:
   responses:

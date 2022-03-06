@@ -767,8 +767,6 @@ paths:
                   type: string
                   format: binary
               example:
-                title: Regular Cleaning Plus
-                description: Layanan cuci sepatu reguler plus
                 file: sneakers.jpg
       responses:
         '200':

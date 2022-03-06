@@ -245,12 +245,12 @@ paths:
                 message: data user tidak ditemukan
                 data: null
     put:
-      summary: Mengupdate data user
+      summary: Memperbarui data user
       tags:
         - Users
       requestBody:
         required: true
-        description: Mengupdate data user dengan input yang sesuai
+        description: Memperbarui data user dengan input yang sesuai
         content:
           application/json:
             schema:
@@ -294,7 +294,7 @@ paths:
                         type: boolean
                 example:
                   code: 200
-                  message: sukses update user
+                  message: sukses memperbarui data user
                   data:
                     id: 1
                     name: Ucup_Updated
@@ -729,7 +729,7 @@ paths:
                 data: null
   /services/{id}:
     put:
-      summary: Mengupdate service berdasarkan id
+      summary: Memperbarui service berdasarkan id
       tags:
         - Services
       parameters:
@@ -1060,7 +1060,7 @@ paths:
                 data: null
   /reviews/{id}:
     put:
-      summary: Mengupdate review berdasarkan id
+      summary: Memperbarui review berdasarkan id
       tags:
         - Reviews
       parameters:

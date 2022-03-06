@@ -14,7 +14,9 @@ tags:
   - name: Users
     description: Operasi tentang users
   - name: Services
-    description: Operasi tentang payment services
+    description: Operasi tentang services
+  - name: Reviews
+    description: Operasi tentang reviews
   - name: Payment Methods
     description: Operasi tentang payment method
 paths:
@@ -873,6 +875,337 @@ paths:
               example:
                 code: 500
                 message: tidak ada service yang dihapus
+                data: null
+  /reviews:
+    post:
+      summary: Tambahkan review baru
+      tags:
+        - Reviews
+      requestBody:
+        required: true
+        description: Menambah review dengan input yang sesuai
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                service_id:
+                  type: integer
+                order_id:
+                  type: integer
+                rating:
+                  type: integer
+                review:
+                  type: string
+            example:
+                service_id: 1
+                order_id: 1
+                rating: 5
+                review: Mantap
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+              example:
+                file: sneakers.jpg
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      service_id:
+                        type: integer
+                      user_id:
+                        type: integer
+                      order_id:
+                        type: integer
+                      rating:
+                        type: integer
+                      review:
+                        type: string
+                      image:
+                        type: string
+                example:
+                  code: 201
+                  message: sukses menambahkan review baru
+                  data:
+                    service_id: 1
+                    user_id: 1
+                    order_id: 1
+                    rating: 5
+                    review: Mantap
+                    image: https://awsucup.s3.ap-southeast-1.amazonaws.com/sneakers.jpg
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                code: 400
+                message: input dari user tidak sesuai, service_id, order_id, rating, atau review tidak boleh kosong
+                data: null
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                code: 500
+                message: terjadi error di dalam server, gagal membuat review baru
+                data: null
+    get:
+      summary: Dapatkan semua review
+      tags:
+        - Reviews
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        service_id:
+                          type: integer
+                        user_id:
+                          type: integer
+                        order_id:
+                          type: integer
+                        rating:
+                          type: integer
+                        review:
+                          type: string
+                        image:
+                          type: string
+                example:
+                  code: 200
+                  message: sukses mendapatkan semua review
+                  data:
+                    - id: 1
+                      service_id: 1
+                      user_id: 1
+                      order_id: 1
+                      rating: 5
+                      review: Mantap
+                      image: https://awsucup.s3.ap-southeast-1.amazonaws.com/sneakers.jpg
+                    - id: 2
+                      service_id: 2
+                      user_id: 2
+                      order_id: 2
+                      rating: 5
+                      review: Bagus bro!
+                      image: https://awsucup.s3.ap-southeast-1.amazonaws.com/sneakers2.jpg
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                code: 500
+                message: tidak terdapat review sama sekali
+                data: null
+  /reviews/{id}:
+    put:
+      summary: Mengupdate review berdasarkan id
+      tags:
+        - Reviews
+      parameters:
+        - name: id
+          in: path
+          description: ID review hasil generate dari sistem
+          required: true
+          schema:
+            type: integer
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        description: Memperbarui review dengan input yang sesuai
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                rating:
+                  type: integer
+                review:
+                  type: string
+            example:
+                rating: 5
+                review: Bagus banget bro!
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+              example:
+                file: sneakers3.jpg
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      service_id:
+                        type: integer
+                      user_id:
+                        type: integer
+                      order_id:
+                        type: integer
+                      rating:
+                        type: integer
+                      review:
+                        type: string
+                      image:
+                        type: string
+                example:
+                  code: 200
+                  message: sukses memperbarui data review
+                  data:
+                    id: 2
+                    service_id: 2
+                    user_id: 2
+                    order_id: 2
+                    rating: 5
+                    review: Bagus banget bro!
+                    image: https://awsucup.s3.ap-southeast-1.amazonaws.com/sneakers3.jpg
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                code: 500
+                message: tidak ada data review yang diperbarui
+                data: null
+    delete:
+      summary: Menghapus review berdasarkan id
+      tags:
+        - Reviews
+      parameters:
+        - name: id
+          in: path
+          description: ID review hasil generate dari sistem
+          required: true
+          schema:
+            type: integer
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+                example:
+                  code: 200
+                  message: sukses menghapus review
+                  data: null
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                code: 500
+                message: tidak ada review yang dihapus
                 data: null
 components:
   responses:

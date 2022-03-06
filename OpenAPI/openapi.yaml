@@ -661,8 +661,6 @@ paths:
       summary: Dapatkan semua service
       tags:
         - Services
-      security:
-        - bearerAuth: []
       responses:
         '200':
           description: OK
@@ -988,8 +986,6 @@ paths:
       summary: Dapatkan semua review
       tags:
         - Reviews
-      security:
-        - bearerAuth: []
       responses:
         '200':
           description: OK

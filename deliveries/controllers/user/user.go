@@ -13,7 +13,7 @@ type UserController struct {
 	repo _UserRepo.User
 }
 
-func New(repository _UserRepo.User) *UserController {
+func NewUserController(repository _UserRepo.User) *UserController {
 	return &UserController{
 		repo: repository,
 	}
@@ -43,7 +43,7 @@ func (ctl *UserController) Get() echo.HandlerFunc {
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
 		}
-		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses mendapatkan user berdasarkan ID", ToResponseGetByID(res)))
+		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses mendapatkan data user", ToResponseGetUser(res)))
 	}
 }
 
@@ -60,19 +60,7 @@ func (ctl *UserController) Update() echo.HandlerFunc {
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
 		}
-		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses update user", ToResponseUpdate(res)))
-	}
-}
-
-func (ctl *UserController) UpdateImage() echo.HandlerFunc {
-	return func(c echo.Context) error {
-		UserID := middlewares.ExtractTokenUserID(c)
-
-		res, err := ctl.repo.Get((uint(UserID)))
-		if err != nil {
-			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
-		}
-		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses menjadikan renter", ToResponseUpdate(res)))
+		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses memperbarui data user", ToResponseUpdateUser(res)))
 	}
 }
 
@@ -81,18 +69,6 @@ func (ctl *UserController) Delete() echo.HandlerFunc {
 		UserID := middlewares.ExtractTokenUserID(c)
 
 		err := ctl.repo.Delete(uint(UserID))
-		if err != nil {
-			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
-		}
-		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses menghapus user", err))
-	}
-}
-
-func (ctl *UserController) DeleteImageByID() echo.HandlerFunc {
-	return func(c echo.Context) error {
-		UserID := middlewares.ExtractTokenUserID(c)
-
-		err := ctl.repo.DeleteImageByID(uint(UserID))
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
 		}

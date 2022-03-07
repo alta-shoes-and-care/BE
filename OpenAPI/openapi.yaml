@@ -188,7 +188,7 @@ paths:
                     type: object
               example:
                 code: 500
-                message: terjadi error di dalam server, gagal membuat user baru
+                message: gagal membuat user baru
                 data: null
     get:
       summary: Dapatkan data user
@@ -456,7 +456,7 @@ paths:
                     type: object
               example:
                 code: 500
-                message: terjadi error di dalam server, gagal membuat payment method baru
+                message: gagal membuat payment method baru
                 data: null
     get:
       summary: Dapatkan semua payment method
@@ -657,7 +657,7 @@ paths:
                     type: object
               example:
                 code: 500
-                message: terjadi error di dalam server, gagal membuat service baru
+                message: gagal membuat service baru
                 data: null
     get:
       summary: Dapatkan semua service
@@ -982,7 +982,7 @@ paths:
                     type: object
               example:
                 code: 500
-                message: terjadi error di dalam server, gagal membuat review baru
+                message: gagal membuat review baru
                 data: null
     get:
       summary: Dapatkan semua review
@@ -1335,7 +1335,7 @@ paths:
                     type: object
               example:
                 code: 500
-                message: terjadi error di dalam server, gagal membuat order baru
+                message: gagal membuat order baru
                 data: null
     get:
       summary: Dapatkan semua order

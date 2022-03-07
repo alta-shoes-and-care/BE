@@ -728,6 +728,73 @@ paths:
                 message: tidak terdapat service sama sekali
                 data: null
   /services/{id}:
+    get:
+      summary: Dapatkan detail service
+      tags:
+        - Services
+      parameters:
+        - name: id
+          in: path
+          description: ID service hasil generate dari sistem
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      user_id:
+                        type: integer
+                      title:
+                        type: string
+                      description:
+                        type: string
+                      price:
+                        type: integer
+                      image:
+                        type: string
+                example:
+                  code: 200
+                  message: sukses mendapatkan detail service
+                  data:
+                    id: 1
+                    user_id: 1
+                    title: Regular Cleaning
+                    description: Layanan cuci sepatu reguler
+                    price: 20000
+                    image: https://awsucup.s3.ap-southeast-1.amazonaws.com/sneakers.jpg
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                code: 500
+                message: gagal mendapatkan detail service
+                data: null
     put:
       summary: Memperbarui service berdasarkan id
       tags:

@@ -1616,8 +1616,9 @@ paths:
                 code: 500
                 message: tidak terdapat order
                 data: null
+  /orders/set-paid/{id}:
     put:
-      summary: Memperbarui order berdasarkan id
+      summary: Mengubah status pembayaran menjadi paid
       tags:
         - Orders
       parameters:
@@ -1629,30 +1630,6 @@ paths:
             type: integer
       security:
         - bearerAuth: []
-      requestBody:
-        required: true
-        description: Memperbarui order dengan input yang sesuai
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                rating:
-                  type: integer
-                order:
-                  type: string
-            example:
-                rating: 5
-                order: Bagus banget bro!
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                file:
-                  type: string
-                  format: binary
-              example:
-                file: sneakers3.jpg
       responses:
         '200':
           description: OK
@@ -1670,29 +1647,52 @@ paths:
                     properties:
                       id:
                         type: integer
-                      service_id:
-                        type: integer
                       user_id:
                         type: integer
-                      order_id:
+                      service_id:
                         type: integer
-                      rating:
-                        type: integer
-                      order:
+                      service_title:
                         type: string
-                      image:
+                      price:
+                        type: integer
+                      payment_method_id:
+                        type: integer
+                      payment_method_name:
+                        type: string
+                      time:
+                        type: string
+                        format: date-time
+                      address:
+                        type: string
+                      city:
+                        type: string
+                      phone:
+                        type: string
+                      status:
+                        type: string
+                        enum: [pending, accepted, rejected, cancel, on process, delivering, done]
+                      is_paid:
+                        type: boolean
+                      url:
                         type: string
                 example:
                   code: 200
-                  message: sukses memperbarui data order
+                  message: sukses menjadikan status order menjadi paid
                   data:
-                    id: 2
-                    service_id: 2
-                    user_id: 2
-                    order_id: 2
-                    rating: 5
-                    order: Bagus banget bro!
-                    image: https://awsucup.s3.ap-southeast-1.amazonaws.com/sneakers3.jpg
+                    id: 1
+                    user_id: 1
+                    service_id: 1
+                    service_title: Regular Cleaning
+                    price: 20000
+                    payment_method_id: 1
+                    payment_method_name: Gopay
+                    time: "2022-03-06T13:00:00+07:00"
+                    address: Jl. Soedirman No. 13
+                    city: Bandung
+                    phone: "081123456789"
+                    status: pending
+                    is_paid: true
+                    url: http://www.midtrans.com/blabla
         '401':
           $ref: '#/components/responses/UnauthorizedError'
         '500':
@@ -1710,10 +1710,11 @@ paths:
                     type: object
               example:
                 code: 500
-                message: tidak ada data order yang diperbarui
+                message: gagal mengubah status order menjadi paid
                 data: null
-    delete:
-      summary: Menghapus order berdasarkan id
+  /orders/set-accept/{id}:
+    put:
+      summary: Memperbarui order berdasarkan id
       tags:
         - Orders
       parameters:
@@ -1739,10 +1740,55 @@ paths:
                     type: string
                   data:
                     type: object
+                    properties:
+                      id:
+                        type: integer
+                      user_id:
+                        type: integer
+                      service_id:
+                        type: integer
+                      service_title:
+                        type: string
+                      price:
+                        type: integer
+                      payment_method_id:
+                        type: integer
+                      payment_method_name:
+                        type: string
+                      time:
+                        type: string
+                        format: date-time
+                      address:
+                        type: string
+                      city:
+                        type: string
+                      phone:
+                        type: string
+                      status:
+                        type: string
+                        enum: [pending, accepted, rejected, cancel, on process, delivering, done]
+                      is_paid:
+                        type: boolean
+                      url:
+                        type: string
                 example:
                   code: 200
-                  message: sukses menghapus order
-                  data: null
+                  message: sukses memperbarui data order
+                  data:
+                    id: 1
+                    user_id: 1
+                    service_id: 1
+                    service_title: Regular Cleaning
+                    price: 20000
+                    payment_method_id: 1
+                    payment_method_name: Gopay
+                    time: "2022-03-06T13:00:00+07:00"
+                    address: Jl. Soedirman No. 13
+                    city: Bandung
+                    phone: "081123456789"
+                    status: accepted
+                    is_paid: true
+                    url: http://www.midtrans.com/blabla
         '401':
           $ref: '#/components/responses/UnauthorizedError'
         '500':
@@ -1760,7 +1806,7 @@ paths:
                     type: object
               example:
                 code: 500
-                message: tidak ada order yang dihapus
+                message: gagal mengubah status order menjadi accepted
                 data: null
 components:
   responses:

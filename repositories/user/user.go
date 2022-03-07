@@ -52,27 +52,9 @@ func (repo *UserRepository) Update(userUpdate U.Users) (U.Users, error) {
 	return userUpdate, nil
 }
 
-func (repo *UserRepository) UpdateImage(userID uint, image string) (U.Users, error) {
-	var user U.Users
-
-	if rowsAffected := repo.db.Table("users").Where("id = ?", userID).Update("image", image).RowsAffected; rowsAffected == 0 {
-		return U.Users{}, errors.New("gagal memperbarui gambar")
-	}
-
-	repo.db.First(&user, userID)
-	return user, nil
-}
-
 func (repo *UserRepository) Delete(userID uint) error {
 	if rowsAffected := repo.db.Delete(&U.Users{}, userID).RowsAffected; rowsAffected == 0 {
 		return errors.New("tidak ada user yang dihapus")
-	}
-	return nil
-}
-
-func (repo *UserRepository) DeleteImageByID(userID uint) error {
-	if rowsAffected := repo.db.Table("users").Where("id = ?", userID).Update("image", "").RowsAffected; rowsAffected == 0 {
-		return errors.New("tidak ada gambar yang dihapus")
 	}
 	return nil
 }

@@ -1276,9 +1276,9 @@ paths:
                   type: integer
                 payment_method_id:
                   type: integer
-                time:
+                date:
                   type: string
-                  format: date-time
+                  format: date
                 address:
                   type: string
                 city:
@@ -1289,7 +1289,7 @@ paths:
                 service_id: 1
                 qty: 2
                 payment_method_id: 1
-                time: "2022-03-06T13:00:00+07:00"
+                date: "2022-03-06"
                 address: Jl. Soedirman No. 13
                 city: Bandung
                 phone: "081123456789"
@@ -1324,9 +1324,9 @@ paths:
                         type: integer
                       payment_method_name:
                         type: string
-                      time:
+                      date:
                         type: string
-                        format: date-time
+                        format: date
                       address:
                         type: string
                       city:
@@ -1352,7 +1352,7 @@ paths:
                     qty: 2
                     payment_method_id: 1
                     payment_method_name: Gopay
-                    time: "2022-03-06T13:00:00+07:00"
+                    date: "2022-03-06"
                     address: Jl. Soedirman No. 13
                     city: Bandung
                     phone: "081123456789"
@@ -1434,9 +1434,9 @@ paths:
                           type: integer
                         payment_method_name:
                           type: string
-                        time:
+                        date:
                           type: string
-                          format: date-time
+                          format: date
                         address:
                           type: string
                         city:
@@ -1462,7 +1462,7 @@ paths:
                       qty: 2
                       payment_method_id: 1
                       payment_method_name: Gopay
-                      time: "2022-03-06T13:00:00+07:00"
+                      date: "2022-03-06"
                       address: Jl. Soedirman No. 13
                       city: Bandung
                       phone: "081123456789"
@@ -1477,7 +1477,7 @@ paths:
                       qty: 2
                       payment_method_id: 2
                       payment_method_name: BCA Klikpay
-                      time: "2022-03-07T13:00:00+07:00"
+                      date: "2022-03-07"
                       address: Jl. Diponegoro No. 13
                       city: Surabaya
                       phone: "081123456788"
@@ -1543,9 +1543,9 @@ paths:
                           type: integer
                         payment_method_name:
                           type: string
-                        time:
+                        date:
                           type: string
-                          format: date-time
+                          format: date
                         address:
                           type: string
                         city:
@@ -1571,7 +1571,7 @@ paths:
                       qty: 2
                       payment_method_id: 1
                       payment_method_name: Gopay
-                      time: "2022-03-06T13:00:00+07:00"
+                      date: "2022-03-06"
                       address: Jl. Soedirman No. 13
                       city: Bandung
                       phone: "081123456789"
@@ -1586,7 +1586,7 @@ paths:
                       qty: 2
                       payment_method_id: 2
                       payment_method_name: BCA Klikpay
-                      time: "2022-03-07T13:00:00+07:00"
+                      date: "2022-03-07"
                       address: Jl. Diponegoro No. 13
                       city: Surabaya
                       phone: "081123456788"
@@ -1657,9 +1657,9 @@ paths:
                         type: integer
                       payment_method_name:
                         type: string
-                      time:
+                      date:
                         type: string
-                        format: date-time
+                        format: date
                       address:
                         type: string
                       city:
@@ -1685,7 +1685,7 @@ paths:
                     qty: 2
                     payment_method_id: 1
                     payment_method_name: Gopay
-                    time: "2022-03-06T13:00:00+07:00"
+                    date: "2022-03-06"
                     address: Jl. Soedirman No. 13
                     city: Bandung
                     phone: "081123456789"
@@ -1756,9 +1756,9 @@ paths:
                         type: integer
                       payment_method_name:
                         type: string
-                      time:
+                      date:
                         type: string
-                        format: date-time
+                        format: date
                       address:
                         type: string
                       city:
@@ -1784,7 +1784,7 @@ paths:
                     qty: 2
                     payment_method_id: 1
                     payment_method_name: Gopay
-                    time: "2022-03-06T13:00:00+07:00"
+                    date: "2022-03-06"
                     address: Jl. Soedirman No. 13
                     city: Bandung
                     phone: "081123456789"
@@ -1855,9 +1855,9 @@ paths:
                         type: integer
                       payment_method_name:
                         type: string
-                      time:
+                      date:
                         type: string
-                        format: date-time
+                        format: date
                       address:
                         type: string
                       city:
@@ -1883,7 +1883,7 @@ paths:
                     qty: 2
                     payment_method_id: 1
                     payment_method_name: Gopay
-                    time: "2022-03-06T13:00:00+07:00"
+                    date: "2022-03-06"
                     address: Jl. Soedirman No. 13
                     city: Bandung
                     phone: "081123456789"
@@ -1954,9 +1954,9 @@ paths:
                         type: integer
                       payment_method_name:
                         type: string
-                      time:
+                      date:
                         type: string
-                        format: date-time
+                        format: date
                       address:
                         type: string
                       city:
@@ -1982,7 +1982,7 @@ paths:
                     qty: 2
                     payment_method_id: 1
                     payment_method_name: Gopay
-                    time: "2022-03-06T13:00:00+07:00"
+                    date: "2022-03-06"
                     address: Jl. Soedirman No. 13
                     city: Bandung
                     phone: "081123456789"
@@ -2053,9 +2053,9 @@ paths:
                         type: integer
                       payment_method_name:
                         type: string
-                      time:
+                      date:
                         type: string
-                        format: date-time
+                        format: date
                       address:
                         type: string
                       city:
@@ -2081,7 +2081,7 @@ paths:
                     qty: 2
                     payment_method_id: 1
                     payment_method_name: Gopay
-                    time: "2022-03-06T13:00:00+07:00"
+                    date: "2022-03-06"
                     address: Jl. Soedirman No. 13
                     city: Bandung
                     phone: "081123456789"
@@ -2152,9 +2152,9 @@ paths:
                         type: integer
                       payment_method_name:
                         type: string
-                      time:
+                      date:
                         type: string
-                        format: date-time
+                        format: date
                       address:
                         type: string
                       city:
@@ -2180,7 +2180,7 @@ paths:
                     qty: 2
                     payment_method_id: 1
                     payment_method_name: Gopay
-                    time: "2022-03-06T13:00:00+07:00"
+                    date: "2022-03-06"
                     address: Jl. Soedirman No. 13
                     city: Bandung
                     phone: "081123456789"
@@ -2251,9 +2251,9 @@ paths:
                         type: integer
                       payment_method_name:
                         type: string
-                      time:
+                      date:
                         type: string
-                        format: date-time
+                        format: date
                       address:
                         type: string
                       city:
@@ -2279,7 +2279,7 @@ paths:
                     qty: 2
                     payment_method_id: 1
                     payment_method_name: Gopay
-                    time: "2022-03-06T13:00:00+07:00"
+                    date: "2022-03-06"
                     address: Jl. Soedirman No. 13
                     city: Bandung
                     phone: "081123456789"
@@ -2350,9 +2350,9 @@ paths:
                         type: integer
                       payment_method_name:
                         type: string
-                      time:
+                      date:
                         type: string
-                        format: date-time
+                        format: date
                       address:
                         type: string
                       city:
@@ -2378,7 +2378,7 @@ paths:
                     qty: 2
                     payment_method_id: 1
                     payment_method_name: Gopay
-                    time: "2022-03-06T13:00:00+07:00"
+                    date: "2022-03-06"
                     address: Jl. Soedirman No. 13
                     city: Bandung
                     phone: "081123456789"

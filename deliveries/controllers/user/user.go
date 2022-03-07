@@ -64,35 +64,11 @@ func (ctl *UserController) Update() echo.HandlerFunc {
 	}
 }
 
-func (ctl *UserController) UpdateImage() echo.HandlerFunc {
-	return func(c echo.Context) error {
-		UserID := middlewares.ExtractTokenUserID(c)
-
-		res, err := ctl.repo.Get((uint(UserID)))
-		if err != nil {
-			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
-		}
-		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses menjadikan renter", ToResponseUpdate(res)))
-	}
-}
-
 func (ctl *UserController) Delete() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		UserID := middlewares.ExtractTokenUserID(c)
 
 		err := ctl.repo.Delete(uint(UserID))
-		if err != nil {
-			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
-		}
-		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses menghapus user", err))
-	}
-}
-
-func (ctl *UserController) DeleteImageByID() echo.HandlerFunc {
-	return func(c echo.Context) error {
-		UserID := middlewares.ExtractTokenUserID(c)
-
-		err := ctl.repo.DeleteImageByID(uint(UserID))
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
 		}

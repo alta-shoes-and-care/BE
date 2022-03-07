@@ -13,7 +13,7 @@ type AuthController struct {
 	repo _AuthRepo.Auth
 }
 
-func New(repository _AuthRepo.Auth) *AuthController {
+func NewAuthController(repository _AuthRepo.Auth) *AuthController {
 	return &AuthController{
 		repo: repository,
 	}

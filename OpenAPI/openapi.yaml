@@ -900,15 +900,6 @@ paths:
                 order_id: 1
                 rating: 5
                 review: Mantap
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                file:
-                  type: string
-                  format: binary
-              example:
-                file: sneakers.jpg
       security:
       - bearerAuth: []
       responses:
@@ -926,6 +917,8 @@ paths:
                   data:
                     type: object
                     properties:
+                      id:
+                        type: integer
                       service_id:
                         type: integer
                       user_id:
@@ -936,18 +929,16 @@ paths:
                         type: integer
                       review:
                         type: string
-                      image:
-                        type: string
                 example:
                   code: 201
                   message: sukses menambahkan review baru
                   data:
+                    id: 1
                     service_id: 1
                     user_id: 1
                     order_id: 1
                     rating: 5
                     review: Mantap
-                    image: https://awsucup.s3.ap-southeast-1.amazonaws.com/sneakers.jpg
         '400':
           description: Bad Request
           content:
@@ -1017,8 +1008,6 @@ paths:
                           type: integer
                         review:
                           type: string
-                        image:
-                          type: string
                 example:
                   code: 200
                   message: sukses mendapatkan semua review
@@ -1029,14 +1018,12 @@ paths:
                       order_id: 1
                       rating: 5
                       review: Mantap
-                      image: https://awsucup.s3.ap-southeast-1.amazonaws.com/sneakers.jpg
                     - id: 2
                       service_id: 2
                       user_id: 2
                       order_id: 2
                       rating: 5
                       review: Bagus bro!
-                      image: https://awsucup.s3.ap-southeast-1.amazonaws.com/sneakers2.jpg
         '401':
           $ref: '#/components/responses/UnauthorizedError'
         '500':
@@ -1085,15 +1072,6 @@ paths:
             example:
                 rating: 5
                 review: Bagus banget bro!
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                file:
-                  type: string
-                  format: binary
-              example:
-                file: sneakers3.jpg
       responses:
         '200':
           description: OK
@@ -1121,8 +1099,6 @@ paths:
                         type: integer
                       review:
                         type: string
-                      image:
-                        type: string
                 example:
                   code: 200
                   message: sukses memperbarui data review
@@ -1133,7 +1109,6 @@ paths:
                     order_id: 2
                     rating: 5
                     review: Bagus banget bro!
-                    image: https://awsucup.s3.ap-southeast-1.amazonaws.com/sneakers3.jpg
         '401':
           $ref: '#/components/responses/UnauthorizedError'
         '500':

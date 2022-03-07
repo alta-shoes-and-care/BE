@@ -24,7 +24,7 @@ func main() {
 	// awsSess := awss3.InitS3(config.S3_KEY, config.S3_SECRET, config.S3_REGION)
 
 	ac := _AuthController.New(authRepo)
-	uc := _UserController.New(userRepo)
+	uc := _UserController.NewUserController(userRepo)
 
 	e := echo.New()
 

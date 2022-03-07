@@ -43,7 +43,7 @@ func (ctl *UserController) Get() echo.HandlerFunc {
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
 		}
-		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses mendapatkan data user", ToResponseGetByID(res)))
+		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses mendapatkan data user", ToResponseGetUser(res)))
 	}
 }
 
@@ -60,7 +60,7 @@ func (ctl *UserController) Update() echo.HandlerFunc {
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
 		}
-		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses memperbarui data user", ToResponseUpdate(res)))
+		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses memperbarui data user", ToResponseUpdateUser(res)))
 	}
 }
 

@@ -1276,6 +1276,8 @@ paths:
                         type: string
                       phone:
                         type: string
+                      url:
+                        type: string
                 example:
                   code: 201
                   message: sukses menambahkan order baru
@@ -1291,6 +1293,7 @@ paths:
                     address: Jl. Soedirman No. 13
                     city: Bandung
                     phone: "081123456789"
+                    url: http://www.midtrans.com/blabla
         '400':
           description: Bad Request
           content:
@@ -1331,6 +1334,8 @@ paths:
       summary: Dapatkan semua order
       tags:
         - Orders
+      security:
+        - bearerAuth: []
       responses:
         '200':
           description: OK
@@ -1350,36 +1355,159 @@ paths:
                       properties:
                         id:
                           type: integer
-                        service_id:
-                          type: integer
                         user_id:
                           type: integer
-                        order_id:
+                        service_id:
                           type: integer
-                        rating:
-                          type: integer
-                        order:
+                        service_title:
                           type: string
-                        image:
+                        price:
+                          type: integer
+                        payment_method_id:
+                          type: integer
+                        payment_method_name:
+                          type: string
+                        time:
+                          type: string
+                          format: date-time
+                        address:
+                          type: string
+                        city:
+                          type: string
+                        phone:
+                          type: string
+                        url:
                           type: string
                 example:
                   code: 200
                   message: sukses mendapatkan semua order
                   data:
                     - id: 1
-                      service_id: 1
                       user_id: 1
-                      order_id: 1
-                      rating: 5
-                      order: Mantap
-                      image: https://awsucup.s3.ap-southeast-1.amazonaws.com/sneakers.jpg
+                      service_id: 1
+                      service_title: Regular Cleaning
+                      price: 20000
+                      payment_method_id: 1
+                      payment_method_name: Gopay
+                      time: "2022-03-06T13:00:00+07:00"
+                      address: Jl. Soedirman No. 13
+                      city: Bandung
+                      phone: "081123456789"
+                      url: http://www.midtrans.com/blabla
                     - id: 2
-                      service_id: 2
                       user_id: 2
-                      order_id: 2
-                      rating: 5
-                      order: Bagus bro!
-                      image: https://awsucup.s3.ap-southeast-1.amazonaws.com/sneakers2.jpg
+                      service_id: 1
+                      service_title: Regular Cleaning
+                      price: 20000
+                      payment_method_id: 2
+                      payment_method_name: BCA Klikpay
+                      time: "2022-03-07T13:00:00+07:00"
+                      address: Jl. Diponegoro No. 13
+                      city: Surabaya
+                      phone: "081123456788"
+                      url: http://www.midtrans.com/blabla2
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                code: 500
+                message: tidak terdapat order sama sekali
+                data: null
+  /orders?user_id:
+    get:
+      summary: Dapatkan semua order berdasarkan user id
+      tags:
+        - Orders
+      parameters:
+        - in: query
+          name: user_id
+          schema:
+            type: integer
+          description: user_id hasil generate dari sistem
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        user_id:
+                          type: integer
+                        service_id:
+                          type: integer
+                        service_title:
+                          type: string
+                        price:
+                          type: integer
+                        payment_method_id:
+                          type: integer
+                        payment_method_name:
+                          type: string
+                        time:
+                          type: string
+                          format: date-time
+                        address:
+                          type: string
+                        city:
+                          type: string
+                        phone:
+                          type: string
+                        url:
+                          type: string
+                example:
+                  code: 200
+                  message: sukses mendapatkan semua order berdasarkan user id
+                  data:
+                    - id: 1
+                      user_id: 1
+                      service_id: 1
+                      service_title: Regular Cleaning
+                      price: 20000
+                      payment_method_id: 1
+                      payment_method_name: Gopay
+                      time: "2022-03-06T13:00:00+07:00"
+                      address: Jl. Soedirman No. 13
+                      city: Bandung
+                      phone: "081123456789"
+                      url: http://www.midtrans.com/blabla
+                    - id: 2
+                      user_id: 1
+                      service_id: 1
+                      service_title: Regular Cleaning
+                      price: 20000
+                      payment_method_id: 2
+                      payment_method_name: BCA Klikpay
+                      time: "2022-03-07T13:00:00+07:00"
+                      address: Jl. Diponegoro No. 13
+                      city: Surabaya
+                      phone: "081123456788"
+                      url: http://www.midtrans.com/blabla2
         '401':
           $ref: '#/components/responses/UnauthorizedError'
         '500':
@@ -1400,6 +1528,94 @@ paths:
                 message: tidak terdapat order sama sekali
                 data: null
   /orders/{id}:
+    get:
+      summary: Dapatkan detail order
+      tags:
+        - Orders
+      parameters:
+        - name: id
+          in: path
+          description: ID order hasil generate dari sistem
+          required: true
+          schema:
+            type: integer
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      user_id:
+                        type: integer
+                      service_id:
+                        type: integer
+                      service_title:
+                        type: string
+                      price:
+                        type: integer
+                      payment_method_id:
+                        type: integer
+                      payment_method_name:
+                        type: string
+                      time:
+                        type: string
+                        format: date-time
+                      address:
+                        type: string
+                      city:
+                        type: string
+                      phone:
+                        type: string
+                      url:
+                        type: string
+                example:
+                  code: 200
+                  message: sukses mendapatkan detail order
+                  data:
+                    id: 1
+                    user_id: 1
+                    service_id: 1
+                    service_title: Regular Cleaning
+                    price: 20000
+                    payment_method_id: 1
+                    payment_method_name: Gopay
+                    time: "2022-03-06T13:00:00+07:00"
+                    address: Jl. Soedirman No. 13
+                    city: Bandung
+                    phone: "081123456789"
+                    url: http://www.midtrans.com/blabla
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                code: 500
+                message: tidak terdapat order
+                data: null
     put:
       summary: Memperbarui order berdasarkan id
       tags:

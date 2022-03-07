@@ -25,7 +25,7 @@ func (repo *AuthRepository) Login(email, password string) (U.Users, error) {
 
 	isMatched := hash.CheckPasswordHash(user.Password, password)
 	if !isMatched {
-		return U.Users{}, errors.New("email atau password tidak valid")
+		return U.Users{}, errors.New("email dan password tidak cocok")
 	}
 
 	return user, nil

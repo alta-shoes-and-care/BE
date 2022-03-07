@@ -1493,17 +1493,11 @@ paths:
                 code: 500
                 message: tidak terdapat order sama sekali
                 data: null
-  /orders?user_id:
+  /orders/me:
     get:
       summary: Dapatkan semua order berdasarkan user id
       tags:
         - Orders
-      parameters:
-        - in: query
-          name: user_id
-          schema:
-            type: integer
-          description: user_id hasil generate dari sistem
       security:
         - bearerAuth: []
       responses:
@@ -1700,7 +1694,7 @@ paths:
                 code: 500
                 message: gagal mendapatkan detail order
                 data: null
-  /orders/set-paid/{id}:
+  /orders/paid/{id}:
     put:
       summary: Mengubah status pembayaran menjadi paid
       tags:
@@ -1796,7 +1790,7 @@ paths:
                 code: 500
                 message: gagal mengubah status pembayaran menjadi paid
                 data: null
-  /orders/set-accept/{id}:
+  /orders/accept/{id}:
     put:
       summary: Mengubah status order menjadi accepted
       tags:
@@ -1892,7 +1886,7 @@ paths:
                 code: 500
                 message: gagal mengubah status order menjadi accepted
                 data: null
-  /orders/set-rejected/{id}:
+  /orders/rejected/{id}:
     put:
       summary: Mengubah status order menjadi rejected
       tags:
@@ -1988,7 +1982,7 @@ paths:
                 code: 500
                 message: gagal mengubah status order menjadi rejected
                 data: null
-  /orders/set-cancel/{id}:
+  /orders/cancel/{id}:
     put:
       summary: Mengubah status order menjadi cancel
       tags:
@@ -2084,7 +2078,7 @@ paths:
                 code: 500
                 message: gagal mengubah status order menjadi cancel
                 data: null
-  /orders/set-on-process/{id}:
+  /orders/on-process/{id}:
     put:
       summary: Mengubah status order menjadi on process
       tags:
@@ -2180,7 +2174,7 @@ paths:
                 code: 500
                 message: gagal mengubah status order menjadi on process
                 data: null
-  /orders/set-delivering/{id}:
+  /orders/delivering/{id}:
     put:
       summary: Mengubah status order menjadi delivering
       tags:
@@ -2276,7 +2270,7 @@ paths:
                 code: 500
                 message: gagal mengubah status order menjadi delivering
                 data: null
-  /orders/set-done/{id}:
+  /orders/done/{id}:
     put:
       summary: Mengubah status order menjadi done
       tags:

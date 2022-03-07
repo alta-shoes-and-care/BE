@@ -34,7 +34,7 @@ func (repo *UserRepository) Get(userID uint) (U.Users, error) {
 
 	if err := repo.db.First(&user, userID).Error; err != nil {
 		log.Warn(err)
-		return U.Users{}, errors.New("user tidak ditemukan")
+		return U.Users{}, errors.New("data user tidak ditemukan")
 	}
 	return user, nil
 }

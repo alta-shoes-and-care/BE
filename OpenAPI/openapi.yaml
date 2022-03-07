@@ -1272,6 +1272,8 @@ paths:
               properties:
                 service_id:
                   type: integer
+                qty:
+                  type: integer
                 payment_method_id:
                   type: integer
                 time:
@@ -1285,6 +1287,7 @@ paths:
                   type: string
             example:
                 service_id: 1
+                qty: 2
                 payment_method_id: 1
                 time: "2022-03-06T13:00:00+07:00"
                 address: Jl. Soedirman No. 13
@@ -1315,6 +1318,8 @@ paths:
                         type: string
                       price:
                         type: integer
+                      qty:
+                        type: integer
                       payment_method_id:
                         type: integer
                       payment_method_name:
@@ -1344,6 +1349,7 @@ paths:
                     service_id: 1
                     service_title: Regular Cleaning
                     price: 20000
+                    qty: 2
                     payment_method_id: 1
                     payment_method_name: Gopay
                     time: "2022-03-06T13:00:00+07:00"
@@ -1422,6 +1428,8 @@ paths:
                           type: string
                         price:
                           type: integer
+                        qty:
+                          type: integer
                         payment_method_id:
                           type: integer
                         payment_method_name:
@@ -1451,6 +1459,7 @@ paths:
                       service_id: 1
                       service_title: Regular Cleaning
                       price: 20000
+                      qty: 2
                       payment_method_id: 1
                       payment_method_name: Gopay
                       time: "2022-03-06T13:00:00+07:00"
@@ -1465,6 +1474,7 @@ paths:
                       service_id: 1
                       service_title: Regular Cleaning
                       price: 20000
+                      qty: 2
                       payment_method_id: 2
                       payment_method_name: BCA Klikpay
                       time: "2022-03-07T13:00:00+07:00"
@@ -1527,6 +1537,8 @@ paths:
                           type: string
                         price:
                           type: integer
+                        qty:
+                          type: integer
                         payment_method_id:
                           type: integer
                         payment_method_name:
@@ -1556,6 +1568,7 @@ paths:
                       service_id: 1
                       service_title: Regular Cleaning
                       price: 20000
+                      qty: 2
                       payment_method_id: 1
                       payment_method_name: Gopay
                       time: "2022-03-06T13:00:00+07:00"
@@ -1570,6 +1583,7 @@ paths:
                       service_id: 1
                       service_title: Regular Cleaning
                       price: 20000
+                      qty: 2
                       payment_method_id: 2
                       payment_method_name: BCA Klikpay
                       time: "2022-03-07T13:00:00+07:00"
@@ -1637,6 +1651,8 @@ paths:
                         type: string
                       price:
                         type: integer
+                      qty:
+                        type: integer
                       payment_method_id:
                         type: integer
                       payment_method_name:
@@ -1666,6 +1682,7 @@ paths:
                     service_id: 1
                     service_title: Regular Cleaning
                     price: 20000
+                    qty: 2
                     payment_method_id: 1
                     payment_method_name: Gopay
                     time: "2022-03-06T13:00:00+07:00"
@@ -1733,6 +1750,8 @@ paths:
                         type: string
                       price:
                         type: integer
+                      qty:
+                        type: integer
                       payment_method_id:
                         type: integer
                       payment_method_name:
@@ -1762,6 +1781,7 @@ paths:
                     service_id: 1
                     service_title: Regular Cleaning
                     price: 20000
+                    qty: 2
                     payment_method_id: 1
                     payment_method_name: Gopay
                     time: "2022-03-06T13:00:00+07:00"
@@ -1829,6 +1849,8 @@ paths:
                         type: string
                       price:
                         type: integer
+                      qty:
+                        type: integer
                       payment_method_id:
                         type: integer
                       payment_method_name:
@@ -1858,6 +1880,7 @@ paths:
                     service_id: 1
                     service_title: Regular Cleaning
                     price: 20000
+                    qty: 2
                     payment_method_id: 1
                     payment_method_name: Gopay
                     time: "2022-03-06T13:00:00+07:00"
@@ -1925,6 +1948,8 @@ paths:
                         type: string
                       price:
                         type: integer
+                      qty:
+                        type: integer
                       payment_method_id:
                         type: integer
                       payment_method_name:
@@ -1954,6 +1979,7 @@ paths:
                     service_id: 1
                     service_title: Regular Cleaning
                     price: 20000
+                    qty: 2
                     payment_method_id: 1
                     payment_method_name: Gopay
                     time: "2022-03-06T13:00:00+07:00"
@@ -2021,6 +2047,8 @@ paths:
                         type: string
                       price:
                         type: integer
+                      qty:
+                        type: integer
                       payment_method_id:
                         type: integer
                       payment_method_name:
@@ -2050,6 +2078,7 @@ paths:
                     service_id: 1
                     service_title: Regular Cleaning
                     price: 20000
+                    qty: 2
                     payment_method_id: 1
                     payment_method_name: Gopay
                     time: "2022-03-06T13:00:00+07:00"
@@ -2117,6 +2146,8 @@ paths:
                         type: string
                       price:
                         type: integer
+                      qty:
+                        type: integer
                       payment_method_id:
                         type: integer
                       payment_method_name:
@@ -2146,6 +2177,7 @@ paths:
                     service_id: 1
                     service_title: Regular Cleaning
                     price: 20000
+                    qty: 2
                     payment_method_id: 1
                     payment_method_name: Gopay
                     time: "2022-03-06T13:00:00+07:00"
@@ -2213,6 +2245,8 @@ paths:
                         type: string
                       price:
                         type: integer
+                      qty:
+                        type: integer
                       payment_method_id:
                         type: integer
                       payment_method_name:
@@ -2242,6 +2276,7 @@ paths:
                     service_id: 1
                     service_title: Regular Cleaning
                     price: 20000
+                    qty: 2
                     payment_method_id: 1
                     payment_method_name: Gopay
                     time: "2022-03-06T13:00:00+07:00"
@@ -2309,6 +2344,8 @@ paths:
                         type: string
                       price:
                         type: integer
+                      qty:
+                        type: integer
                       payment_method_id:
                         type: integer
                       payment_method_name:
@@ -2338,6 +2375,7 @@ paths:
                     service_id: 1
                     service_title: Regular Cleaning
                     price: 20000
+                    qty: 2
                     payment_method_id: 1
                     payment_method_name: Gopay
                     time: "2022-03-06T13:00:00+07:00"

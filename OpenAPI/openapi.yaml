@@ -1,24 +1,32 @@
 openapi: "3.0.2"
 info:
-  title: Final Project
-  description: Dokumentasi Final Project
+  title: Shoes Service Station
+  description: Dokumentasi Final Project - Shoes Service Station
   contact:
-    name: Final Project
+    name: BE Team
     email: yusufnurwahid.contact@gmail.com
   version: "1.0.0"
 servers:
-  - url: http://3.1.211.120:8081/
+  - url: https://ynwahid.cloud.okteto.net
 tags:
   - name: Auth
     description: Autorisasi users
   - name: Users
-    description: Daftar users
+    description: Operasi tentang users
+  - name: Services
+    description: Operasi tentang services
+  - name: Reviews
+    description: Operasi tentang reviews
+  - name: Orders
+    description: Operasi tentang orders
+  - name: Payment Methods
+    description: Operasi tentang payment method
 paths:
   /login:
     post:
       tags:
         - Auth
-      summary: Login user
+      summary: Login untuk user
       requestBody:
         required: true
         content:
@@ -91,9 +99,2324 @@ paths:
                     type: object
               example:
                 code: 500
-                message: email atau password tidak valid
+                message: email atau password tidak cocok
+                data: null
+  /users:
+    post:
+      summary: Tambahkan user baru
+      tags:
+        - Users
+      requestBody:
+        required: true
+        description: Menambah user baru dengan input yang sesuai
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+                  format: password
+                is_admin: 
+                  type: boolean
+              example:
+                name: ucup
+                email: ucup@ucup.com
+                password: ucup123
+                is_admin: false
+      responses:
+        '201':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      email:
+                        type: string
+                      is_admin:
+                        type: boolean
+                example:
+                  code: 201
+                  message: sukses menambahkan user baru
+                  data:
+                    name: ucup
+                    email: ucup@ucup.com
+                    is_admin: false
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                code: 400
+                message: input dari user tidak sesuai, nama, email atau password tidak boleh kosong
+                data: null
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                code: 500
+                message: gagal membuat user baru
+                data: null
+    get:
+      summary: Dapatkan data user
+      tags:
+        - Users
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                      email:
+                        type: string
+                      is_admin:
+                        type: boolean
+                example:
+                  code: 200
+                  message: sukses mendapatkan data user
+                  data:
+                    id: 1
+                    name: ucup
+                    email: ucup@ucup.com
+                    is_admin: false
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                code: 500
+                message: data user tidak ditemukan
+                data: null
+    put:
+      summary: Memperbarui data user
+      tags:
+        - Users
+      requestBody:
+        required: true
+        description: Memperbarui data user dengan input yang sesuai
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+                  format: password
+              example:
+                name: Ucup_Updated
+                email: ucup_Updated@ucup.com
+                password: ucup1234
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                      email:
+                        type: string
+                      is_admin:
+                        type: boolean
+                example:
+                  code: 200
+                  message: sukses memperbarui data user
+                  data:
+                    id: 1
+                    name: Ucup_Updated
+                    email: ucup_Updated@ucup.com
+                    is_admin: false
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                code: 400
+                message: terdapat kesalahan input dari client
+                data: null
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                code: 500
+                message: tidak ada perubahan pada data user
+                data: null
+    delete:
+      summary: Menghapus data user
+      tags:
+        - Users
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+                example:
+                  code: 200
+                  message: sukses menghapus user
+                  data: null
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                code: 500
+                message: tidak ada user yang dihapus
+                data: null
+  /payment-methods:
+    post:
+      summary: Tambahkan payment method baru
+      tags:
+        - Payment Methods
+      requestBody:
+        required: true
+        description: Menambah payment method dengan input yang sesuai
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+              example:
+                name: BCA Klikpay
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                example:
+                  code: 201
+                  message: sukses menambahkan payment method baru
+                  data:
+                    name: BCA Klikpay
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                code: 400
+                message: input dari user tidak sesuai, nama payment method tidak boleh kosong
+                data: null
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                code: 500
+                message: gagal membuat payment method baru
+                data: null
+    get:
+      summary: Dapatkan semua payment method
+      tags:
+        - Payment Methods
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        name:
+                          type: string
+                example:
+                  code: 200
+                  message: sukses mendapatkan semua payment method
+                  data:
+                    - id: 1
+                      name: BCA Klikpay
+                    - id: 2
+                      name: Gopay
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                code: 500
+                message: tidak terdapat payment method sama sekali
+                data: null
+    delete:
+      summary: Menghapus payment method
+      tags:
+        - Payment Methods
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+                example:
+                  code: 200
+                  message: sukses menghapus payment method
+                  data: null
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                code: 500
+                message: tidak ada payment method yang dihapus
+                data: null
+  /services:
+    post:
+      summary: Tambahkan service baru
+      tags:
+        - Services
+      requestBody:
+        required: true
+        description: Menambah service dengan input yang sesuai
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+                price:
+                  type: integer
+            example:
+                title: Regular Cleaning
+                description: Layanan cuci sepatu reguler
+                price: 20000
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+              example:
+                file: sneakers.jpg
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      user_id:
+                        type: integer
+                      title:
+                        type: string
+                      description:
+                        type: string
+                      price:
+                        type: integer
+                      image:
+                        type: string
+                example:
+                  code: 201
+                  message: sukses menambahkan service baru
+                  data:
+                    user_id: 1
+                    title: Regular Cleaning
+                    description: Layanan cuci sepatu reguler
+                    price: 20000
+                    image: https://awsucup.s3.ap-southeast-1.amazonaws.com/sneakers.jpg
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                code: 400
+                message: input dari user tidak sesuai, title, description, atau price tidak boleh kosong
+                data: null
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                code: 500
+                message: gagal membuat service baru
+                data: null
+    get:
+      summary: Dapatkan semua service
+      tags:
+        - Services
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        user_id:
+                          type: integer
+                        title:
+                          type: string
+                        description:
+                          type: string
+                        price:
+                          type: integer
+                        image:
+                          type: string
+                example:
+                  code: 200
+                  message: sukses mendapatkan semua service
+                  data:
+                    - id: 1
+                      user_id: 1
+                      title: Regular Cleaning
+                      description: Layanan cuci sepatu reguler
+                      price: 20000
+                      image: https://awsucup.s3.ap-southeast-1.amazonaws.com/sneakers.jpg
+                    - id: 2
+                      user_id: 1
+                      title: Premium Cleaning
+                      description: Layanan cuci sepatu premium
+                      price: 30000
+                      image: https://awsucup.s3.ap-southeast-1.amazonaws.com/sneakers2.jpg
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                code: 500
+                message: tidak terdapat service sama sekali
+                data: null
+  /services/{id}:
+    get:
+      summary: Dapatkan detail service
+      tags:
+        - Services
+      parameters:
+        - name: id
+          in: path
+          description: ID service hasil generate dari sistem
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      user_id:
+                        type: integer
+                      title:
+                        type: string
+                      description:
+                        type: string
+                      price:
+                        type: integer
+                      image:
+                        type: string
+                example:
+                  code: 200
+                  message: sukses mendapatkan detail service
+                  data:
+                    id: 1
+                    user_id: 1
+                    title: Regular Cleaning
+                    description: Layanan cuci sepatu reguler
+                    price: 20000
+                    image: https://awsucup.s3.ap-southeast-1.amazonaws.com/sneakers.jpg
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                code: 500
+                message: gagal mendapatkan detail service
+                data: null
+    put:
+      summary: Memperbarui service berdasarkan id
+      tags:
+        - Services
+      parameters:
+        - name: id
+          in: path
+          description: ID service hasil generate dari sistem
+          required: true
+          schema:
+            type: integer
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        description: Memperbarui service dengan input yang sesuai
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+                price:
+                  type: integer
+            example:
+                title: Regular Cleaning Plus
+                description: Layanan cuci sepatu reguler plus
+                price: 20000
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+              example:
+                file: sneakers.jpg
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      user_id:
+                        type: integer
+                      title:
+                        type: string
+                      description:
+                        type: string
+                      price:
+                        type: integer
+                      image:
+                        type: string
+                example:
+                  code: 200
+                  message: sukses memperbarui data service
+                  data:
+                    id: 1
+                    user_id: 1
+                    title: Regular Cleaning Plus
+                    description: Layanan cuci sepatu reguler plus
+                    price: 20000
+                    image: https://awsucup.s3.ap-southeast-1.amazonaws.com/sneakers.jpg
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                code: 500
+                message: tidak ada data service yang diperbarui
+                data: null
+    delete:
+      summary: Menghapus service berdasarkan id
+      tags:
+        - Services
+      parameters:
+        - name: id
+          in: path
+          description: ID service hasil generate dari sistem
+          required: true
+          schema:
+            type: integer
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+                example:
+                  code: 200
+                  message: sukses menghapus service
+                  data: null
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                code: 500
+                message: tidak ada service yang dihapus
+                data: null
+  /reviews:
+    post:
+      summary: Tambahkan review baru
+      tags:
+        - Reviews
+      requestBody:
+        required: true
+        description: Menambah review dengan input yang sesuai
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                service_id:
+                  type: integer
+                order_id:
+                  type: integer
+                rating:
+                  type: integer
+                review:
+                  type: string
+            example:
+                service_id: 1
+                order_id: 1
+                rating: 5
+                review: Mantap
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      service_id:
+                        type: integer
+                      user_id:
+                        type: integer
+                      user_name:
+                        type: string
+                      order_id:
+                        type: integer
+                      rating:
+                        type: integer
+                      review:
+                        type: string
+                example:
+                  code: 201
+                  message: sukses menambahkan review baru
+                  data:
+                    id: 1
+                    service_id: 1
+                    user_id: 1
+                    user_name: Frans Ihsan
+                    order_id: 1
+                    rating: 5
+                    review: Mantap
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                code: 400
+                message: input dari user tidak sesuai, service_id, order_id, rating, atau review tidak boleh kosong
+                data: null
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                code: 500
+                message: gagal membuat review baru
+                data: null
+    get:
+      summary: Dapatkan semua review
+      tags:
+        - Reviews
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        service_id:
+                          type: integer
+                        user_id:
+                          type: integer
+                        user_name:
+                          type: string
+                        order_id:
+                          type: integer
+                        rating:
+                          type: integer
+                        review:
+                          type: string
+                example:
+                  code: 200
+                  message: sukses mendapatkan semua review
+                  data:
+                    - id: 1
+                      service_id: 1
+                      user_id: 1
+                      user_name: Frans Ihsan
+                      order_id: 1
+                      rating: 5
+                      review: Mantap
+                    - id: 2
+                      service_id: 2
+                      user_id: 2
+                      user_name: Ucup Nur
+                      order_id: 2
+                      rating: 5
+                      review: Bagus bro!
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                code: 500
+                message: tidak terdapat review sama sekali
+                data: null
+  /reviews/{id}:
+    put:
+      summary: Memperbarui review berdasarkan id
+      tags:
+        - Reviews
+      parameters:
+        - name: id
+          in: path
+          description: ID review hasil generate dari sistem
+          required: true
+          schema:
+            type: integer
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        description: Memperbarui review dengan input yang sesuai
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                rating:
+                  type: integer
+                review:
+                  type: string
+            example:
+                rating: 5
+                review: Bagus banget bro!
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      service_id:
+                        type: integer
+                      user_id:
+                        type: integer
+                      user_name:
+                        type: string
+                      order_id:
+                        type: integer
+                      rating:
+                        type: integer
+                      review:
+                        type: string
+                example:
+                  code: 200
+                  message: sukses memperbarui data review
+                  data:
+                    id: 2
+                    service_id: 2
+                    user_id: 2
+                    user_name: Ucup
+                    order_id: 2
+                    rating: 5
+                    review: Bagus banget bro!
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                code: 500
+                message: tidak ada data review yang diperbarui
+                data: null
+    delete:
+      summary: Menghapus review berdasarkan id
+      tags:
+        - Reviews
+      parameters:
+        - name: id
+          in: path
+          description: ID review hasil generate dari sistem
+          required: true
+          schema:
+            type: integer
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+                example:
+                  code: 200
+                  message: sukses menghapus review
+                  data: null
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                code: 500
+                message: tidak ada review yang dihapus
+                data: null
+  /orders:
+    post:
+      summary: Tambahkan order baru
+      tags:
+        - Orders
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        description: Menambah order dengan input yang sesuai
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                service_id:
+                  type: integer
+                qty:
+                  type: integer
+                payment_method_id:
+                  type: integer
+                time:
+                  type: string
+                  format: date-time
+                address:
+                  type: string
+                city:
+                  type: string
+                phone:
+                  type: string
+            example:
+                service_id: 1
+                qty: 2
+                payment_method_id: 1
+                time: "2022-03-06T13:00:00+07:00"
+                address: Jl. Soedirman No. 13
+                city: Bandung
+                phone: "081123456789"
+      responses:
+        '201':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      user_id:
+                        type: integer
+                      service_id:
+                        type: integer
+                      service_title:
+                        type: string
+                      price:
+                        type: integer
+                      qty:
+                        type: integer
+                      payment_method_id:
+                        type: integer
+                      payment_method_name:
+                        type: string
+                      time:
+                        type: string
+                        format: date-time
+                      address:
+                        type: string
+                      city:
+                        type: string
+                      phone:
+                        type: string
+                      order_status:
+                          type: string
+                          enum: [pending, accepted, rejected, cancel, on process, delivering, done]
+                      is_paid:
+                        type: boolean
+                      url:
+                        type: string
+                example:
+                  code: 201
+                  message: sukses menambahkan order baru
+                  data:
+                    id: 1
+                    user_id: 1
+                    service_id: 1
+                    service_title: Regular Cleaning
+                    price: 20000
+                    qty: 2
+                    payment_method_id: 1
+                    payment_method_name: Gopay
+                    time: "2022-03-06T13:00:00+07:00"
+                    address: Jl. Soedirman No. 13
+                    city: Bandung
+                    phone: "081123456789"
+                    order_status: pending
+                    is_paid: false
+                    url: http://www.midtrans.com/blabla
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                code: 400
+                message: input dari user tidak sesuai, service_id, payment_method_id, time, address, city, atau phone tidak boleh kosong
+                data: null
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                code: 500
+                message: gagal membuat order baru
+                data: null
+    get:
+      summary: Dapatkan semua order
+      tags:
+        - Orders
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        user_id:
+                          type: integer
+                        service_id:
+                          type: integer
+                        service_title:
+                          type: string
+                        price:
+                          type: integer
+                        qty:
+                          type: integer
+                        payment_method_id:
+                          type: integer
+                        payment_method_name:
+                          type: string
+                        time:
+                          type: string
+                          format: date-time
+                        address:
+                          type: string
+                        city:
+                          type: string
+                        phone:
+                          type: string
+                        order_status:
+                          type: string
+                          enum: [pending, accepted, rejected, cancel, on process, delivering, done]
+                        is_paid:
+                          type: boolean
+                        url:
+                          type: string
+                example:
+                  code: 200
+                  message: sukses mendapatkan semua order
+                  data:
+                    - id: 1
+                      user_id: 1
+                      service_id: 1
+                      service_title: Regular Cleaning
+                      price: 20000
+                      qty: 2
+                      payment_method_id: 1
+                      payment_method_name: Gopay
+                      time: "2022-03-06T13:00:00+07:00"
+                      address: Jl. Soedirman No. 13
+                      city: Bandung
+                      phone: "081123456789"
+                      order_status: accepted
+                      is_paid: true
+                      url: http://www.midtrans.com/blabla
+                    - id: 2
+                      user_id: 2
+                      service_id: 1
+                      service_title: Regular Cleaning
+                      price: 20000
+                      qty: 2
+                      payment_method_id: 2
+                      payment_method_name: BCA Klikpay
+                      time: "2022-03-07T13:00:00+07:00"
+                      address: Jl. Diponegoro No. 13
+                      city: Surabaya
+                      phone: "081123456788"
+                      order_status: accepted
+                      is_paid: true
+                      url: http://www.midtrans.com/blabla2
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                code: 500
+                message: tidak terdapat order sama sekali
+                data: null
+  /orders/me:
+    get:
+      summary: Dapatkan semua order berdasarkan user id
+      tags:
+        - Orders
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        user_id:
+                          type: integer
+                        service_id:
+                          type: integer
+                        service_title:
+                          type: string
+                        price:
+                          type: integer
+                        qty:
+                          type: integer
+                        payment_method_id:
+                          type: integer
+                        payment_method_name:
+                          type: string
+                        time:
+                          type: string
+                          format: date-time
+                        address:
+                          type: string
+                        city:
+                          type: string
+                        phone:
+                          type: string
+                        order_status:
+                          type: string
+                          enum: [pending, accepted, rejected, cancel, on process, delivering, done]
+                        is_paid:
+                          type: boolean
+                        url:
+                          type: string
+                example:
+                  code: 200
+                  message: sukses mendapatkan semua order berdasarkan user id
+                  data:
+                    - id: 1
+                      user_id: 1
+                      service_id: 1
+                      service_title: Regular Cleaning
+                      price: 20000
+                      qty: 2
+                      payment_method_id: 1
+                      payment_method_name: Gopay
+                      time: "2022-03-06T13:00:00+07:00"
+                      address: Jl. Soedirman No. 13
+                      city: Bandung
+                      phone: "081123456789"
+                      order_status: accepted
+                      is_paid: true
+                      url: http://www.midtrans.com/blabla
+                    - id: 2
+                      user_id: 1
+                      service_id: 1
+                      service_title: Regular Cleaning
+                      price: 20000
+                      qty: 2
+                      payment_method_id: 2
+                      payment_method_name: BCA Klikpay
+                      time: "2022-03-07T13:00:00+07:00"
+                      address: Jl. Diponegoro No. 13
+                      city: Surabaya
+                      phone: "081123456788"
+                      order_status: accepted
+                      is_paid: true
+                      url: http://www.midtrans.com/blabla2
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                code: 500
+                message: tidak terdapat order sama sekali
+                data: null
+  /orders/{id}:
+    get:
+      summary: Dapatkan detail order
+      tags:
+        - Orders
+      parameters:
+        - name: id
+          in: path
+          description: ID order hasil generate dari sistem
+          required: true
+          schema:
+            type: integer
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      user_id:
+                        type: integer
+                      service_id:
+                        type: integer
+                      service_title:
+                        type: string
+                      price:
+                        type: integer
+                      qty:
+                        type: integer
+                      payment_method_id:
+                        type: integer
+                      payment_method_name:
+                        type: string
+                      time:
+                        type: string
+                        format: date-time
+                      address:
+                        type: string
+                      city:
+                        type: string
+                      phone:
+                        type: string
+                      order_status:
+                        type: string
+                        enum: [pending, accepted, rejected, cancel, on process, delivering, done]
+                      is_paid:
+                        type: boolean
+                      url:
+                        type: string
+                example:
+                  code: 200
+                  message: sukses mendapatkan detail order
+                  data:
+                    id: 1
+                    user_id: 1
+                    service_id: 1
+                    service_title: Regular Cleaning
+                    price: 20000
+                    qty: 2
+                    payment_method_id: 1
+                    payment_method_name: Gopay
+                    time: "2022-03-06T13:00:00+07:00"
+                    address: Jl. Soedirman No. 13
+                    city: Bandung
+                    phone: "081123456789"
+                    order_status: accepted
+                    is_paid: true
+                    url: http://www.midtrans.com/blabla
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                code: 500
+                message: gagal mendapatkan detail order
+                data: null
+  /orders/paid/{id}:
+    put:
+      summary: Mengubah status pembayaran menjadi paid
+      tags:
+        - Orders
+      parameters:
+        - name: id
+          in: path
+          description: ID order hasil generate dari sistem
+          required: true
+          schema:
+            type: integer
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      user_id:
+                        type: integer
+                      service_id:
+                        type: integer
+                      service_title:
+                        type: string
+                      price:
+                        type: integer
+                      qty:
+                        type: integer
+                      payment_method_id:
+                        type: integer
+                      payment_method_name:
+                        type: string
+                      time:
+                        type: string
+                        format: date-time
+                      address:
+                        type: string
+                      city:
+                        type: string
+                      phone:
+                        type: string
+                      order_status:
+                        type: string
+                        enum: [pending, accepted, rejected, cancel, on process, delivering, done]
+                      is_paid:
+                        type: boolean
+                      url:
+                        type: string
+                example:
+                  code: 200
+                  message: sukses menjadikan status pembayaran menjadi paid
+                  data:
+                    id: 1
+                    user_id: 1
+                    service_id: 1
+                    service_title: Regular Cleaning
+                    price: 20000
+                    qty: 2
+                    payment_method_id: 1
+                    payment_method_name: Gopay
+                    time: "2022-03-06T13:00:00+07:00"
+                    address: Jl. Soedirman No. 13
+                    city: Bandung
+                    phone: "081123456789"
+                    order_status: pending
+                    is_paid: true
+                    url: http://www.midtrans.com/blabla
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                code: 500
+                message: gagal mengubah status pembayaran menjadi paid
+                data: null
+  /orders/accept/{id}:
+    put:
+      summary: Mengubah status order menjadi accepted
+      tags:
+        - Orders
+      parameters:
+        - name: id
+          in: path
+          description: ID order hasil generate dari sistem
+          required: true
+          schema:
+            type: integer
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      user_id:
+                        type: integer
+                      service_id:
+                        type: integer
+                      service_title:
+                        type: string
+                      price:
+                        type: integer
+                      qty:
+                        type: integer
+                      payment_method_id:
+                        type: integer
+                      payment_method_name:
+                        type: string
+                      time:
+                        type: string
+                        format: date-time
+                      address:
+                        type: string
+                      city:
+                        type: string
+                      phone:
+                        type: string
+                      order_status:
+                        type: string
+                        enum: [pending, accepted, rejected, cancel, on process, delivering, done]
+                      is_paid:
+                        type: boolean
+                      url:
+                        type: string
+                example:
+                  code: 200
+                  message: sukses mengubah status order menjadi accepted
+                  data:
+                    id: 1
+                    user_id: 1
+                    service_id: 1
+                    service_title: Regular Cleaning
+                    price: 20000
+                    qty: 2
+                    payment_method_id: 1
+                    payment_method_name: Gopay
+                    time: "2022-03-06T13:00:00+07:00"
+                    address: Jl. Soedirman No. 13
+                    city: Bandung
+                    phone: "081123456789"
+                    order_status: accepted
+                    is_paid: true
+                    url: http://www.midtrans.com/blabla
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                code: 500
+                message: gagal mengubah status order menjadi accepted
+                data: null
+  /orders/rejected/{id}:
+    put:
+      summary: Mengubah status order menjadi rejected
+      tags:
+        - Orders
+      parameters:
+        - name: id
+          in: path
+          description: ID order hasil generate dari sistem
+          required: true
+          schema:
+            type: integer
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      user_id:
+                        type: integer
+                      service_id:
+                        type: integer
+                      service_title:
+                        type: string
+                      price:
+                        type: integer
+                      qty:
+                        type: integer
+                      payment_method_id:
+                        type: integer
+                      payment_method_name:
+                        type: string
+                      time:
+                        type: string
+                        format: date-time
+                      address:
+                        type: string
+                      city:
+                        type: string
+                      phone:
+                        type: string
+                      order_status:
+                        type: string
+                        enum: [pending, accepted, rejected, cancel, on process, delivering, done]
+                      is_paid:
+                        type: boolean
+                      url:
+                        type: string
+                example:
+                  code: 200
+                  message: sukses mengubah status order menjadi rejected
+                  data:
+                    id: 1
+                    user_id: 1
+                    service_id: 1
+                    service_title: Regular Cleaning
+                    price: 20000
+                    qty: 2
+                    payment_method_id: 1
+                    payment_method_name: Gopay
+                    time: "2022-03-06T13:00:00+07:00"
+                    address: Jl. Soedirman No. 13
+                    city: Bandung
+                    phone: "081123456789"
+                    order_status: rejected
+                    is_paid: true
+                    url: http://www.midtrans.com/blabla
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                code: 500
+                message: gagal mengubah status order menjadi rejected
+                data: null
+  /orders/cancel/{id}:
+    put:
+      summary: Mengubah status order menjadi cancel
+      tags:
+        - Orders
+      parameters:
+        - name: id
+          in: path
+          description: ID order hasil generate dari sistem
+          required: true
+          schema:
+            type: integer
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      user_id:
+                        type: integer
+                      service_id:
+                        type: integer
+                      service_title:
+                        type: string
+                      price:
+                        type: integer
+                      qty:
+                        type: integer
+                      payment_method_id:
+                        type: integer
+                      payment_method_name:
+                        type: string
+                      time:
+                        type: string
+                        format: date-time
+                      address:
+                        type: string
+                      city:
+                        type: string
+                      phone:
+                        type: string
+                      order_status:
+                        type: string
+                        enum: [pending, accepted, rejected, cancel, on process, delivering, done]
+                      is_paid:
+                        type: boolean
+                      url:
+                        type: string
+                example:
+                  code: 200
+                  message: sukses mengubah status order menjadi cancel
+                  data:
+                    id: 1
+                    user_id: 1
+                    service_id: 1
+                    service_title: Regular Cleaning
+                    price: 20000
+                    qty: 2
+                    payment_method_id: 1
+                    payment_method_name: Gopay
+                    time: "2022-03-06T13:00:00+07:00"
+                    address: Jl. Soedirman No. 13
+                    city: Bandung
+                    phone: "081123456789"
+                    order_status: cancel
+                    is_paid: false
+                    url: http://www.midtrans.com/blabla
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                code: 500
+                message: gagal mengubah status order menjadi cancel
+                data: null
+  /orders/on-process/{id}:
+    put:
+      summary: Mengubah status order menjadi on process
+      tags:
+        - Orders
+      parameters:
+        - name: id
+          in: path
+          description: ID order hasil generate dari sistem
+          required: true
+          schema:
+            type: integer
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      user_id:
+                        type: integer
+                      service_id:
+                        type: integer
+                      service_title:
+                        type: string
+                      price:
+                        type: integer
+                      qty:
+                        type: integer
+                      payment_method_id:
+                        type: integer
+                      payment_method_name:
+                        type: string
+                      time:
+                        type: string
+                        format: date-time
+                      address:
+                        type: string
+                      city:
+                        type: string
+                      phone:
+                        type: string
+                      order_status:
+                        type: string
+                        enum: [pending, accepted, rejected, cancel, on process, delivering, done]
+                      is_paid:
+                        type: boolean
+                      url:
+                        type: string
+                example:
+                  code: 200
+                  message: sukses mengubah status order menjadi on process
+                  data:
+                    id: 1
+                    user_id: 1
+                    service_id: 1
+                    service_title: Regular Cleaning
+                    price: 20000
+                    qty: 2
+                    payment_method_id: 1
+                    payment_method_name: Gopay
+                    time: "2022-03-06T13:00:00+07:00"
+                    address: Jl. Soedirman No. 13
+                    city: Bandung
+                    phone: "081123456789"
+                    order_status: on process
+                    is_paid: true
+                    url: http://www.midtrans.com/blabla
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                code: 500
+                message: gagal mengubah status order menjadi on process
+                data: null
+  /orders/delivering/{id}:
+    put:
+      summary: Mengubah status order menjadi delivering
+      tags:
+        - Orders
+      parameters:
+        - name: id
+          in: path
+          description: ID order hasil generate dari sistem
+          required: true
+          schema:
+            type: integer
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      user_id:
+                        type: integer
+                      service_id:
+                        type: integer
+                      service_title:
+                        type: string
+                      price:
+                        type: integer
+                      qty:
+                        type: integer
+                      payment_method_id:
+                        type: integer
+                      payment_method_name:
+                        type: string
+                      time:
+                        type: string
+                        format: date-time
+                      address:
+                        type: string
+                      city:
+                        type: string
+                      phone:
+                        type: string
+                      order_status:
+                        type: string
+                        enum: [pending, accepted, rejected, cancel, on process, delivering, done]
+                      is_paid:
+                        type: boolean
+                      url:
+                        type: string
+                example:
+                  code: 200
+                  message: sukses mengubah status order menjadi delivering
+                  data:
+                    id: 1
+                    user_id: 1
+                    service_id: 1
+                    service_title: Regular Cleaning
+                    price: 20000
+                    qty: 2
+                    payment_method_id: 1
+                    payment_method_name: Gopay
+                    time: "2022-03-06T13:00:00+07:00"
+                    address: Jl. Soedirman No. 13
+                    city: Bandung
+                    phone: "081123456789"
+                    order_status: delivering
+                    is_paid: true
+                    url: http://www.midtrans.com/blabla
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                code: 500
+                message: gagal mengubah status order menjadi delivering
+                data: null
+  /orders/done/{id}:
+    put:
+      summary: Mengubah status order menjadi done
+      tags:
+        - Orders
+      parameters:
+        - name: id
+          in: path
+          description: ID order hasil generate dari sistem
+          required: true
+          schema:
+            type: integer
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      user_id:
+                        type: integer
+                      service_id:
+                        type: integer
+                      service_title:
+                        type: string
+                      price:
+                        type: integer
+                      qty:
+                        type: integer
+                      payment_method_id:
+                        type: integer
+                      payment_method_name:
+                        type: string
+                      time:
+                        type: string
+                        format: date-time
+                      address:
+                        type: string
+                      city:
+                        type: string
+                      phone:
+                        type: string
+                      order_status:
+                        type: string
+                        enum: [pending, accepted, rejected, cancel, on process, delivering, done]
+                      is_paid:
+                        type: boolean
+                      url:
+                        type: string
+                example:
+                  code: 200
+                  message: sukses mengubah status order menjadi done
+                  data:
+                    id: 1
+                    user_id: 1
+                    service_id: 1
+                    service_title: Regular Cleaning
+                    price: 20000
+                    qty: 2
+                    payment_method_id: 1
+                    payment_method_name: Gopay
+                    time: "2022-03-06T13:00:00+07:00"
+                    address: Jl. Soedirman No. 13
+                    city: Bandung
+                    phone: "081123456789"
+                    order_status: done
+                    is_paid: true
+                    url: http://www.midtrans.com/blabla
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                code: 500
+                message: gagal mengubah status order menjadi done
                 data: null
 components:
+  responses:
+    UnauthorizedError:
+      description: Access token is missing or invalid
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+          example:
+            missing or malformed JWT
   securitySchemes:
     bearerAuth:
       type: http

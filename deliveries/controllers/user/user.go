@@ -13,7 +13,7 @@ type UserController struct {
 	repo _UserRepo.User
 }
 
-func New(repository _UserRepo.User) *UserController {
+func NewUserController(repository _UserRepo.User) *UserController {
 	return &UserController{
 		repo: repository,
 	}

@@ -37,10 +37,8 @@ func GetConfig(isTest bool) *AppConfig {
 }
 
 func initConfig(isTest bool) *AppConfig {
-	if os.Getenv("username") == "cakcup" {
-		if err := godotenv.Load(".env"); err != nil {
-			log.Info(err)
-		}
+	if err := godotenv.Load(".env"); err != nil {
+		log.Info("tidak dapat memuat env file", err)
 	}
 
 	var defaultAppConfig AppConfig

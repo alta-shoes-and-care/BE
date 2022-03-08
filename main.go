@@ -23,7 +23,7 @@ func main() {
 	config := configs.GetConfig(false)
 	db := utils.InitDB(config)
 
-	authRepo := _AuthRepo.New(db)
+	authRepo := _AuthRepo.NewAuthRepository(db)
 	userRepo := _UserRepo.NewUserRepository(db)
 	paymentMethodRepo := _PMRepo.NewPaymentMethodRepository(db)
 	serviceRepo := _ServiceRepo.NewServiceRepository(db)

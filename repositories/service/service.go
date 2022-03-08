@@ -36,7 +36,7 @@ func (repo *ServiceRepository) Get() ([]S.Services, error) {
 	return services, nil
 }
 
-func (repo *ServiceRepository) GetDetail(ID uint) (S.Services, error) {
+func (repo *ServiceRepository) GetDetails(ID uint) (S.Services, error) {
 	var service S.Services
 
 	if err := repo.db.First(&service, ID).Error; err != nil {

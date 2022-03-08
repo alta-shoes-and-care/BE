@@ -5,7 +5,7 @@ import S "final-project/entities/service"
 type Service interface {
 	Create(newService S.Services) (S.Services, error)
 	Get() ([]S.Services, error)
-	GetDetail(ID uint) (S.Services, error)
+	GetDetails(ID uint) (S.Services, error)
 	Update(serviceUpdate S.Services) (S.Services, error)
 	Delete(ID uint) error
 }

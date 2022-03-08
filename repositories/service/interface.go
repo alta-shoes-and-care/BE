@@ -7,5 +7,6 @@ type Service interface {
 	Get() ([]S.Services, error)
 	GetDetails(ID uint) (S.Services, error)
 	Update(serviceUpdate S.Services) (S.Services, error)
+	UpdateImage(ID uint, image string) (S.Services, error)
 	Delete(ID uint) error
 }

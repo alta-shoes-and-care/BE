@@ -2,6 +2,7 @@ package routes
 
 import (
 	"final-project/deliveries/controllers/auth"
+	paymentmethod "final-project/deliveries/controllers/payment-method"
 	"final-project/deliveries/controllers/service"
 	"final-project/deliveries/controllers/user"
 	"final-project/deliveries/middlewares"
@@ -10,7 +11,7 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 )
 
-func RegisterPaths(e *echo.Echo, ac *auth.AuthController, uc *user.UserController, sc *service.ServiceController) {
+func RegisterPaths(e *echo.Echo, ac *auth.AuthController, uc *user.UserController, sc *service.ServiceController, pmc *paymentmethod.PaymentMethodController) {
 	e.Pre(middleware.RemoveTrailingSlash())
 	e.Use(middleware.CORS())
 	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
@@ -29,6 +30,14 @@ func RegisterPaths(e *echo.Echo, ac *auth.AuthController, uc *user.UserControlle
 	uj.GET("/me", uc.Get())
 	uj.PUT("/me", uc.Update())
 	uj.DELETE("/me", uc.Delete())
+
+
+	// Payment Method Route
+	pm := e.Group("/payment-methods")
+	pm.Use(middlewares.JWTMiddleware())
+	pm.POST("", pmc.Create())
+	pm.GET("", pmc.Get())
+	pm.DELETE("/:id", pmc.Delete())
 
 	// Service Route
 	s := e.Group("/services")

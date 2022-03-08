@@ -3,6 +3,7 @@ package utils
 import (
 	"final-project/configs"
 	U "final-project/entities/user"
+	PM "final-project/entities/payment-method"
 	"fmt"
 
 	"github.com/labstack/gommon/log"
@@ -30,4 +31,5 @@ func InitDB(config *configs.AppConfig) *gorm.DB {
 
 func InitMigrate(db *gorm.DB) {
 	db.AutoMigrate(&U.Users{})
+	db.AutoMigrate(&PM.PaymentMethods{})
 }

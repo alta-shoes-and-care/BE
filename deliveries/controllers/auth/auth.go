@@ -21,7 +21,7 @@ func NewAuthController(repository _AuthRepo.Auth) *AuthController {
 
 func (ctl *AuthController) Login() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		loginFormat := LoginRequestFormat{}
+		var loginFormat RequestLogin
 		if err := c.Bind(&loginFormat); err != nil || loginFormat.Email == "" || loginFormat.Password == "" {
 			return c.JSON(http.StatusBadRequest, common.BadRequest("input dari user tidak sesuai, email atau password tidak boleh kosong"))
 		}
@@ -36,6 +36,6 @@ func (ctl *AuthController) Login() echo.HandlerFunc {
 		if err != nil {
 			return c.JSON(http.StatusNotAcceptable, common.NotAcceptable())
 		}
-		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "berhasil masuk, mendapatkan token baru", tokenID))
+		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "berhasil masuk, mendapatkan token baru", ToResponseLogin(tokenID, IsAdmin)))
 	}
 }

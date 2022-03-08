@@ -132,8 +132,12 @@ func (ctl *ServiceController) UpdateImage() echo.HandlerFunc {
 
 func (ctl *ServiceController) Delete() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		ID, _ := strconv.Atoi(c.Param("id"))
+		isAdmin := middlewares.ExtractTokenIsAdmin(c)
+		if !isAdmin {
+			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))
+		}
 
+		ID, _ := strconv.Atoi(c.Param("id"))
 		err := ctl.repo.Delete(uint(ID))
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))

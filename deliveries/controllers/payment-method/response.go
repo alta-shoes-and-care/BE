@@ -3,18 +3,18 @@ package paymentmethod
 import PM "final-project/entities/payment-method"
 
 type ResponseCreatePaymentMethod struct {
-	Name    string `json:"name"`
+	Name string `json:"name"`
 }
 
 func ToResponseCreatePaymentMethod(PaymentMethod PM.PaymentMethods) ResponseCreatePaymentMethod {
 	return ResponseCreatePaymentMethod{
-		Name:    PaymentMethod.Name,
+		Name: PaymentMethod.Name,
 	}
 }
 
 type ResponseGetPaymentMethod struct {
-	ID      uint   `json:"id"`
-	Name    string `json:"name"`
+	ID   uint   `json:"id"`
+	Name string `json:"name"`
 }
 
 func ToResponseGetPaymentMethod(PaymentMethod []PM.PaymentMethods) []ResponseGetPaymentMethod {

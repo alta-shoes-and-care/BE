@@ -5,11 +5,11 @@ import (
 )
 
 type RequestCreatePaymentMethod struct {
-	Name     string `json:"name" form:"name"`
+	Name string `json:"name" form:"name"`
 }
 
 func (Req RequestCreatePaymentMethod) ToEntityPaymentMethod() PM.PaymentMethods {
 	return PM.PaymentMethods{
-		Name:     Req.Name,
+		Name: Req.Name,
 	}
 }

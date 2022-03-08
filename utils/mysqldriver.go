@@ -2,8 +2,8 @@ package utils
 
 import (
 	"final-project/configs"
-	U "final-project/entities/user"
 	PM "final-project/entities/payment-method"
+	U "final-project/entities/user"
 	"fmt"
 
 	"github.com/labstack/gommon/log"

@@ -38,5 +38,6 @@ func RegisterPaths(e *echo.Echo, ac *auth.AuthController, uc *user.UserControlle
 	sj.Use(middlewares.JWTMiddleware())
 	sj.POST("", sc.Create())
 	sj.PUT("", sc.Update())
+	sj.PUT("/:id", sc.UpdateImage())
 	sj.DELETE("/:id", sc.Delete())
 }

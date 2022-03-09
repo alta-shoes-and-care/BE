@@ -10,7 +10,8 @@ require (
 	github.com/labstack/gommon v0.3.1
 	github.com/midtrans/midtrans-go v1.2.2
 	github.com/stretchr/testify v1.7.0
-	golang.org/x/crypto v0.0.0-20210817164053-32db794688a5
+	golang.org/x/crypto v0.0.0-20220214200702-86341886e292
+	gorm.io/datatypes v1.0.6
 	gorm.io/driver/mysql v1.3.2
 	gorm.io/gorm v1.23.2
 )

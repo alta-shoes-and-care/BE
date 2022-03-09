@@ -62,6 +62,20 @@ func (repo *OrderRepository) GetByID(ID uint) (ResponseOrder, error) {
 	return order, nil
 }
 
+func (repo *OrderRepository) InsertUrl(ID uint, url string) (ResponseOrder, error) {
+	var order ResponseOrder
+
+	if rowsAffected := repo.db.Table("orders").Where("id = ?", ID).Update("url", url).RowsAffected; rowsAffected == 0 {
+		return ResponseOrder{}, errors.New("gagal menambahkan url pembayaran")
+	}
+
+	repo.db.Table("orders as o").Select("o.id as ID, o.user_id as UserID, o.service_id as ServiceID, s.service_title as ServiceTitle, s.price as Price, o.qty as Qty, o.date as Date, o.address as Address, o.city as City, o.phone as Phone, o.status as Status, o.is_paid as IsPaid, o.url as Url").
+		Joins("inner join services as s.id = o.service_id").
+		Joins("inner join payment_methods as pm on pm.id = o.payment_method_id").
+		Where("id = ?", ID).First(&order)
+	return order, nil
+}
+
 func (repo *OrderRepository) SetPaid(ID uint) (ResponseOrder, error) {
 	var order ResponseOrder
 

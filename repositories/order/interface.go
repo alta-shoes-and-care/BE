@@ -6,6 +6,7 @@ type Order interface {
 	Create(newOrder O.Orders) (ResponseOrder, error)
 	Get() ([]ResponseOrder, error)
 	GetByUserID(UserID uint) ([]ResponseOrder, error)
+	InsertUrl(ID uint, url string) (ResponseOrder, error)
 	GetByID(ID uint) (ResponseOrder, error)
 	SetPaid(ID uint) (ResponseOrder, error)
 	SetAccept(ID uint) (ResponseOrder, error)

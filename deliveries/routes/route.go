@@ -59,9 +59,9 @@ func RegisterPaths(e *echo.Echo, ac *auth.AuthController, uc *user.UserControlle
 	o.GET("/:id", oc.GetByID())
 	o.PUT("/check-payment/:id", oc.CheckPaymentStatus())
 	o.PUT("/accept/:id", oc.SetAccepted())
-	o.PUT("/rejected/:id", oc.SetRejected())
-	o.PUT("/on-process/:id", oc.SetOnProcess())
-	o.PUT("/delivering/:id", oc.SetDelivering())
+	o.PUT("/reject/:id", oc.SetRejected())
+	o.PUT("/process/:id", oc.SetOnProcess())
+	o.PUT("/deliver/:id", oc.SetDelivering())
 	o.PUT("/cancel/:id", oc.SetCancel())
-	o.PUT("/done/:id", oc.SetDelivering())
+	o.PUT("/done/:id", oc.SetDone())
 }

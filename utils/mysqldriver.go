@@ -2,6 +2,7 @@ package utils
 
 import (
 	"final-project/configs"
+	O "final-project/entities/order"
 	PM "final-project/entities/payment-method"
 	S "final-project/entities/service"
 	U "final-project/entities/user"
@@ -34,4 +35,5 @@ func InitMigrate(db *gorm.DB) {
 	db.AutoMigrate(&U.Users{})
 	db.AutoMigrate(&S.Services{})
 	db.AutoMigrate(&PM.PaymentMethods{})
+	db.AutoMigrate(&O.Orders{})
 }

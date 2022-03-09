@@ -50,7 +50,7 @@ func (ctl *OrderController) Create() echo.HandlerFunc {
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
 		}
-		return c.JSON(http.StatusCreated, common.Success(http.StatusCreated, "sukses menambahkan Order baru", res))
+		return c.JSON(http.StatusCreated, common.Success(http.StatusCreated, "sukses menambahkan Order baru", ToResponseOrder(res)))
 	}
 }
 
@@ -65,7 +65,7 @@ func (ctl *OrderController) Get() echo.HandlerFunc {
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
 		}
-		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses mendapatkan semua order", res))
+		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses mendapatkan semua order", ToResponseOrderArr(res)))
 	}
 }
 
@@ -81,7 +81,7 @@ func (ctl *OrderController) GetByUserID() echo.HandlerFunc {
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
 		}
-		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses mendapatkan semua order berdasarkan user id", res))
+		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses mendapatkan semua order berdasarkan user id", ToResponseOrderArr(res)))
 	}
 }
 
@@ -92,7 +92,7 @@ func (ctl *OrderController) GetByID() echo.HandlerFunc {
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
 		}
-		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses mendapatkan detail order", res))
+		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses mendapatkan detail order", ToResponseOrder(res)))
 	}
 }
 
@@ -111,13 +111,13 @@ func (ctl *OrderController) CheckPaymentStatus() echo.HandlerFunc {
 			if err != nil {
 				return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
 			}
-			return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses menjadikan status pembayaran menjadi paid", res))
+			return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses menjadikan status pembayaran menjadi paid", ToResponseOrder(res)))
 		} else if res == "status cancel" {
 			res, err := ctl.repo.SetCancel(uint(ID))
 			if err != nil {
 				return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
 			}
-			return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses mengubah status order menjadi cancel", res))
+			return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses mengubah status order menjadi cancel", ToResponseOrder(res)))
 		}
 		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "status transaksi:", res))
 	}
@@ -135,7 +135,7 @@ func (ctl *OrderController) SetAccepted() echo.HandlerFunc {
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
 		}
-		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses mengubah status order menjadi accepted", res))
+		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses mengubah status order menjadi accepted", ToResponseOrder(res)))
 	}
 }
 
@@ -151,7 +151,7 @@ func (ctl *OrderController) SetRejected() echo.HandlerFunc {
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
 		}
-		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses mengubah status order menjadi rejected", res))
+		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses mengubah status order menjadi rejected", ToResponseOrder(res)))
 	}
 }
 
@@ -167,7 +167,7 @@ func (ctl *OrderController) SetOnProcess() echo.HandlerFunc {
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
 		}
-		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses mengubah status order menjadi on process", res))
+		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses mengubah status order menjadi on process", ToResponseOrder(res)))
 	}
 }
 
@@ -183,7 +183,7 @@ func (ctl *OrderController) SetDelivering() echo.HandlerFunc {
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
 		}
-		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses mengubah status order menjadi delivering", res))
+		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses mengubah status order menjadi delivering", ToResponseOrder(res)))
 	}
 }
 
@@ -205,6 +205,6 @@ func (ctl *OrderController) SetDone() echo.HandlerFunc {
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
 		}
-		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses mengubah status order menjadi done", res))
+		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses mengubah status order menjadi done", ToResponseOrder(res)))
 	}
 }

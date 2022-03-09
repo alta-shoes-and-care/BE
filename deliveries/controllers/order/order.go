@@ -27,7 +27,7 @@ var (
 )
 
 const (
-	layoutISO = "2006-01-02 WIB"
+	layoutISO = "2006-01-02"
 )
 
 func (ctl *OrderController) Create() echo.HandlerFunc {

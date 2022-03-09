@@ -6,6 +6,7 @@ import (
 	_OrderRepo "final-project/repositories/order"
 	midtranspay "final-project/services/midtrans-pay"
 	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/labstack/echo/v4"
@@ -50,5 +51,47 @@ func (ctl *OrderController) Create() echo.HandlerFunc {
 			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
 		}
 		return c.JSON(http.StatusCreated, common.Success(http.StatusCreated, "sukses menambahkan Order baru", res))
+	}
+}
+
+func (ctl *OrderController) Get() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		isAdmin := middlewares.ExtractTokenIsAdmin(c)
+		if !isAdmin {
+			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))
+		}
+
+		res, err := ctl.repo.Get()
+		if err != nil {
+			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
+		}
+		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses mendapatkan semua order", res))
+	}
+}
+
+func (ctl *OrderController) GetByUserID() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		isAdmin := middlewares.ExtractTokenIsAdmin(c)
+		if !isAdmin {
+			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))
+		}
+
+		userID := middlewares.ExtractTokenUserID(c)
+		res, err := ctl.repo.GetByUserID(userID)
+		if err != nil {
+			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
+		}
+		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses mendapatkan semua order berdasarkan user id", res))
+	}
+}
+
+func (ctl *OrderController) GetByID() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		ID, _ := strconv.Atoi(c.Param("id"))
+		res, err := ctl.repo.GetByID(uint(ID))
+		if err != nil {
+			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
+		}
+		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses mendapatkan detail order", res))
 	}
 }

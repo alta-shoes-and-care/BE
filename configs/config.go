@@ -21,6 +21,7 @@ type AppConfig struct {
 	S3_REGION   string
 	S3_KEY      string
 	S3_SECRET   string
+	S3_BUCKET   string
 }
 
 var synchronizer = &sync.Mutex{}
@@ -72,6 +73,7 @@ func getEnv(appConfig *AppConfig, isTest bool) {
 	appConfig.S3_REGION = os.Getenv("S3_REGION")
 	appConfig.S3_KEY = os.Getenv("S3_KEY")
 	appConfig.S3_SECRET = os.Getenv("S3_SECRET")
+	appConfig.S3_BUCKET = os.Getenv("S3_BUCKET")
 
 	if isTest {
 		appConfig.DB_NAME = "immersive6"

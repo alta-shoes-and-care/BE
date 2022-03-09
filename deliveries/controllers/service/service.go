@@ -47,7 +47,7 @@ func (ctl *ServiceController) Create() echo.HandlerFunc {
 			return c.JSON(http.StatusBadRequest, common.BadRequest("tidak dapat membaca file gambar"))
 		}
 
-		image, err := uploader.Uploader(ctl.sess, ctl.config.S3_REGION, file)
+		image, err := uploader.Uploader(ctl.sess, ctl.config.S3_REGION, ctl.config.S3_BUCKET, *file)
 		if err != nil {
 			return c.JSON(http.StatusBadRequest, common.BadRequest(err.Error()))
 		}
@@ -116,7 +116,7 @@ func (ctl *ServiceController) UpdateImage() echo.HandlerFunc {
 			return c.JSON(http.StatusBadRequest, common.BadRequest("tidak dapat membaca file gambar"))
 		}
 
-		image, err := uploader.Uploader(ctl.sess, ctl.config.S3_REGION, file)
+		image, err := uploader.Uploader(ctl.sess, ctl.config.S3_REGION, ctl.config.S3_BUCKET, *file)
 		if err != nil {
 			return c.JSON(http.StatusBadRequest, common.BadRequest(err.Error()))
 		}

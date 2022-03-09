@@ -15,11 +15,7 @@ import (
 	"github.com/labstack/gommon/log"
 )
 
-var (
-	bucket = os.Getenv("AWS_BUCKET")
-)
-
-func InitS3(region, key, secret string) *session.Session {
+func InitS3(key, secret, region string) *session.Session {
 	sess, err := session.NewSession(
 		&aws.Config{
 			Region: aws.String(region),
@@ -34,7 +30,7 @@ func InitS3(region, key, secret string) *session.Session {
 	return sess
 }
 
-func DoUpload(sess *session.Session, region string, file multipart.FileHeader) (string, error) {
+func DoUpload(sess *session.Session, region, bucket string, file multipart.FileHeader) (string, error) {
 	manager := s3manager.NewUploader(sess)
 	src, err := file.Open()
 	if err != nil {
@@ -67,7 +63,7 @@ func DoUpload(sess *session.Session, region string, file multipart.FileHeader) (
 	return link, nil
 }
 
-func DoDelete(sess *session.Session, fileName string) error {
+func DoDelete(sess *session.Session, fileName, bucket string) error {
 	svc := s3.New(sess)
 
 	deleteInput := &s3.DeleteObjectInput{

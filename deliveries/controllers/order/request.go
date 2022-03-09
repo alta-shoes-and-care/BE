@@ -3,6 +3,8 @@ package order
 import (
 	O "final-project/entities/order"
 	"time"
+
+	"gorm.io/datatypes"
 )
 
 type RequestCreateOrder struct {
@@ -19,7 +21,7 @@ type RequestCreateOrder struct {
 func (req RequestCreateOrder) ToEntityOrder(dateFormatted time.Time, userID uint) O.Orders {
 	return O.Orders{
 		Qty:             req.Qty,
-		Date:            dateFormatted,
+		Date:            datatypes.Date(dateFormatted),
 		Address:         req.Address,
 		City:            req.City,
 		Phone:           req.Phone,

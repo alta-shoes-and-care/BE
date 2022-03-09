@@ -2,7 +2,7 @@ package routes
 
 import (
 	"final-project/deliveries/controllers/auth"
-	paymentmethod "final-project/deliveries/controllers/payment-method"
+	"final-project/deliveries/controllers/payment-method"
 	"final-project/deliveries/controllers/service"
 	"final-project/deliveries/controllers/user"
 	"final-project/deliveries/middlewares"
@@ -32,7 +32,7 @@ func RegisterPaths(e *echo.Echo, ac *auth.AuthController, uc *user.UserControlle
 	uj.DELETE("/me", uc.Delete())
 
 	// Payment Method Route
-	pm := e.Group("/payment-methods")
+	pm := e.Group("/payments")
 	pm.Use(middlewares.JWTMiddleware())
 	pm.POST("", pmc.Create())
 	pm.GET("", pmc.Get())

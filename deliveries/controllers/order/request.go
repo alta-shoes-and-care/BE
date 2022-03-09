@@ -16,13 +16,12 @@ type RequestCreateOrder struct {
 	Phone           string `json:"phone" form:"phone"`
 }
 
-func (req RequestCreateOrder) ToEntityOrder(dateFormatted time.Time, userID uint, url string) O.Orders {
+func (req RequestCreateOrder) ToEntityOrder(dateFormatted time.Time, userID uint) O.Orders {
 	return O.Orders{
 		Qty:             req.Qty,
 		Date:            dateFormatted,
 		Address:         req.Address,
 		City:            req.City,
-		Url:             url,
 		Phone:           req.Phone,
 		UserID:          userID,
 		ServiceID:       req.ServiceID,

@@ -32,7 +32,7 @@ func RegisterPaths(e *echo.Echo, ac *auth.AuthController, uc *user.UserControlle
 	uj.DELETE("/me", uc.Delete())
 
 	// Payment Method Route
-	pm := e.Group("/payment")
+	pm := e.Group("/payments")
 	pm.Use(middlewares.JWTMiddleware())
 	pm.POST("", pmc.Create())
 	pm.GET("", pmc.Get())

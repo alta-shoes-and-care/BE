@@ -4,7 +4,7 @@ import (
 	"gorm.io/datatypes"
 )
 
-type ResponseOrder struct {
+type FormatOrder struct {
 	ID                uint           `json:"id"`
 	UserID            uint           `json:"user_id"`
 	ServiceID         uint           `json:"service_id"`

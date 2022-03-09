@@ -2,6 +2,7 @@ package routes
 
 import (
 	"final-project/deliveries/controllers/auth"
+	"final-project/deliveries/controllers/order"
 	paymentmethod "final-project/deliveries/controllers/payment-method"
 	"final-project/deliveries/controllers/service"
 	"final-project/deliveries/controllers/user"
@@ -11,7 +12,7 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 )
 
-func RegisterPaths(e *echo.Echo, ac *auth.AuthController, uc *user.UserController, sc *service.ServiceController, pmc *paymentmethod.PaymentMethodController) {
+func RegisterPaths(e *echo.Echo, ac *auth.AuthController, uc *user.UserController, sc *service.ServiceController, pmc *paymentmethod.PaymentMethodController, oc *order.OrderController) {
 	e.Pre(middleware.RemoveTrailingSlash())
 	e.Use(middleware.CORS())
 	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
@@ -48,4 +49,19 @@ func RegisterPaths(e *echo.Echo, ac *auth.AuthController, uc *user.UserControlle
 	sj.PUT("", sc.Update())
 	sj.PUT("/:id", sc.UpdateImage())
 	sj.DELETE("/:id", sc.Delete())
+
+	// Order route
+	o := e.Group("/orders/jwt")
+	o.Use(middlewares.JWTMiddleware())
+	o.POST("", oc.Create())
+	o.GET("", oc.Get())
+	o.GET("/me", oc.GetByUserID())
+	o.GET("/:id", oc.GetByID())
+	o.PUT("/check-payment/:id", oc.CheckPaymentStatus())
+	o.PUT("/accept/:id", oc.SetAccepted())
+	o.PUT("/rejected/:id", oc.SetRejected())
+	o.PUT("/on-process/:id", oc.SetOnProcess())
+	o.PUT("/delivering/:id", oc.SetDelivering())
+	o.PUT("/cancel/:id", oc.SetCancel())
+	o.PUT("/done/:id", oc.SetDelivering())
 }

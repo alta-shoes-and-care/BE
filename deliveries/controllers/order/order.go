@@ -95,3 +95,116 @@ func (ctl *OrderController) GetByID() echo.HandlerFunc {
 		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses mendapatkan detail order", res))
 	}
 }
+
+func (ctl *OrderController) CheckPaymentStatus() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		ID, _ := strconv.Atoi(c.Param("id"))
+		res, err := midtranspay.CheckTransaction(midtransClient, uint(ID))
+		if err != nil {
+			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
+		}
+
+		if res == "status pending" {
+			return c.JSON(http.StatusOK, common.Success(http.StatusOK, "pembayaran tertunda", nil))
+		} else if res == "status settlement" {
+			res, err := ctl.repo.SetPaid(uint(ID))
+			if err != nil {
+				return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
+			}
+			return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses menjadikan status pembayaran menjadi paid", res))
+		} else if res == "status cancel" {
+			res, err := ctl.repo.SetCancel(uint(ID))
+			if err != nil {
+				return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
+			}
+			return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses mengubah status order menjadi cancel", res))
+		}
+		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "status transaksi:", res))
+	}
+}
+
+func (ctl *OrderController) SetAccepted() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		isAdmin := middlewares.ExtractTokenIsAdmin(c)
+		if !isAdmin {
+			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))
+		}
+
+		ID, _ := strconv.Atoi(c.Param("id"))
+		res, err := ctl.repo.SetAccepted(uint(ID))
+		if err != nil {
+			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
+		}
+		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses mengubah status order menjadi accepted", res))
+	}
+}
+
+func (ctl *OrderController) SetRejected() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		isAdmin := middlewares.ExtractTokenIsAdmin(c)
+		if !isAdmin {
+			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))
+		}
+
+		ID, _ := strconv.Atoi(c.Param("id"))
+		res, err := ctl.repo.SetRejected(uint(ID))
+		if err != nil {
+			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
+		}
+		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses mengubah status order menjadi rejected", res))
+	}
+}
+
+func (ctl *OrderController) SetOnProcess() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		isAdmin := middlewares.ExtractTokenIsAdmin(c)
+		if !isAdmin {
+			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))
+		}
+
+		ID, _ := strconv.Atoi(c.Param("id"))
+		res, err := ctl.repo.SetOnProcess(uint(ID))
+		if err != nil {
+			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
+		}
+		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses mengubah status order menjadi on process", res))
+	}
+}
+
+func (ctl *OrderController) SetDelivering() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		isAdmin := middlewares.ExtractTokenIsAdmin(c)
+		if !isAdmin {
+			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))
+		}
+
+		ID, _ := strconv.Atoi(c.Param("id"))
+		res, err := ctl.repo.SetDelivering(uint(ID))
+		if err != nil {
+			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
+		}
+		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses mengubah status order menjadi delivering", res))
+	}
+}
+
+func (ctl *OrderController) SetCancel() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		ID, _ := strconv.Atoi(c.Param("id"))
+		res, err := ctl.repo.SetCancel(uint(ID))
+		if err != nil {
+			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
+		}
+		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses mengubah status order menjadi cancel", res))
+	}
+}
+
+func (ctl *OrderController) SetDone() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		ID, _ := strconv.Atoi(c.Param("id"))
+		res, err := ctl.repo.SetDone(uint(ID))
+		if err != nil {
+			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
+		}
+		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses mengubah status order menjadi done", res))
+	}
+}

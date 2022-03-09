@@ -9,7 +9,7 @@ import (
 type Orders struct {
 	gorm.Model
 	Qty             uint
-	Time            time.Time
+	Date            time.Time
 	Address         string `gorm:"type:text;not null"`
 	City            string `gorm:"type:varchar(255);not null"`
 	Status          string `gorm:"type:enum('pending', 'cancel', 'accepted', 'rejected', 'on process', 'delivering', 'done');default:'pending'"`

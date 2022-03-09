@@ -1,0 +1,54 @@
+package order
+
+import (
+	"errors"
+	O "final-project/entities/order"
+
+	"github.com/labstack/gommon/log"
+	"gorm.io/gorm"
+)
+
+type OrderRepository struct {
+	db *gorm.DB
+}
+
+func NewOrderRepository(db *gorm.DB) *OrderRepository {
+	return &OrderRepository{
+		db: db,
+	}
+}
+
+func (repo *OrderRepository) Create(newOrder O.Orders) (ResponseOrder, error) {
+	var order ResponseOrder
+
+	if err := repo.db.Create(&newOrder).Error; err != nil {
+		log.Warn(err)
+		return ResponseOrder{}, errors.New("gagal membuat order baru")
+	}
+
+	repo.db.Table("orders as o").
+		Select("o.id as ID, o.user_id as UserID, o.service_id as ServiceID, s.service_title as ServiceTitle, s.price as Price, o.qty as Qty, o.date as Date, o.address as Address, o.city as City, o.phone as Phone, o.status as Status, o.is_paid as IsPaid, o.url as Url").
+		Joins("inner join services as s.id = o.service_id").
+		Joins("inner join payment_methods as pm on pm.id = o.payment_method_id").
+		Where("user_id = ? AND service_id = ? AND qty = ? AND date = ?", newOrder.UserID, newOrder.ServiceID, newOrder.Qty, newOrder.Date).
+		Last(&order)
+	return order, nil
+}
+
+func (repo *OrderRepository) Get() ([]ResponseOrder, error) {
+	var orders []ResponseOrder
+
+	if rowsAffected := repo.db.Table("orders as o").Select("o.id as ID, o.user_id as UserID, o.service_id as ServiceID, s.service_title as ServiceTitle, s.price as Price, o.qty as Qty, o.date as Date, o.address as Address, o.city as City, o.phone as Phone, o.status as Status, o.is_paid as IsPaid, o.url as Url").Joins("inner join services as s.id = o.service_id").Joins("inner join payment_methods as pm on pm.id = o.payment_method_id").Find(&orders).RowsAffected; rowsAffected == 0 {
+		return nil, errors.New("tidak terdapat order sama sekali")
+	}
+	return orders, nil
+}
+
+func (repo *OrderRepository) GetByUserID(UserID uint) ([]ResponseOrder, error) {
+	var orders []ResponseOrder
+
+	if rowsAffected := repo.db.Table("orders as o").Select("o.id as ID, o.user_id as UserID, o.service_id as ServiceID, s.service_title as ServiceTitle, s.price as Price, o.qty as Qty, o.date as Date, o.address as Address, o.city as City, o.phone as Phone, o.status as Status, o.is_paid as IsPaid, o.url as Url").Joins("inner join services as s.id = o.service_id").Joins("inner join payment_methods as pm on pm.id = o.payment_method_id").Where("user_id = ?", UserID).Find(&orders).RowsAffected; rowsAffected == 0 {
+		return nil, errors.New("tidak terdapat order sama sekali")
+	}
+	return orders, nil
+}

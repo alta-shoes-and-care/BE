@@ -1,15 +1,14 @@
 package order
 
 import (
-	"time"
-
+	"gorm.io/datatypes"
 	"gorm.io/gorm"
 )
 
 type Orders struct {
 	gorm.Model
 	Qty             uint
-	Date            time.Time
+	Date            datatypes.Date
 	Address         string `gorm:"type:text;not null"`
 	City            string `gorm:"type:varchar(255);not null"`
 	Status          string `gorm:"type:enum('pending', 'cancel', 'accepted', 'rejected', 'on process', 'delivering', 'done');default:'pending'"`

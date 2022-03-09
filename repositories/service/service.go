@@ -29,8 +29,7 @@ func (repo *ServiceRepository) Create(newService S.Services) (S.Services, error)
 func (repo *ServiceRepository) Get() ([]S.Services, error) {
 	var services []S.Services
 
-	if err := repo.db.Find(&services).Error; err != nil {
-		log.Warn(err)
+	if rowsAffected := repo.db.Find(&services).RowsAffected; rowsAffected == 0 {
 		return nil, errors.New("tidak terdapat service sama sekali")
 	}
 	return services, nil

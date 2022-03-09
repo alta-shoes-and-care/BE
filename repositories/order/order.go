@@ -90,7 +90,7 @@ func (repo *OrderRepository) SetPaid(ID uint) (ResponseOrder, error) {
 	return order, nil
 }
 
-func (repo *OrderRepository) SetAccept(ID uint) (ResponseOrder, error) {
+func (repo *OrderRepository) SetAccepted(ID uint) (ResponseOrder, error) {
 	var order ResponseOrder
 
 	if rowsAffected := repo.db.Table("orders").Where("id = ?", ID).Update("status", "accepted").RowsAffected; rowsAffected == 0 {
@@ -109,20 +109,6 @@ func (repo *OrderRepository) SetRejected(ID uint) (ResponseOrder, error) {
 
 	if rowsAffected := repo.db.Table("orders").Where("id = ?", ID).Update("status", "rejected").RowsAffected; rowsAffected == 0 {
 		return ResponseOrder{}, errors.New("gagal mengubah status order menjadi rejected")
-	}
-
-	repo.db.Table("orders as o").Select("o.id as ID, o.user_id as UserID, o.service_id as ServiceID, s.service_title as ServiceTitle, s.price as Price, o.qty as Qty, o.date as Date, o.address as Address, o.city as City, o.phone as Phone, o.status as Status, o.is_paid as IsPaid, o.url as Url").
-		Joins("inner join services as s.id = o.service_id").
-		Joins("inner join payment_methods as pm on pm.id = o.payment_method_id").
-		Where("id = ?", ID).First(&order)
-	return order, nil
-}
-
-func (repo *OrderRepository) SetCancel(ID uint) (ResponseOrder, error) {
-	var order ResponseOrder
-
-	if rowsAffected := repo.db.Table("orders").Where("id = ?", ID).Update("status", "cancel").RowsAffected; rowsAffected == 0 {
-		return ResponseOrder{}, errors.New("gagal mengubah status order menjadi cancel")
 	}
 
 	repo.db.Table("orders as o").Select("o.id as ID, o.user_id as UserID, o.service_id as ServiceID, s.service_title as ServiceTitle, s.price as Price, o.qty as Qty, o.date as Date, o.address as Address, o.city as City, o.phone as Phone, o.status as Status, o.is_paid as IsPaid, o.url as Url").
@@ -151,6 +137,20 @@ func (repo *OrderRepository) SetDelivering(ID uint) (ResponseOrder, error) {
 
 	if rowsAffected := repo.db.Table("orders").Where("id = ?", ID).Update("status", "delivering").RowsAffected; rowsAffected == 0 {
 		return ResponseOrder{}, errors.New("gagal mengubah status order menjadi delivering")
+	}
+
+	repo.db.Table("orders as o").Select("o.id as ID, o.user_id as UserID, o.service_id as ServiceID, s.service_title as ServiceTitle, s.price as Price, o.qty as Qty, o.date as Date, o.address as Address, o.city as City, o.phone as Phone, o.status as Status, o.is_paid as IsPaid, o.url as Url").
+		Joins("inner join services as s.id = o.service_id").
+		Joins("inner join payment_methods as pm on pm.id = o.payment_method_id").
+		Where("id = ?", ID).First(&order)
+	return order, nil
+}
+
+func (repo *OrderRepository) SetCancel(ID uint) (ResponseOrder, error) {
+	var order ResponseOrder
+
+	if rowsAffected := repo.db.Table("orders").Where("id = ?", ID).Update("status", "cancel").RowsAffected; rowsAffected == 0 {
+		return ResponseOrder{}, errors.New("gagal mengubah status order menjadi cancel")
 	}
 
 	repo.db.Table("orders as o").Select("o.id as ID, o.user_id as UserID, o.service_id as ServiceID, s.service_title as ServiceTitle, s.price as Price, o.qty as Qty, o.date as Date, o.address as Address, o.city as City, o.phone as Phone, o.status as Status, o.is_paid as IsPaid, o.url as Url").

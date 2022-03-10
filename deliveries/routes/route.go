@@ -3,9 +3,9 @@ package routes
 import (
 	"final-project/deliveries/controllers/auth"
 	"final-project/deliveries/controllers/order"
-	"final-project/deliveries/controllers/payment-method"
-	"final-project/deliveries/controllers/service"
+	paymentmethod "final-project/deliveries/controllers/payment-method"
 	"final-project/deliveries/controllers/review"
+	"final-project/deliveries/controllers/service"
 	"final-project/deliveries/controllers/user"
 	"final-project/deliveries/middlewares"
 
@@ -52,7 +52,7 @@ func RegisterPaths(e *echo.Echo, ac *auth.AuthController, uc *user.UserControlle
 	sj.DELETE("/:id", sc.Delete())
 
 	// Order route
-	o := e.Group("/orders/jwt")
+	o := e.Group("/orders")
 	o.Use(middlewares.JWTMiddleware())
 	o.POST("", oc.Create())
 	o.GET("", oc.Get())
@@ -71,6 +71,6 @@ func RegisterPaths(e *echo.Echo, ac *auth.AuthController, uc *user.UserControlle
 	r.Use(middlewares.JWTMiddleware())
 	r.POST("", rc.Insert())
 	r.GET("", rc.Get())
-	r.PUT("/:id", rc.Update()) 
+	r.PUT("/:id", rc.Update())
 	r.DELETE("/:id", rc.Delete())
 }

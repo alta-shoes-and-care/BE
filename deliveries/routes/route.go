@@ -3,8 +3,9 @@ package routes
 import (
 	"final-project/deliveries/controllers/auth"
 	"final-project/deliveries/controllers/order"
-	paymentmethod "final-project/deliveries/controllers/payment-method"
+	"final-project/deliveries/controllers/payment-method"
 	"final-project/deliveries/controllers/service"
+	"final-project/deliveries/controllers/review"
 	"final-project/deliveries/controllers/user"
 	"final-project/deliveries/middlewares"
 
@@ -12,7 +13,7 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 )
 
-func RegisterPaths(e *echo.Echo, ac *auth.AuthController, uc *user.UserController, sc *service.ServiceController, pmc *paymentmethod.PaymentMethodController, oc *order.OrderController) {
+func RegisterPaths(e *echo.Echo, ac *auth.AuthController, uc *user.UserController, sc *service.ServiceController, pmc *paymentmethod.PaymentMethodController, oc *order.OrderController, rc *review.ReviewController) {
 	e.Pre(middleware.RemoveTrailingSlash())
 	e.Use(middleware.CORS())
 	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
@@ -64,4 +65,12 @@ func RegisterPaths(e *echo.Echo, ac *auth.AuthController, uc *user.UserControlle
 	o.PUT("/deliver/:id", oc.SetDelivering())
 	o.PUT("/cancel/:id", oc.SetCancel())
 	o.PUT("/done/:id", oc.SetDone())
+
+	// Review Method Route
+	r := e.Group("/reviews")
+	r.Use(middlewares.JWTMiddleware())
+	r.POST("", rc.Insert())
+	r.GET("", rc.Get())
+	r.PUT("/:id", rc.Update()) 
+	r.DELETE("/:id", rc.Delete())
 }

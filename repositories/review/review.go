@@ -19,7 +19,13 @@ func NewReviewRepository(db *gorm.DB) *ReviewRepository {
 }
 
 func (repo *ReviewRepository) Insert(newReview R.Reviews) (FormatReview, error) {
+	var checkReview R.Reviews
 	var review FormatReview
+	if rowsAffected := repo.db.Where("order_id = ? AND user_id = ?", newReview.OrderID, newReview.UserID).
+	First(&checkReview).RowsAffected; rowsAffected > 0  {
+		return FormatReview{}, errors.New("review sudah ada")
+	}	
+
 	if err := repo.db.Create(&newReview).Error; err != nil {
 		log.Warn(err)
 		return FormatReview{}, errors.New("gagal membuat review baru")
@@ -58,8 +64,8 @@ func (repo *ReviewRepository) Update(reviewUpdate R.Reviews) (FormatReview, erro
 	return review, nil
 }
 
-func (repo *ReviewRepository) Delete(ID uint) error {
-	if rowsAffected := repo.db.Delete(&R.Reviews{}, ID).RowsAffected; rowsAffected == 0 {
+func (repo *ReviewRepository) Delete(ID, UserID uint) error {
+	if rowsAffected := repo.db.Where("id = ? AND user_id = ?", ID, UserID).Delete(&R.Reviews{}).RowsAffected; rowsAffected == 0 {
 		return errors.New("tidak ada review yang dihapus")
 	}
 	return nil

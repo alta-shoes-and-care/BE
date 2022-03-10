@@ -5,6 +5,7 @@ import (
 	O "final-project/entities/order"
 	PM "final-project/entities/payment-method"
 	S "final-project/entities/service"
+	R "final-project/entities/review"
 	U "final-project/entities/user"
 	"fmt"
 
@@ -36,4 +37,5 @@ func InitMigrate(db *gorm.DB) {
 	db.AutoMigrate(&S.Services{})
 	db.AutoMigrate(&PM.PaymentMethods{})
 	db.AutoMigrate(&O.Orders{})
+	db.AutoMigrate(&R.Reviews{})
 }

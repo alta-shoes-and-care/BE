@@ -70,9 +70,9 @@ func (ctl *ReviewController) Update() echo.HandlerFunc {
 
 func (ctl *ReviewController) Delete() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		// UserID := middlewares.ExtractTokenUserID(c)
+		UserID := middlewares.ExtractTokenUserID(c)
 		ID, _ := strconv.Atoi(c.Param("id"))
-		err := ctl.repo.Delete(uint(ID))
+		err := ctl.repo.Delete(uint(ID), uint(UserID))
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
 		}

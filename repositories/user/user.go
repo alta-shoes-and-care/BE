@@ -29,10 +29,10 @@ func (repo *UserRepository) Create(newUser U.Users) (U.Users, error) {
 	return newUser, nil
 }
 
-func (repo *UserRepository) Get(userID uint) (U.Users, error) {
+func (repo *UserRepository) Get(ID uint) (U.Users, error) {
 	var user U.Users
 
-	if err := repo.db.First(&user, userID).Error; err != nil {
+	if err := repo.db.First(&user, ID).Error; err != nil {
 		log.Warn(err)
 		return U.Users{}, errors.New("data user tidak ditemukan")
 	}
@@ -52,8 +52,8 @@ func (repo *UserRepository) Update(userUpdate U.Users) (U.Users, error) {
 	return userUpdate, nil
 }
 
-func (repo *UserRepository) Delete(userID uint) error {
-	if rowsAffected := repo.db.Delete(&U.Users{}, userID).RowsAffected; rowsAffected == 0 {
+func (repo *UserRepository) Delete(ID uint) error {
+	if rowsAffected := repo.db.Delete(&U.Users{}, ID).RowsAffected; rowsAffected == 0 {
 		return errors.New("tidak ada user yang dihapus")
 	}
 	return nil

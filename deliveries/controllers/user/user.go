@@ -21,13 +21,13 @@ func NewUserController(repository _UserRepo.User) *UserController {
 
 func (ctl *UserController) Create() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		NewUser := RequestCreateUser{}
+		newUser := RequestCreateUser{}
 
-		if err := c.Bind(&NewUser); err != nil || NewUser.Name == "" || NewUser.Email == "" || NewUser.Password == "" {
+		if err := c.Bind(&newUser); err != nil || newUser.Name == "" || newUser.Email == "" || newUser.Password == "" {
 			return c.JSON(http.StatusBadRequest, common.BadRequest("input dari user tidak sesuai, nama, email atau password tidak boleh kosong"))
 		}
 
-		res, err := ctl.repo.Create(NewUser.ToEntityUser())
+		res, err := ctl.repo.Create(newUser.ToEntityUser())
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
 		}
@@ -37,9 +37,9 @@ func (ctl *UserController) Create() echo.HandlerFunc {
 
 func (ctl *UserController) Get() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		UserID := middlewares.ExtractTokenUserID(c)
+		userID := middlewares.ExtractTokenUserID(c)
 
-		res, err := ctl.repo.Get(uint(UserID))
+		res, err := ctl.repo.Get(uint(userID))
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
 		}
@@ -49,14 +49,14 @@ func (ctl *UserController) Get() echo.HandlerFunc {
 
 func (ctl *UserController) Update() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		UserID := middlewares.ExtractTokenUserID(c)
+		userID := middlewares.ExtractTokenUserID(c)
 		var UpdatedUser = RequestUpdateUser{}
 
 		if err := c.Bind(&UpdatedUser); err != nil {
 			return c.JSON(http.StatusBadRequest, common.BadRequest("terdapat kesalahan input dari client"))
 		}
 
-		res, err := ctl.repo.Update(UpdatedUser.ToEntityUser(uint(UserID)))
+		res, err := ctl.repo.Update(UpdatedUser.ToEntityUser(uint(userID)))
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
 		}
@@ -66,9 +66,9 @@ func (ctl *UserController) Update() echo.HandlerFunc {
 
 func (ctl *UserController) Delete() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		UserID := middlewares.ExtractTokenUserID(c)
+		userID := middlewares.ExtractTokenUserID(c)
 
-		err := ctl.repo.Delete(uint(UserID))
+		err := ctl.repo.Delete(uint(userID))
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
 		}

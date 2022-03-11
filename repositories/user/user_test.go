@@ -34,6 +34,7 @@ func Migrator() {
 }
 
 func TestCreate(t *testing.T) {
+	Migrator()
 	repo := NewUserRepository(db)
 
 	mockUser := SeederUser.UserSeeder()

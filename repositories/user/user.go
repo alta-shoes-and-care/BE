@@ -44,7 +44,7 @@ func (repo *UserRepository) Update(userUpdate U.Users) (U.Users, error) {
 		userUpdate.Password, _ = hash.HashPassword(userUpdate.Password)
 	}
 
-	if rowsAffected := repo.db.Model(&userUpdate).Updates(userUpdate).Error; rowsAffected != nil {
+	if rowsAffected := repo.db.Model(&userUpdate).Updates(userUpdate).RowsAffected; rowsAffected == 0 {
 		return U.Users{}, errors.New("tidak ada perubahan pada data user")
 	}
 

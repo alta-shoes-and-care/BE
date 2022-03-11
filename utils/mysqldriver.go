@@ -4,8 +4,8 @@ import (
 	"final-project/configs"
 	O "final-project/entities/order"
 	PM "final-project/entities/payment-method"
-	S "final-project/entities/service"
 	R "final-project/entities/review"
+	S "final-project/entities/service"
 	U "final-project/entities/user"
 	"fmt"
 
@@ -34,8 +34,8 @@ func InitDB(config *configs.AppConfig) *gorm.DB {
 
 func InitMigrate(db *gorm.DB) {
 	db.AutoMigrate(&U.Users{})
-	db.AutoMigrate(&S.Services{})
 	db.AutoMigrate(&PM.PaymentMethods{})
+	db.AutoMigrate(&S.Services{})
 	db.AutoMigrate(&O.Orders{})
 	db.AutoMigrate(&R.Reviews{})
 }

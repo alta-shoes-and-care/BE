@@ -49,5 +49,23 @@ func TestCreate(t *testing.T) {
 		_, err := repo.Create(mockUser)
 		assert.NotNil(t, err)
 	})
+}
 
+func TestGet(t *testing.T) {
+	Migrator()
+	repo := NewUserRepository(db)
+
+	mockUser := SeederUser.UserSeeder()
+
+	t.Run("negative", func(t *testing.T) {
+		_, err := repo.Get(1)
+		assert.NotNil(t, err)
+	})
+
+	t.Run("positive", func(t *testing.T) {
+		repo.Create(mockUser)
+		res, err := repo.Get(1)
+		assert.Nil(t, err)
+		assert.Equal(t, mockUser.Name, res.Name)
+	})
 }

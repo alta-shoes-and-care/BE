@@ -70,9 +70,10 @@ func RegisterPaths(e *echo.Echo, ac *auth.AuthController, uc *user.UserControlle
 
 	// Review Method Route
 	r := e.Group("/reviews")
-	r.Use(middlewares.JWTMiddleware())
-	r.POST("", rc.Insert())
 	r.GET("", rc.Get())
-	r.PUT("/:id", rc.Update())
-	r.DELETE("/:id", rc.Delete())
+	rj := r.Group("/jwt")
+	rj.Use(middlewares.JWTMiddleware())
+	rj.POST("", rc.Insert())
+	rj.PUT("/:id", rc.Update())
+	rj.DELETE("/:id", rc.Delete())
 }

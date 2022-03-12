@@ -16,7 +16,7 @@ func GenerateToken(ID uint, isAdmin bool) (string, error) {
 	data := jwt.MapClaims{}
 	data["id"] = ID
 	data["isAdmin"] = isAdmin
-	data["expired"] = time.Now().Add(time.Hour * 1).Unix()
+	data["expired"] = time.Now().Add(time.Second * 30).Unix()
 	data["authorized"] = true
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, data)
 	return token.SignedString([]byte(os.Getenv("JWT_SECRET")))

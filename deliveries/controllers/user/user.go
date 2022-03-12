@@ -38,6 +38,11 @@ func (ctl *UserController) Create() echo.HandlerFunc {
 
 func (ctl *UserController) Get() echo.HandlerFunc {
 	return func(c echo.Context) error {
+		isAlive := middlewares.ExtractTokenIsAlive(c)
+		if !isAlive {
+			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))
+		}
+
 		userID := middlewares.ExtractTokenUserID(c)
 
 		res, err := ctl.repo.Get(uint(userID))
@@ -51,7 +56,8 @@ func (ctl *UserController) Get() echo.HandlerFunc {
 func (ctl *UserController) GetByID() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		isAdmin := middlewares.ExtractTokenIsAdmin(c)
-		if !isAdmin {
+		isAlive := middlewares.ExtractTokenIsAlive(c)
+		if !isAdmin || !isAlive {
 			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))
 		}
 
@@ -69,7 +75,7 @@ func (ctl *UserController) GetAllUsers() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		isAdmin := middlewares.ExtractTokenIsAdmin(c)
 		isAlive := middlewares.ExtractTokenIsAlive(c)
-		if !isAdmin {
+		if !isAdmin || !isAlive {
 			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))
 		}
 		res, err := ctl.repo.GetAllUsers()
@@ -82,6 +88,11 @@ func (ctl *UserController) GetAllUsers() echo.HandlerFunc {
 
 func (ctl *UserController) Update() echo.HandlerFunc {
 	return func(c echo.Context) error {
+		isAlive := middlewares.ExtractTokenIsAlive(c)
+		if !isAlive {
+			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))
+		}
+
 		userID := middlewares.ExtractTokenUserID(c)
 		var UpdatedUser = RequestUpdateUser{}
 
@@ -99,6 +110,11 @@ func (ctl *UserController) Update() echo.HandlerFunc {
 
 func (ctl *UserController) Delete() echo.HandlerFunc {
 	return func(c echo.Context) error {
+		isAlive := middlewares.ExtractTokenIsAlive(c)
+		if !isAlive {
+			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))
+		}
+
 		userID := middlewares.ExtractTokenUserID(c)
 
 		err := ctl.repo.Delete(uint(userID))

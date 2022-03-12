@@ -50,7 +50,7 @@ func ExtractTokenIsAlive(e echo.Context) bool {
 	user := e.Get("user").(*jwt.Token)
 	if user.Valid {
 		data := user.Claims.(jwt.MapClaims)
-		expiredTime := time.Unix(data["expired"].(int64), 0)
+		expiredTime := time.Unix(int64(data["expired"].(float64)), 0)
 
 		if remainder := time.Until(expiredTime); remainder > 0 {
 			return true

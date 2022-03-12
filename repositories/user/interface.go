@@ -6,7 +6,7 @@ type User interface {
 	Create(newUser U.Users) (U.Users, error)
 	Get(ID uint) (U.Users, error)
 	GetByID(ID uint) (U.Users, error)
-	GetUsers() ([]U.Users, error)
+	GetAllUsers() ([]U.Users, error)
 	Update(userUpdate U.Users) (U.Users, error)
 	Delete(ID uint) error
 }

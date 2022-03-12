@@ -29,7 +29,7 @@ func RegisterPaths(e *echo.Echo, ac *auth.AuthController, uc *user.UserControlle
 	u.POST("", uc.Create())
 	uj := u.Group("/jwt")
 	uj.Use(middlewares.JWTMiddleware())
-	uj.GET("", uc.GetUsers())
+	uj.GET("", uc.GetAllUsers())
 	uj.GET("/:id", uc.GetByID())
 	uj.GET("/me", uc.Get())
 	uj.PUT("/me", uc.Update())

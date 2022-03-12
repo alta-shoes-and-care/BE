@@ -49,7 +49,7 @@ func (repo *UserRepository) GetByID(ID uint) (U.Users, error) {
 	return user, nil
 }
 
-func (repo *UserRepository) GetUsers() ([]U.Users, error) {
+func (repo *UserRepository) GetAllUsers() ([]U.Users, error) {
 	var users []U.Users
 	repo.db.Find(&users)
 	if len(users) < 1 {

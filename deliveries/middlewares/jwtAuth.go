@@ -41,3 +41,16 @@ func ExtractTokenIsAdmin(e echo.Context) bool {
 	}
 	return false
 }
+
+func ExtractTokenIsAlive(e echo.Context) bool {
+	user := e.Get("user").(*jwt.Token)
+	if user.Valid {
+		data := user.Claims.(jwt.MapClaims)
+		expiredTime := time.Unix(data["expired"].(int64), 0)
+
+		if remainder := time.Until(expiredTime); remainder > 0 {
+			return true
+		}
+	}
+	return false
+}

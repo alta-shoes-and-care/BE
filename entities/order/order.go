@@ -2,6 +2,7 @@ package order
 
 import (
 	"gorm.io/datatypes"
+	"final-project/entities/review"
 	"gorm.io/gorm"
 )
 
@@ -18,4 +19,5 @@ type Orders struct {
 	UserID          uint
 	ServiceID       uint
 	PaymentMethodID uint
+	Reviews      review.Reviews `gorm:"foreignKey:OrderID"`
 }

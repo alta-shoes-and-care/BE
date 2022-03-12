@@ -22,14 +22,19 @@ func NewReviewController(repository _ReviewRepo.Review) *ReviewController {
 
 func (ctl *ReviewController) Insert() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		UserID := middlewares.ExtractTokenUserID(c)
+		isAlive := middlewares.ExtractTokenIsAlive(c)
+		if !isAlive {
+			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))
+		}
+
+		userID := middlewares.ExtractTokenUserID(c)
 		NewReview := RequestInsertReview{}
 
 		if err := c.Bind(&NewReview); err != nil || NewReview.Review == "" || NewReview.Rating == 0 || NewReview.ServiceID == 0 || NewReview.OrderID == 0 {
 			return c.JSON(http.StatusBadRequest, common.BadRequest("input dari user tidak sesuai, service_id, order_id, rating, atau review tidak boleh kosong"))
 		}
 
-		res, err := ctl.repo.Insert(NewReview.ToEntityReview(uint(UserID)))
+		res, err := ctl.repo.Insert(NewReview.ToEntityReview(uint(userID)))
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
 		}
@@ -39,10 +44,6 @@ func (ctl *ReviewController) Insert() echo.HandlerFunc {
 
 func (ctl *ReviewController) Get() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		isAdmin := middlewares.ExtractTokenIsAdmin(c)
-		if !isAdmin {
-			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))
-		}
 		res, err := ctl.repo.Get()
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
@@ -53,14 +54,19 @@ func (ctl *ReviewController) Get() echo.HandlerFunc {
 
 func (ctl *ReviewController) Update() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		UserID := middlewares.ExtractTokenUserID(c)
+		isAlive := middlewares.ExtractTokenIsAlive(c)
+		if !isAlive {
+			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))
+		}
+
+		userID := middlewares.ExtractTokenUserID(c)
 		var UpdatedReview = RequestUpdateReview{}
 
 		if err := c.Bind(&UpdatedReview); err != nil {
 			return c.JSON(http.StatusBadRequest, common.BadRequest("input dari user tidak sesuai"))
 		}
 		ID, _ := strconv.Atoi(c.Param("id"))
-		res, err := ctl.repo.Update(UpdatedReview.ToEntityReview(uint(ID), uint(UserID)))
+		res, err := ctl.repo.Update(UpdatedReview.ToEntityReview(uint(ID), uint(userID)))
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
 		}
@@ -70,9 +76,14 @@ func (ctl *ReviewController) Update() echo.HandlerFunc {
 
 func (ctl *ReviewController) Delete() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		UserID := middlewares.ExtractTokenUserID(c)
+		isAlive := middlewares.ExtractTokenIsAlive(c)
+		if !isAlive {
+			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))
+		}
+
+		userID := middlewares.ExtractTokenUserID(c)
 		ID, _ := strconv.Atoi(c.Param("id"))
-		err := ctl.repo.Delete(uint(ID), uint(UserID))
+		err := ctl.repo.Delete(uint(ID), uint(userID))
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
 		}

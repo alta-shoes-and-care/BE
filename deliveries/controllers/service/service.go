@@ -32,7 +32,8 @@ func NewServiceController(repository _ServiceRepo.Service, config *configs.AppCo
 func (ctl *ServiceController) Create() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		isAdmin := middlewares.ExtractTokenIsAdmin(c)
-		if !isAdmin {
+		isAlive := middlewares.ExtractTokenIsAlive(c)
+		if !isAdmin || !isAlive {
 			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))
 		}
 
@@ -86,7 +87,8 @@ func (ctl *ServiceController) GetDetails() echo.HandlerFunc {
 func (ctl *ServiceController) Update() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		isAdmin := middlewares.ExtractTokenIsAdmin(c)
-		if !isAdmin {
+		isAlive := middlewares.ExtractTokenIsAlive(c)
+		if !isAdmin || !isAlive {
 			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))
 		}
 
@@ -106,7 +108,8 @@ func (ctl *ServiceController) Update() echo.HandlerFunc {
 func (ctl *ServiceController) UpdateImage() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		isAdmin := middlewares.ExtractTokenIsAdmin(c)
-		if !isAdmin {
+		isAlive := middlewares.ExtractTokenIsAlive(c)
+		if !isAdmin || !isAlive {
 			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))
 		}
 
@@ -133,7 +136,8 @@ func (ctl *ServiceController) UpdateImage() echo.HandlerFunc {
 func (ctl *ServiceController) Delete() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		isAdmin := middlewares.ExtractTokenIsAdmin(c)
-		if !isAdmin {
+		isAlive := middlewares.ExtractTokenIsAlive(c)
+		if !isAdmin || !isAlive {
 			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))
 		}
 

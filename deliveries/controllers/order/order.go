@@ -32,6 +32,11 @@ const (
 
 func (ctl *OrderController) Create() echo.HandlerFunc {
 	return func(c echo.Context) error {
+		isAlive := middlewares.ExtractTokenIsAlive(c)
+		if !isAlive {
+			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))
+		}
+
 		var newOrder RequestCreateOrder
 		if err := c.Bind(&newOrder); err != nil {
 			return c.JSON(http.StatusBadRequest, common.BadRequest("input dari user tidak sesuai, service_id, payment_method_id, time, address, city, atau phone tidak boleh kosong"))
@@ -57,7 +62,8 @@ func (ctl *OrderController) Create() echo.HandlerFunc {
 func (ctl *OrderController) Get() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		isAdmin := middlewares.ExtractTokenIsAdmin(c)
-		if !isAdmin {
+		isAlive := middlewares.ExtractTokenIsAlive(c)
+		if !isAdmin || !isAlive {
 			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))
 		}
 
@@ -71,6 +77,11 @@ func (ctl *OrderController) Get() echo.HandlerFunc {
 
 func (ctl *OrderController) GetByUserID() echo.HandlerFunc {
 	return func(c echo.Context) error {
+		isAlive := middlewares.ExtractTokenIsAlive(c)
+		if !isAlive {
+			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))
+		}
+
 		userID := middlewares.ExtractTokenUserID(c)
 		res, err := ctl.repo.GetByUserID(userID)
 		if err != nil {
@@ -82,6 +93,11 @@ func (ctl *OrderController) GetByUserID() echo.HandlerFunc {
 
 func (ctl *OrderController) GetByID() echo.HandlerFunc {
 	return func(c echo.Context) error {
+		isAlive := middlewares.ExtractTokenIsAlive(c)
+		if !isAlive {
+			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))
+		}
+
 		ID, _ := strconv.Atoi(c.Param("id"))
 		res, err := ctl.repo.GetByID(uint(ID))
 		if err != nil {
@@ -93,6 +109,11 @@ func (ctl *OrderController) GetByID() echo.HandlerFunc {
 
 func (ctl *OrderController) CheckPaymentStatus() echo.HandlerFunc {
 	return func(c echo.Context) error {
+		isAlive := middlewares.ExtractTokenIsAlive(c)
+		if !isAlive {
+			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))
+		}
+
 		ID, _ := strconv.Atoi(c.Param("id"))
 		res, err := midtranspay.CheckTransaction(midtransClient, uint(ID))
 		if err != nil {
@@ -121,7 +142,8 @@ func (ctl *OrderController) CheckPaymentStatus() echo.HandlerFunc {
 func (ctl *OrderController) SetAccepted() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		isAdmin := middlewares.ExtractTokenIsAdmin(c)
-		if !isAdmin {
+		isAlive := middlewares.ExtractTokenIsAlive(c)
+		if !isAdmin || !isAlive {
 			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))
 		}
 
@@ -137,7 +159,8 @@ func (ctl *OrderController) SetAccepted() echo.HandlerFunc {
 func (ctl *OrderController) SetRejected() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		isAdmin := middlewares.ExtractTokenIsAdmin(c)
-		if !isAdmin {
+		isAlive := middlewares.ExtractTokenIsAlive(c)
+		if !isAdmin || !isAlive {
 			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))
 		}
 
@@ -153,7 +176,8 @@ func (ctl *OrderController) SetRejected() echo.HandlerFunc {
 func (ctl *OrderController) SetOnProcess() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		isAdmin := middlewares.ExtractTokenIsAdmin(c)
-		if !isAdmin {
+		isAlive := middlewares.ExtractTokenIsAlive(c)
+		if !isAdmin || !isAlive {
 			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))
 		}
 
@@ -169,7 +193,8 @@ func (ctl *OrderController) SetOnProcess() echo.HandlerFunc {
 func (ctl *OrderController) SetDelivering() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		isAdmin := middlewares.ExtractTokenIsAdmin(c)
-		if !isAdmin {
+		isAlive := middlewares.ExtractTokenIsAlive(c)
+		if !isAdmin || !isAlive {
 			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))
 		}
 
@@ -184,6 +209,11 @@ func (ctl *OrderController) SetDelivering() echo.HandlerFunc {
 
 func (ctl *OrderController) SetCancel() echo.HandlerFunc {
 	return func(c echo.Context) error {
+		isAlive := middlewares.ExtractTokenIsAlive(c)
+		if !isAlive {
+			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))
+		}
+
 		ID, _ := strconv.Atoi(c.Param("id"))
 		res, err := ctl.repo.SetCancel(uint(ID))
 		if err != nil {
@@ -195,6 +225,11 @@ func (ctl *OrderController) SetCancel() echo.HandlerFunc {
 
 func (ctl *OrderController) SetDone() echo.HandlerFunc {
 	return func(c echo.Context) error {
+		isAlive := middlewares.ExtractTokenIsAlive(c)
+		if !isAlive {
+			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))
+		}
+
 		ID, _ := strconv.Atoi(c.Param("id"))
 		res, err := ctl.repo.SetDone(uint(ID))
 		if err != nil {

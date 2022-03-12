@@ -39,6 +39,25 @@ func (repo *UserRepository) Get(ID uint) (U.Users, error) {
 	return user, nil
 }
 
+func (repo *UserRepository) GetByID(ID uint) (U.Users, error) {
+	var user U.Users
+
+	if err := repo.db.First(&user, ID).Error; err != nil {
+		log.Warn(err)
+		return U.Users{}, errors.New("data user tidak ditemukan")
+	}
+	return user, nil
+}
+
+func (repo *UserRepository) GetAllUsers() ([]U.Users, error) {
+	var users []U.Users
+	repo.db.Find(&users)
+	if len(users) < 1 {
+		return nil, errors.New("tidak terdapat data user sama sekali")
+	}
+	return users, nil
+}
+
 func (repo *UserRepository) Update(userUpdate U.Users) (U.Users, error) {
 	if userUpdate.Password != "" {
 		userUpdate.Password, _ = hash.HashPassword(userUpdate.Password)

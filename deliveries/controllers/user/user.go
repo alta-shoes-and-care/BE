@@ -5,6 +5,7 @@ import (
 	"final-project/deliveries/middlewares"
 	_UserRepo "final-project/repositories/user"
 	"net/http"
+	"strconv"
 
 	"github.com/labstack/echo/v4"
 )
@@ -44,6 +45,37 @@ func (ctl *UserController) Get() echo.HandlerFunc {
 			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
 		}
 		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses mendapatkan data user", ToResponseGetUser(res)))
+	}
+}
+
+func (ctl *UserController) GetByID() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		isAdmin := middlewares.ExtractTokenIsAdmin(c)
+		if !isAdmin {
+			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))
+		}
+
+		userID, _ := strconv.Atoi(c.Param("id"))
+
+		res, err := ctl.repo.GetByID(uint(userID))
+		if err != nil {
+			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
+		}
+		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses mendapatkan data user", ToResponseGetUser(res)))
+	}
+}
+
+func (ctl *UserController) GetAllUsers() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		isAdmin := middlewares.ExtractTokenIsAdmin(c)
+		if !isAdmin {
+			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))
+		}
+		res, err := ctl.repo.GetAllUsers()
+		if err != nil {
+			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
+		}
+		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses mendapatkan semua user", ToResponseGetUsers(res)))
 	}
 }
 

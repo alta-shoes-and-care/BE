@@ -68,6 +68,7 @@ func (ctl *UserController) GetByID() echo.HandlerFunc {
 func (ctl *UserController) GetAllUsers() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		isAdmin := middlewares.ExtractTokenIsAdmin(c)
+		isAlive := middlewares.ExtractTokenIsAlive(c)
 		if !isAdmin {
 			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))
 		}

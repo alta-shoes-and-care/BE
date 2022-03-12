@@ -9,6 +9,7 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+// Generate jwt token
 func GenerateToken(ID uint, isAdmin bool) (string, error) {
 	if ID < 1 {
 		return "", errors.New("user_id tidak valid")
@@ -22,6 +23,7 @@ func GenerateToken(ID uint, isAdmin bool) (string, error) {
 	return token.SignedString([]byte(os.Getenv("JWT_SECRET")))
 }
 
+// Get user id
 func ExtractTokenUserID(e echo.Context) uint {
 	user := e.Get("user").(*jwt.Token)
 	if user.Valid {
@@ -32,6 +34,7 @@ func ExtractTokenUserID(e echo.Context) uint {
 	return 0
 }
 
+// Check if user is admin or not
 func ExtractTokenIsAdmin(e echo.Context) bool {
 	user := e.Get("user").(*jwt.Token)
 	if user.Valid {
@@ -42,6 +45,7 @@ func ExtractTokenIsAdmin(e echo.Context) bool {
 	return false
 }
 
+// Check if token is alive or not
 func ExtractTokenIsAlive(e echo.Context) bool {
 	user := e.Get("user").(*jwt.Token)
 	if user.Valid {

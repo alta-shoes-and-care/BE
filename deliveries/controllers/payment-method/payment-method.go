@@ -23,7 +23,8 @@ func NewPaymentMethodController(repository _PMRepo.PaymentMethod) *PaymentMethod
 func (ctl *PaymentMethodController) Create() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		isAdmin := middlewares.ExtractTokenIsAdmin(c)
-		if !isAdmin {
+		isAlive := middlewares.ExtractTokenIsAlive(c)
+		if !isAdmin || !isAlive {
 			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))
 		}
 
@@ -44,7 +45,8 @@ func (ctl *PaymentMethodController) Create() echo.HandlerFunc {
 func (ctl *PaymentMethodController) Get() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		isAdmin := middlewares.ExtractTokenIsAdmin(c)
-		if !isAdmin {
+		isAlive := middlewares.ExtractTokenIsAlive(c)
+		if !isAdmin || !isAlive {
 			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))
 		}
 		res, err := ctl.repo.Get()
@@ -58,7 +60,8 @@ func (ctl *PaymentMethodController) Get() echo.HandlerFunc {
 func (ctl *PaymentMethodController) Delete() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		isAdmin := middlewares.ExtractTokenIsAdmin(c)
-		if !isAdmin {
+		isAlive := middlewares.ExtractTokenIsAlive(c)
+		if !isAdmin || !isAlive {
 			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))
 		}
 

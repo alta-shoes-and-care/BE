@@ -71,11 +71,6 @@ func (ctl *OrderController) Get() echo.HandlerFunc {
 
 func (ctl *OrderController) GetByUserID() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		isAdmin := middlewares.ExtractTokenIsAdmin(c)
-		if !isAdmin {
-			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))
-		}
-
 		userID := middlewares.ExtractTokenUserID(c)
 		res, err := ctl.repo.GetByUserID(userID)
 		if err != nil {

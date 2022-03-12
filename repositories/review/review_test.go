@@ -72,7 +72,7 @@ func TestInsert(t *testing.T) {
 		assert.Equal(t, mockReview.Review, res.Review)
 	})
 
-	t.Run("negatif2", func(t *testing.T) {
+	t.Run("negative2", func(t *testing.T) {
 		userRepo.Create(mockUser)
 		serviceRepo.Create(mockService)
 		PMRepo.Create(mockPM)
@@ -81,7 +81,6 @@ func TestInsert(t *testing.T) {
 		assert.NotNil(t, err)
 	})
 
-	
 }
 
 func TestGet(t *testing.T) {

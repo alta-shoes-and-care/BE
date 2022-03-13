@@ -34,7 +34,7 @@ func (ctl *OrderController) Create() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		isAlive := middlewares.ExtractTokenIsAlive(c)
 		if !isAlive {
-			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))
+			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("JWT token is expired"))
 		}
 
 		var newOrder RequestCreateOrder
@@ -61,9 +61,13 @@ func (ctl *OrderController) Create() echo.HandlerFunc {
 
 func (ctl *OrderController) Get() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		isAdmin := middlewares.ExtractTokenIsAdmin(c)
 		isAlive := middlewares.ExtractTokenIsAlive(c)
-		if !isAdmin || !isAlive {
+		if !isAlive {
+			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("JWT token is expired"))
+		}
+
+		isAdmin := middlewares.ExtractTokenIsAdmin(c)
+		if !isAdmin {
 			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))
 		}
 
@@ -79,7 +83,7 @@ func (ctl *OrderController) GetByUserID() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		isAlive := middlewares.ExtractTokenIsAlive(c)
 		if !isAlive {
-			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))
+			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("JWT token is expired"))
 		}
 
 		userID := middlewares.ExtractTokenUserID(c)
@@ -95,7 +99,7 @@ func (ctl *OrderController) GetByID() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		isAlive := middlewares.ExtractTokenIsAlive(c)
 		if !isAlive {
-			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))
+			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("JWT token is expired"))
 		}
 
 		ID, _ := strconv.Atoi(c.Param("id"))
@@ -111,7 +115,7 @@ func (ctl *OrderController) CheckPaymentStatus() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		isAlive := middlewares.ExtractTokenIsAlive(c)
 		if !isAlive {
-			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))
+			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("JWT token is expired"))
 		}
 
 		ID, _ := strconv.Atoi(c.Param("id"))
@@ -141,9 +145,13 @@ func (ctl *OrderController) CheckPaymentStatus() echo.HandlerFunc {
 
 func (ctl *OrderController) SetAccepted() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		isAdmin := middlewares.ExtractTokenIsAdmin(c)
 		isAlive := middlewares.ExtractTokenIsAlive(c)
-		if !isAdmin || !isAlive {
+		if !isAlive {
+			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("JWT token is expired"))
+		}
+
+		isAdmin := middlewares.ExtractTokenIsAdmin(c)
+		if !isAdmin {
 			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))
 		}
 
@@ -158,9 +166,13 @@ func (ctl *OrderController) SetAccepted() echo.HandlerFunc {
 
 func (ctl *OrderController) SetRejected() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		isAdmin := middlewares.ExtractTokenIsAdmin(c)
 		isAlive := middlewares.ExtractTokenIsAlive(c)
-		if !isAdmin || !isAlive {
+		if !isAlive {
+			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("JWT token is expired"))
+		}
+
+		isAdmin := middlewares.ExtractTokenIsAdmin(c)
+		if !isAdmin {
 			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))
 		}
 
@@ -175,9 +187,13 @@ func (ctl *OrderController) SetRejected() echo.HandlerFunc {
 
 func (ctl *OrderController) SetOnProcess() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		isAdmin := middlewares.ExtractTokenIsAdmin(c)
 		isAlive := middlewares.ExtractTokenIsAlive(c)
-		if !isAdmin || !isAlive {
+		if !isAlive {
+			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("JWT token is expired"))
+		}
+
+		isAdmin := middlewares.ExtractTokenIsAdmin(c)
+		if !isAdmin {
 			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))
 		}
 
@@ -192,9 +208,13 @@ func (ctl *OrderController) SetOnProcess() echo.HandlerFunc {
 
 func (ctl *OrderController) SetDelivering() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		isAdmin := middlewares.ExtractTokenIsAdmin(c)
 		isAlive := middlewares.ExtractTokenIsAlive(c)
-		if !isAdmin || !isAlive {
+		if !isAlive {
+			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("JWT token is expired"))
+		}
+
+		isAdmin := middlewares.ExtractTokenIsAdmin(c)
+		if !isAdmin {
 			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))
 		}
 
@@ -211,7 +231,7 @@ func (ctl *OrderController) SetCancel() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		isAlive := middlewares.ExtractTokenIsAlive(c)
 		if !isAlive {
-			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))
+			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("JWT token is expired"))
 		}
 
 		ID, _ := strconv.Atoi(c.Param("id"))
@@ -227,7 +247,7 @@ func (ctl *OrderController) SetDone() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		isAlive := middlewares.ExtractTokenIsAlive(c)
 		if !isAlive {
-			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))
+			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("JWT token is expired"))
 		}
 
 		ID, _ := strconv.Atoi(c.Param("id"))

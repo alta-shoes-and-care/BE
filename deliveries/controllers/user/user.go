@@ -40,7 +40,7 @@ func (ctl *UserController) Get() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		isAlive := middlewares.ExtractTokenIsAlive(c)
 		if !isAlive {
-			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))
+			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("JWT token is expired"))
 		}
 
 		userID := middlewares.ExtractTokenUserID(c)
@@ -55,9 +55,13 @@ func (ctl *UserController) Get() echo.HandlerFunc {
 
 func (ctl *UserController) GetByID() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		isAdmin := middlewares.ExtractTokenIsAdmin(c)
 		isAlive := middlewares.ExtractTokenIsAlive(c)
-		if !isAdmin || !isAlive {
+		if !isAlive {
+			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("JWT token is expired"))
+		}
+
+		isAdmin := middlewares.ExtractTokenIsAdmin(c)
+		if !isAdmin {
 			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))
 		}
 
@@ -73,11 +77,16 @@ func (ctl *UserController) GetByID() echo.HandlerFunc {
 
 func (ctl *UserController) GetAllUsers() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		isAdmin := middlewares.ExtractTokenIsAdmin(c)
 		isAlive := middlewares.ExtractTokenIsAlive(c)
-		if !isAdmin || !isAlive {
+		if !isAlive {
+			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("JWT token is expired"))
+		}
+
+		isAdmin := middlewares.ExtractTokenIsAdmin(c)
+		if !isAdmin {
 			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))
 		}
+
 		res, err := ctl.repo.GetAllUsers()
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
@@ -90,7 +99,7 @@ func (ctl *UserController) Update() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		isAlive := middlewares.ExtractTokenIsAlive(c)
 		if !isAlive {
-			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))
+			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("JWT token is expired"))
 		}
 
 		userID := middlewares.ExtractTokenUserID(c)
@@ -112,7 +121,7 @@ func (ctl *UserController) Delete() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		isAlive := middlewares.ExtractTokenIsAlive(c)
 		if !isAlive {
-			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))
+			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("JWT token is expired"))
 		}
 
 		userID := middlewares.ExtractTokenUserID(c)

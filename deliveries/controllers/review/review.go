@@ -24,7 +24,7 @@ func (ctl *ReviewController) Insert() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		isAlive := middlewares.ExtractTokenIsAlive(c)
 		if !isAlive {
-			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))
+			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("JWT token is expired"))
 		}
 
 		userID := middlewares.ExtractTokenUserID(c)
@@ -56,7 +56,7 @@ func (ctl *ReviewController) Update() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		isAlive := middlewares.ExtractTokenIsAlive(c)
 		if !isAlive {
-			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))
+			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("JWT token is expired"))
 		}
 
 		userID := middlewares.ExtractTokenUserID(c)
@@ -78,7 +78,7 @@ func (ctl *ReviewController) Delete() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		isAlive := middlewares.ExtractTokenIsAlive(c)
 		if !isAlive {
-			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))
+			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("JWT token is expired"))
 		}
 
 		userID := middlewares.ExtractTokenUserID(c)

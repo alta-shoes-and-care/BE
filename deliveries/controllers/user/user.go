@@ -3,9 +3,11 @@ package user
 import (
 	"final-project/deliveries/controllers/common"
 	"final-project/deliveries/middlewares"
+	"final-project/deliveries/validators"
 	_UserRepo "final-project/repositories/user"
 	"net/http"
 	"strconv"
+	"strings"
 
 	"github.com/labstack/echo/v4"
 )
@@ -24,8 +26,12 @@ func (ctl *UserController) Create() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		newUser := RequestCreateUser{}
 
-		if err := c.Bind(&newUser); err != nil || newUser.Name == "" || newUser.Email == "" || newUser.Password == "" {
+		if err := c.Bind(&newUser); err != nil || strings.TrimSpace(newUser.Name) == "" || strings.TrimSpace(newUser.Email) == "" || strings.TrimSpace(newUser.Password) == "" {
 			return c.JSON(http.StatusBadRequest, common.BadRequest("input dari user tidak sesuai, nama, email atau password tidak boleh kosong"))
+		}
+
+		if err := validators.ValidateCreateUser(newUser.Name, newUser.Email, newUser.Password); err != nil {
+			return c.JSON(http.StatusBadRequest, common.BadRequest(err.Error()))
 		}
 
 		res, err := ctl.repo.Create(newUser.ToEntityUser())

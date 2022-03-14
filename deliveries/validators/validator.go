@@ -8,7 +8,7 @@ import (
 )
 
 func ValidateCreateUser(name, email, password string) error {
-	namePattern, _ := regexp.Compile(`^([A-Za-z]+ ?[A-Za-z]*){4,29}[A-Z-a-z]$`)
+	namePattern, _ := regexp.Compile(`^([A-Za-z]+ ?[A-Za-z]*){3,29}[A-Z-a-z]$`)
 	if len(name) > 30 || !namePattern.MatchString(name) {
 		return errors.New("input nama tidak sesuai (alfabet; tanpa simbol; boleh ada spasi di antara kata; total karakter: minimal 4, maksimal 30;)\ncontoh: \"Yusuf Nur Wahid\"")
 	}

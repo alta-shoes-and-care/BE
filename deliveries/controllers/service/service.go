@@ -5,6 +5,7 @@ import (
 	"final-project/deliveries/controllers/common"
 	"final-project/deliveries/helpers/uploader"
 	"final-project/deliveries/middlewares"
+	"final-project/deliveries/validators"
 	_ServiceRepo "final-project/repositories/service"
 	"net/http"
 	"strconv"
@@ -44,6 +45,10 @@ func (ctl *ServiceController) Create() echo.HandlerFunc {
 		var newService RequestCreate
 		if err := c.Bind(&newService); err != nil || strings.TrimSpace(newService.Title) == "" || strings.TrimSpace(newService.Description) == "" || newService.Price == 0 {
 			return c.JSON(http.StatusBadRequest, common.BadRequest("input dari user tidak sesuai, title, description, atau price tidak boleh kosong"))
+		}
+
+		if err := validators.ValidateCreateService(newService.Title, newService.Description); err != nil {
+			return c.JSON(http.StatusBadRequest, common.BadRequest(err.Error()))
 		}
 
 		file, err := c.FormFile("file")

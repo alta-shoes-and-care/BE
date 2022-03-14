@@ -2,7 +2,9 @@ package validators
 
 import (
 	"errors"
+	"mime/multipart"
 	"regexp"
+	"strings"
 )
 
 func ValidateCreateUser(name, email, password string) error {
@@ -31,4 +33,21 @@ func ValidateCreateService(title, description string) error {
 		return errors.New("input description melebihi jumlah maksimal karakter (320 karakter)")
 	}
 	return nil
+}
+
+func ValidateUpdateServiceData(title, description string) error {
+	if len(title) > 30 {
+		return errors.New("input title melebihi jumlah maksimal karakter (30 karakter)")
+	}
+	if len(description) > 320 {
+		return errors.New("input description melebihi jumlah maksimal karakter (320 karakter)")
+	}
+	return nil
+}
+
+func ValidateUpdateServiceImage(file *multipart.FileHeader) error {
+	if strings.HasSuffix(file.Filename, ".jpg") || strings.HasSuffix(file.Filename, ".jpeg") || strings.HasSuffix(file.Filename, ".png") {
+		return nil
+	}
+	return errors.New("hanya menerima file dengan ekstensi jpg, jpeg, dan png")
 }

@@ -22,3 +22,13 @@ func ValidateCreateUser(name, email, password string) error {
 	}
 	return nil
 }
+
+func ValidateCreateService(title, description string) error {
+	if len(title) > 30 {
+		return errors.New("input title melebihi jumlah maksimal karakter (30 karakter)")
+	}
+	if len(description) > 320 {
+		return errors.New("input description melebihi jumlah maksimal karakter (320 karakter)")
+	}
+	return nil
+}

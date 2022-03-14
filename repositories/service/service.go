@@ -54,17 +54,6 @@ func (repo *ServiceRepository) Update(serviceUpdate S.Services) (S.Services, err
 	return serviceUpdate, nil
 }
 
-func (repo *ServiceRepository) UpdateImage(ID uint, image string) (S.Services, error) {
-	var service S.Services
-
-	if rowsAffected := repo.db.Table("services").Where("id = ?", ID).Update("image", image).RowsAffected; rowsAffected == 0 {
-		return S.Services{}, errors.New("tidak ada gambar service yang diperbarui")
-	}
-
-	repo.db.First(&service, ID)
-	return service, nil
-}
-
 func (repo *ServiceRepository) Delete(ID uint) error {
 	if rowsAffected := repo.db.Delete(&S.Services{}, ID).RowsAffected; rowsAffected == 0 {
 		return errors.New("tidak ada service yang dihapus")

@@ -110,43 +110,25 @@ func (ctl *ServiceController) Update() echo.HandlerFunc {
 			return c.JSON(http.StatusBadRequest, common.BadRequest("input dari user tidak sesuai"))
 		}
 
-		res, err := ctl.repo.Update(updateService.ToEntityService())
+		var image string
+		file, err := c.FormFile("file")
+		if err != nil {
+			log.Info(err)
+		} else if strings.HasSuffix(file.Filename, ".jpg") || strings.HasSuffix(file.Filename, ".jpeg") || strings.HasSuffix(file.Filename, ".png") {
+			var err error
+			image, err = uploader.Uploader(ctl.sess, ctl.config.S3_REGION, ctl.config.S3_BUCKET, *file)
+			if err != nil {
+				return c.JSON(http.StatusBadRequest, common.BadRequest(err.Error()))
+			}
+		} else {
+			return c.JSON(http.StatusBadRequest, common.BadRequest("hanya menerima file dengan ekstensi jpg, jpeg, dan png"))
+		}
+
+		res, err := ctl.repo.Update(updateService.ToEntityService(image))
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
 		}
 		return c.JSON(http.StatusCreated, common.Success(http.StatusCreated, "sukses memperbarui data service", ToResponseUpdate(res)))
-	}
-}
-
-func (ctl *ServiceController) UpdateImage() echo.HandlerFunc {
-	return func(c echo.Context) error {
-		isAlive := middlewares.ExtractTokenIsAlive(c)
-		if !isAlive {
-			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("JWT token is expired"))
-		}
-
-		isAdmin := middlewares.ExtractTokenIsAdmin(c)
-		if !isAdmin {
-			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))
-		}
-
-		file, err := c.FormFile("file")
-		if err != nil {
-			log.Info(err)
-			return c.JSON(http.StatusBadRequest, common.BadRequest("tidak dapat membaca file gambar"))
-		}
-
-		image, err := uploader.Uploader(ctl.sess, ctl.config.S3_REGION, ctl.config.S3_BUCKET, *file)
-		if err != nil {
-			return c.JSON(http.StatusBadRequest, common.BadRequest(err.Error()))
-		}
-
-		ID, _ := strconv.Atoi(c.Param("id"))
-		res, err := ctl.repo.UpdateImage(uint(ID), image)
-		if err != nil {
-			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
-		}
-		return c.JSON(http.StatusCreated, common.Success(http.StatusCreated, "sukses memperbarui gambar service", ToResponseUpdate(res)))
 	}
 }
 

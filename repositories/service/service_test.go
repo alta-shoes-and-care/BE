@@ -125,28 +125,6 @@ func TestUpdate(t *testing.T) {
 	})
 }
 
-func TestUpdateImage(t *testing.T) {
-	Migrator()
-	userRepo := user.NewUserRepository(db)
-	repo := NewServiceRepository(db)
-
-	mockUser := SeederUser.UserSeeder()
-	mockService := SeederService.ServiceSeeder()
-
-	t.Run("negative", func(t *testing.T) {
-		_, err := repo.UpdateImage(1, "")
-		assert.NotNil(t, err)
-	})
-
-	t.Run("positive", func(t *testing.T) {
-		userRepo.Create(mockUser)
-		repo.Create(mockService)
-
-		_, err := repo.UpdateImage(1, "")
-		assert.Nil(t, err)
-	})
-}
-
 func TestDelete(t *testing.T) {
 	Migrator()
 	userRepo := user.NewUserRepository(db)

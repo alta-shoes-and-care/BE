@@ -110,18 +110,24 @@ func (ctl *ServiceController) Update() echo.HandlerFunc {
 			return c.JSON(http.StatusBadRequest, common.BadRequest("input dari user tidak sesuai"))
 		}
 
+		if err := validators.ValidateUpdateServiceData(updateService.Title, updateService.Description); err != nil {
+			return c.JSON(http.StatusBadRequest, common.BadRequest(err.Error()))
+		}
+
 		var image string
 		file, err := c.FormFile("file")
 		if err != nil {
 			log.Info(err)
-		} else if strings.HasSuffix(file.Filename, ".jpg") || strings.HasSuffix(file.Filename, ".jpeg") || strings.HasSuffix(file.Filename, ".png") {
+		} else {
+			if err := validators.ValidateUpdateServiceImage(file); err != nil {
+				return c.JSON(http.StatusBadRequest, common.BadRequest(err.Error()))
+			}
+
 			var err error
 			image, err = uploader.Uploader(ctl.sess, ctl.config.S3_REGION, ctl.config.S3_BUCKET, *file)
 			if err != nil {
 				return c.JSON(http.StatusBadRequest, common.BadRequest(err.Error()))
 			}
-		} else {
-			return c.JSON(http.StatusBadRequest, common.BadRequest("hanya menerima file dengan ekstensi jpg, jpeg, dan png"))
 		}
 
 		res, err := ctl.repo.Update(updateService.ToEntityService(image))

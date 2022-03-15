@@ -199,7 +199,7 @@ func TestGet(t *testing.T) {
 	})
 }
 
-func TestGetAllUsers(t *testing.T) {
+func TestGetByID(t *testing.T) {
 	var jwtTokenUser, jwtTokenAdmin string
 
 	if err := godotenv.Load(".env"); err != nil {
@@ -208,8 +208,8 @@ func TestGetAllUsers(t *testing.T) {
 
 	t.Run("login user", func(t *testing.T) {
 		requestBody, _ := json.Marshal(auth.RequestLogin{
-			Email:    "user@user.com",
-			Password: "user123",
+			Email:    "ucup@ucup.com",
+			Password: "ucup123",
 		})
 
 		req := httptest.NewRequest(http.MethodPost, "/login", bytes.NewBuffer(requestBody))
@@ -233,8 +233,8 @@ func TestGetAllUsers(t *testing.T) {
 
 	t.Run("login admin", func(t *testing.T) {
 		requestBody, _ := json.Marshal(auth.RequestLogin{
-			Email:    "admin@admin.com",
-			Password: "admin123",
+			Email:    "ucup@ucup.com",
+			Password: "ucup123",
 		})
 
 		req := httptest.NewRequest(http.MethodPost, "/login", bytes.NewBuffer(requestBody))
@@ -262,7 +262,128 @@ func TestGetAllUsers(t *testing.T) {
 
 		req.Header.Set("Content-Type", "application/json")
 		req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtTokenUser))
-		log.Info(jwtTokenUser)
+
+		context := e.NewContext(req, res)
+		context.SetPath(fmt.Sprintf("%v%v/1", rootPath, jwtPath))
+
+		userController := NewUserController(&MockUser.MockUserRepository{})
+		if err := middlewares.JWTMiddleware()(userController.GetByID())(context); err != nil {
+			log.Fatal(err)
+		}
+
+		response := common.Response{}
+		json.Unmarshal([]byte(res.Body.Bytes()), &response)
+
+		assert.Equal(t, http.StatusUnauthorized, response.Code)
+	})
+
+	t.Run("fail to get user by id", func(t *testing.T) {
+		req := httptest.NewRequest(http.MethodGet, "/", bytes.NewBuffer(nil))
+		res := httptest.NewRecorder()
+
+		req.Header.Set("Content-Type", "application/json")
+		req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtTokenAdmin))
+
+		context := e.NewContext(req, res)
+		context.SetPath(fmt.Sprintf("%v%v/1", rootPath, jwtPath))
+
+		userController := NewUserController(&MockUser.MockFalseUserRepository{})
+		if err := middlewares.JWTMiddleware()(userController.GetByID())(context); err != nil {
+			log.Fatal(err)
+		}
+
+		response := common.Response{}
+		json.Unmarshal([]byte(res.Body.Bytes()), &response)
+
+		assert.Equal(t, http.StatusInternalServerError, response.Code)
+	})
+
+	t.Run("succeed to get by id", func(t *testing.T) {
+		req := httptest.NewRequest(http.MethodGet, "/", bytes.NewBuffer(nil))
+		res := httptest.NewRecorder()
+
+		req.Header.Set("Content-Type", "application/json")
+		req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtTokenAdmin))
+
+		context := e.NewContext(req, res)
+		context.SetPath(fmt.Sprintf("%v%v/1", rootPath, jwtPath))
+
+		userController := NewUserController(&MockUser.MockUserRepository{})
+		if err := middlewares.JWTMiddleware()(userController.GetByID())(context); err != nil {
+			log.Fatal(err)
+		}
+
+		response := common.Response{}
+		json.Unmarshal([]byte(res.Body.Bytes()), &response)
+
+		assert.Equal(t, http.StatusOK, response.Code)
+	})
+}
+
+func TestGetAllUsers(t *testing.T) {
+	var jwtTokenUser, jwtTokenAdmin string
+
+	if err := godotenv.Load(".env"); err != nil {
+		log.Info("tidak dapat memuat env file", err)
+	}
+
+	t.Run("login user", func(t *testing.T) {
+		requestBody, _ := json.Marshal(auth.RequestLogin{
+			Email:    "ucup@ucup.com",
+			Password: "ucup123",
+		})
+
+		req := httptest.NewRequest(http.MethodPost, "/login", bytes.NewBuffer(requestBody))
+		res := httptest.NewRecorder()
+
+		req.Header.Set("Content-Type", "application/json")
+		context := e.NewContext(req, res)
+
+		authControl := auth.NewAuthController(&MockUser.MockAuthUserRepository{})
+		authControl.Login()(context)
+
+		response := common.Response{}
+		json.Unmarshal([]byte(res.Body.Bytes()), &response)
+
+		dataMap := response.Data.(map[string]interface{})
+		jwtTokenUser = dataMap["token"].(string)
+
+		assert.NotEmpty(t, jwtTokenUser)
+		assert.Equal(t, http.StatusOK, response.Code)
+	})
+
+	t.Run("login admin", func(t *testing.T) {
+		requestBody, _ := json.Marshal(auth.RequestLogin{
+			Email:    "ucup@ucup.com",
+			Password: "ucup123",
+		})
+
+		req := httptest.NewRequest(http.MethodPost, "/login", bytes.NewBuffer(requestBody))
+		res := httptest.NewRecorder()
+
+		req.Header.Set("Content-Type", "application/json")
+		context := e.NewContext(req, res)
+
+		authControl := auth.NewAuthController(&MockUser.MockAuthAdminRepository{})
+		authControl.Login()(context)
+
+		response := common.Response{}
+		json.Unmarshal([]byte(res.Body.Bytes()), &response)
+
+		dataMap := response.Data.(map[string]interface{})
+		jwtTokenAdmin = dataMap["token"].(string)
+
+		assert.NotEmpty(t, jwtTokenAdmin)
+		assert.Equal(t, http.StatusOK, response.Code)
+	})
+
+	t.Run("fail admin", func(t *testing.T) {
+		req := httptest.NewRequest(http.MethodGet, "/", bytes.NewBuffer(nil))
+		res := httptest.NewRecorder()
+
+		req.Header.Set("Content-Type", "application/json")
+		req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtTokenUser))
+
 		context := e.NewContext(req, res)
 		context.SetPath(fmt.Sprintf("%v%v", rootPath, jwtPath))
 

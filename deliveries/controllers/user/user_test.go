@@ -599,3 +599,103 @@ func TestUpdate(t *testing.T) {
 		assert.Equal(t, http.StatusOK, response.Code)
 	})
 }
+
+func TestDelete(t *testing.T) {
+	var jwtTokenUser, jwtTokenAdmin string
+
+	if err := godotenv.Load(".env"); err != nil {
+		log.Info("tidak dapat memuat env file", err)
+	}
+
+	t.Run("login user", func(t *testing.T) {
+		requestBody, _ := json.Marshal(auth.RequestLogin{
+			Email:    "ucup@ucup.com",
+			Password: "ucup123",
+		})
+
+		req := httptest.NewRequest(http.MethodPost, "/login", bytes.NewBuffer(requestBody))
+		res := httptest.NewRecorder()
+
+		req.Header.Set("Content-Type", "application/json")
+		context := e.NewContext(req, res)
+
+		authControl := auth.NewAuthController(&MockUser.MockAuthUserRepository{})
+		authControl.Login()(context)
+
+		response := common.Response{}
+		json.Unmarshal([]byte(res.Body.Bytes()), &response)
+
+		dataMap := response.Data.(map[string]interface{})
+		jwtTokenUser = dataMap["token"].(string)
+
+		assert.NotEmpty(t, jwtTokenUser)
+		assert.Equal(t, http.StatusOK, response.Code)
+	})
+
+	t.Run("login admin", func(t *testing.T) {
+		requestBody, _ := json.Marshal(auth.RequestLogin{
+			Email:    "ucup@ucup.com",
+			Password: "ucup123",
+		})
+
+		req := httptest.NewRequest(http.MethodPost, "/login", bytes.NewBuffer(requestBody))
+		res := httptest.NewRecorder()
+
+		req.Header.Set("Content-Type", "application/json")
+		context := e.NewContext(req, res)
+
+		authControl := auth.NewAuthController(&MockUser.MockAuthAdminRepository{})
+		authControl.Login()(context)
+
+		response := common.Response{}
+		json.Unmarshal([]byte(res.Body.Bytes()), &response)
+
+		dataMap := response.Data.(map[string]interface{})
+		jwtTokenAdmin = dataMap["token"].(string)
+
+		assert.NotEmpty(t, jwtTokenAdmin)
+		assert.Equal(t, http.StatusOK, response.Code)
+	})
+
+	t.Run("fail to delete", func(t *testing.T) {
+		req := httptest.NewRequest(http.MethodPut, "/", bytes.NewBuffer(nil))
+		res := httptest.NewRecorder()
+
+		req.Header.Set("Content-Type", "application/json")
+		req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtTokenUser))
+
+		context := e.NewContext(req, res)
+		context.SetPath(fmt.Sprintf("%v%v/me", rootPath, jwtPath))
+
+		userController := NewUserController(&MockUser.MockFalseUserRepository{})
+		if err := middlewares.JWTMiddleware()(userController.Delete())(context); err != nil {
+			log.Fatal(err)
+		}
+
+		response := common.Response{}
+		json.Unmarshal([]byte(res.Body.Bytes()), &response)
+
+		assert.Equal(t, http.StatusInternalServerError, response.Code)
+	})
+
+	t.Run("succeed to delete", func(t *testing.T) {
+		req := httptest.NewRequest(http.MethodPut, "/", bytes.NewBuffer(nil))
+		res := httptest.NewRecorder()
+
+		req.Header.Set("Content-Type", "application/json")
+		req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtTokenUser))
+
+		context := e.NewContext(req, res)
+		context.SetPath(fmt.Sprintf("%v%v/me", rootPath, jwtPath))
+
+		userController := NewUserController(&MockUser.MockUserRepository{})
+		if err := middlewares.JWTMiddleware()(userController.Delete())(context); err != nil {
+			log.Fatal(err)
+		}
+
+		response := common.Response{}
+		json.Unmarshal([]byte(res.Body.Bytes()), &response)
+
+		assert.Equal(t, http.StatusOK, response.Code)
+	})
+}

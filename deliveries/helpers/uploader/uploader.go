@@ -1,7 +1,7 @@
 package uploader
 
 import (
-	awss3 "final-project/services/aws-s3"
+	awss3 "final-project/external/aws-s3"
 	"mime/multipart"
 	"strings"
 

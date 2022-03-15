@@ -17,7 +17,7 @@ func GenerateToken(ID uint, isAdmin bool) (string, error) {
 	data := jwt.MapClaims{}
 	data["id"] = ID
 	data["isAdmin"] = isAdmin
-	data["expired"] = time.Now().Add(time.Minute * 5).Unix()
+	data["exp"] = time.Now().Add(time.Minute * 1).Unix()
 	data["authorized"] = true
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, data)
 	return token.SignedString([]byte(os.Getenv("JWT_SECRET")))
@@ -46,15 +46,15 @@ func ExtractTokenIsAdmin(e echo.Context) bool {
 }
 
 // Check if token is alive or not
-func ExtractTokenIsAlive(e echo.Context) bool {
-	user := e.Get("user").(*jwt.Token)
-	if user.Valid {
-		data := user.Claims.(jwt.MapClaims)
-		expiredTime := time.Unix(int64(data["expired"].(float64)), 0)
+// func ExtractTokenIsAlive(e echo.Context) bool {
+// 	user := e.Get("user").(*jwt.Token)
+// 	if user.Valid {
+// 		data := user.Claims.(jwt.MapClaims)
+// 		expiredTime := time.Unix(int64(data["exp"].(float64)), 0)
 
-		if remainder := time.Until(expiredTime); remainder > 0 {
-			return true
-		}
-	}
-	return false
-}
+// 		if remainder := time.Until(expiredTime); remainder > 0 {
+// 			return true
+// 		}
+// 	}
+// 	return false
+// }

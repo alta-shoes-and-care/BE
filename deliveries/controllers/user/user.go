@@ -24,7 +24,7 @@ func NewUserController(repository _UserRepo.User) *UserController {
 
 func (ctl *UserController) Create() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		newUser := RequestCreateUser{}
+		var newUser RequestCreateUser
 
 		if err := c.Bind(&newUser); err != nil || strings.TrimSpace(newUser.Name) == "" || strings.TrimSpace(newUser.Email) == "" || strings.TrimSpace(newUser.Password) == "" {
 			return c.JSON(http.StatusBadRequest, common.BadRequest("input dari user tidak sesuai, nama, email atau password tidak boleh kosong"))
@@ -44,11 +44,6 @@ func (ctl *UserController) Create() echo.HandlerFunc {
 
 func (ctl *UserController) Get() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		isAlive := middlewares.ExtractTokenIsAlive(c)
-		if !isAlive {
-			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("JWT token is expired"))
-		}
-
 		userID := middlewares.ExtractTokenUserID(c)
 
 		res, err := ctl.repo.Get(uint(userID))
@@ -61,11 +56,6 @@ func (ctl *UserController) Get() echo.HandlerFunc {
 
 func (ctl *UserController) GetByID() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		isAlive := middlewares.ExtractTokenIsAlive(c)
-		if !isAlive {
-			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("JWT token is expired"))
-		}
-
 		isAdmin := middlewares.ExtractTokenIsAdmin(c)
 		if !isAdmin {
 			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))
@@ -83,11 +73,6 @@ func (ctl *UserController) GetByID() echo.HandlerFunc {
 
 func (ctl *UserController) GetAllUsers() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		isAlive := middlewares.ExtractTokenIsAlive(c)
-		if !isAlive {
-			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("JWT token is expired"))
-		}
-
 		isAdmin := middlewares.ExtractTokenIsAdmin(c)
 		if !isAdmin {
 			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))
@@ -103,19 +88,18 @@ func (ctl *UserController) GetAllUsers() echo.HandlerFunc {
 
 func (ctl *UserController) Update() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		isAlive := middlewares.ExtractTokenIsAlive(c)
-		if !isAlive {
-			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("JWT token is expired"))
-		}
-
 		userID := middlewares.ExtractTokenUserID(c)
-		var UpdatedUser = RequestUpdateUser{}
+		var updatedUser RequestUpdateUser
 
-		if err := c.Bind(&UpdatedUser); err != nil {
+		if err := c.Bind(&updatedUser); err != nil {
 			return c.JSON(http.StatusBadRequest, common.BadRequest("terdapat kesalahan input dari client"))
 		}
 
-		res, err := ctl.repo.Update(UpdatedUser.ToEntityUser(uint(userID)))
+		if err := validators.ValidateUpdateUser(updatedUser.Name, updatedUser.Email, updatedUser.Password); err != nil {
+			return c.JSON(http.StatusBadRequest, common.BadRequest(err.Error()))
+		}
+
+		res, err := ctl.repo.Update(updatedUser.ToEntityUser(uint(userID)))
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
 		}
@@ -125,11 +109,6 @@ func (ctl *UserController) Update() echo.HandlerFunc {
 
 func (ctl *UserController) Delete() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		isAlive := middlewares.ExtractTokenIsAlive(c)
-		if !isAlive {
-			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("JWT token is expired"))
-		}
-
 		userID := middlewares.ExtractTokenUserID(c)
 
 		err := ctl.repo.Delete(uint(userID))

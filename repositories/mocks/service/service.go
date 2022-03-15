@@ -1,9 +1,9 @@
 package service
 
-import "final-project/entities/service"
+import S "final-project/entities/service"
 
-func ServiceSeeder() service.Services {
-	mockService := service.Services{
+func ServiceSeeder() S.Services {
+	mockService := S.Services{
 		Title:       "service 1",
 		Description: "layanan 1",
 		Price:       10000,

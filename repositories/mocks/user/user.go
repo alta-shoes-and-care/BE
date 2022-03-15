@@ -1,11 +1,11 @@
 package user
 
 import (
-	"final-project/entities/user"
+	U "final-project/entities/user"
 )
 
-func AdminSeeder() user.Users {
-	mockAdmin := user.Users{
+func AdminSeeder() U.Users {
+	mockAdmin := U.Users{
 		Name:     "admin",
 		Email:    "admin@mail.com",
 		Password: "admin123",
@@ -14,8 +14,8 @@ func AdminSeeder() user.Users {
 	return mockAdmin
 }
 
-func UserSeeder() user.Users {
-	mockUser := user.Users{
+func UserSeeder() U.Users {
+	mockUser := U.Users{
 		Name:     "ucup",
 		Email:    "ucup@mail.com",
 		Password: "ucup123",

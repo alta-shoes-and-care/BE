@@ -3,8 +3,8 @@ package order
 import (
 	"final-project/deliveries/controllers/common"
 	"final-project/deliveries/middlewares"
+	midtranspay "final-project/external/midtrans-pay"
 	_OrderRepo "final-project/repositories/order"
-	midtranspay "final-project/services/midtrans-pay"
 	"net/http"
 	"strconv"
 	"strings"

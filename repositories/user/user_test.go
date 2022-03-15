@@ -7,7 +7,7 @@ import (
 	R "final-project/entities/review"
 	S "final-project/entities/service"
 	U "final-project/entities/user"
-	SeederUser "final-project/seeders/user"
+	SeederUser "final-project/repositories/mocks/user"
 	"final-project/utils"
 	"testing"
 

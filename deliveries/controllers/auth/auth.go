@@ -2,7 +2,6 @@ package auth
 
 import (
 	"final-project/deliveries/controllers/common"
-	"final-project/deliveries/helpers/hash"
 	"final-project/deliveries/middlewares"
 	_AuthRepo "final-project/repositories/auth"
 	"net/http"
@@ -28,7 +27,6 @@ func (ctl *AuthController) Login() echo.HandlerFunc {
 			return c.JSON(http.StatusBadRequest, common.BadRequest("input dari user tidak sesuai, email atau password tidak boleh kosong"))
 		}
 
-		loginFormat.Password, _ = hash.HashPassword(loginFormat.Password)
 		checkedUser, err := ctl.repo.Login(loginFormat.Email, loginFormat.Password)
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))

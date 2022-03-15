@@ -5,7 +5,11 @@ import (
 	"encoding/json"
 	"final-project/deliveries/controllers/auth"
 	"final-project/deliveries/controllers/common"
+	"final-project/deliveries/middlewares"
+	MockAuth "final-project/deliveries/mocks/auth"
 	MockUser "final-project/deliveries/mocks/user"
+	"fmt"
+	"log"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -24,33 +28,6 @@ type LoginDataStruct struct {
 }
 
 func TestCreate(t *testing.T) {
-	var jwtToken string
-
-	t.Run("test login", func(t *testing.T) {
-		requestBody, _ := json.Marshal(auth.RequestLogin{
-			Email:    "ucup@ucup.com",
-			Password: "ucup123",
-		})
-
-		req := httptest.NewRequest(http.MethodPost, "/login", bytes.NewBuffer(requestBody))
-		res := httptest.NewRecorder()
-
-		req.Header.Set("Content-Type", "application/json")
-		context := e.NewContext(req, res)
-
-		authControl := auth.NewAuthController(&MockUser.MockAuthRepository{})
-		authControl.Login()(context)
-
-		response := common.Response{}
-		json.Unmarshal([]byte(res.Body.Bytes()), &response)
-
-		dataMap := response.Data.(map[string]interface{})
-		jwtToken = dataMap["token"].(string)
-
-		assert.NotEmpty(t, jwtToken)
-		assert.Equal(t, http.StatusOK, response.Code)
-	})
-
 	t.Run("fail to bind json", func(t *testing.T) {
 		requestBody, _ := json.Marshal(RequestCreateUser{
 			Name:  "",
@@ -143,5 +120,55 @@ func TestCreate(t *testing.T) {
 
 		assert.NotNil(t, response.Data)
 		assert.Equal(t, http.StatusCreated, response.Code)
+	})
+}
+
+func TestGet(t *testing.T) {
+	var jwtToken string
+
+	t.Run("test login", func(t *testing.T) {
+		requestBody, _ := json.Marshal(auth.RequestLogin{
+			Email:    "ucup@ucup.com",
+			Password: "ucup123",
+		})
+
+		req := httptest.NewRequest(http.MethodPost, "/login", bytes.NewBuffer(requestBody))
+		res := httptest.NewRecorder()
+
+		req.Header.Set("Content-Type", "application/json")
+		context := e.NewContext(req, res)
+
+		authControl := auth.NewAuthController(&MockUser.MockAuthRepository{})
+		authControl.Login()(context)
+
+		response := common.Response{}
+		json.Unmarshal([]byte(res.Body.Bytes()), &response)
+
+		dataMap := response.Data.(map[string]interface{})
+		jwtToken = dataMap["token"].(string)
+
+		assert.NotEmpty(t, jwtToken)
+		assert.Equal(t, http.StatusOK, response.Code)
+	})
+
+	t.Run("expired jwt token", func(t *testing.T) {
+		req := httptest.NewRequest(http.MethodGet, "/", bytes.NewBuffer(nil))
+		res := httptest.NewRecorder()
+
+		req.Header.Set("Content-Type", "application/json")
+		req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", MockAuth.FalseJWT))
+
+		context := e.NewContext(req, res)
+		context.SetPath("/users")
+
+		userController := NewUserController(&MockUser.MockUserRepository{})
+		if err := middlewares.JWTMiddleware()(userController.Get())(context); err != nil {
+			log.Fatal(err)
+			return
+		}
+
+		response := common.Response{}
+		json.Unmarshal([]byte(res.Body.Bytes()), &response)
+		assert.Equal(t, http.StatusUnauthorized, response.Code)
 	})
 }

@@ -151,7 +151,7 @@ func TestGetByID(t *testing.T) {
 	})
 }
 
-func TestInsertUrl(t *testing.T) {
+func TestGetLastOrderID(t *testing.T) {
 	Migrator()
 	userRepo := user.NewUserRepository(db)
 	serviceRepo := service.NewServiceRepository(db)
@@ -164,7 +164,7 @@ func TestInsertUrl(t *testing.T) {
 	mockPM := SeederPaymentMethod.PaymentMethodSeeder()
 
 	t.Run("negative", func(t *testing.T) {
-		_, err := repo.InsertUrl(1, "")
+		_, err := repo.GetLastOrderID()
 		assert.NotNil(t, err)
 	})
 
@@ -173,9 +173,9 @@ func TestInsertUrl(t *testing.T) {
 		serviceRepo.Create(mockService)
 		PMRepo.Create(mockPM)
 		repo.Create(mockOrder)
-		res, err := repo.InsertUrl(1, "https://foo.com/order/1")
+		res, err := repo.GetLastOrderID()
 		assert.Nil(t, err)
-		assert.Equal(t, "https://foo.com/order/1", res.Url)
+		assert.NotZero(t, res)
 	})
 }
 

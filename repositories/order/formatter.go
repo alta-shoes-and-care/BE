@@ -21,3 +21,7 @@ type FormatOrder struct {
 	IsPaid            bool           `json:"is_paid"`
 	Url               string         `json:"url"`
 }
+
+type LastOrderID struct {
+	ID uint
+}

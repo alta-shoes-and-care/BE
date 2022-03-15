@@ -62,18 +62,13 @@ func (repo *OrderRepository) GetByID(ID uint) (FormatOrder, error) {
 	return order, nil
 }
 
-func (repo *OrderRepository) InsertUrl(ID uint, url string) (FormatOrder, error) {
-	var order FormatOrder
+func (repo *OrderRepository) GetLastOrderID() (uint, error) {
+	var lastID LastOrderID
 
-	if rowsAffected := repo.db.Table("orders").Where("id = ?", ID).Update("url", url).RowsAffected; rowsAffected == 0 {
-		return FormatOrder{}, errors.New("gagal menambahkan url pembayaran")
+	if rowsAffected := repo.db.Table("orders as o").Select("o.id as ID").Order("o.id desc").Limit(1).First(&lastID).RowsAffected; rowsAffected == 0 {
+		return 0, errors.New("gagal mendapatkan order_id terakhir")
 	}
-
-	repo.db.Table("orders as o").Select("o.id as ID, o.user_id as UserID, o.service_id as ServiceID, s.title as ServiceTitle, s.price as Price, o.qty as Qty, pm.id as PaymentMethodID, pm.name as PaymentMethodName, o.date as Date, o.address as Address, o.city as City, o.phone as Phone, o.status as Status, o.is_paid as IsPaid, o.url as Url").
-		Joins("inner join services as s on s.id = o.service_id").
-		Joins("inner join payment_methods as pm on pm.id = o.payment_method_id").
-		Where("o.id = ?", ID).First(&order)
-	return order, nil
+	return lastID.ID, nil
 }
 
 func (repo *OrderRepository) SetPaid(ID uint) (FormatOrder, error) {

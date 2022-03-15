@@ -3,7 +3,6 @@ package user
 import (
 	"errors"
 	U "final-project/entities/user"
-	"final-project/repositories/hash"
 
 	"github.com/labstack/gommon/log"
 	"gorm.io/gorm"
@@ -20,8 +19,6 @@ func NewUserRepository(db *gorm.DB) *UserRepository {
 }
 
 func (repo *UserRepository) Create(newUser U.Users) (U.Users, error) {
-	newUser.Password, _ = hash.HashPassword(newUser.Password)
-
 	if err := repo.db.Create(&newUser).Error; err != nil {
 		log.Warn(err)
 		return U.Users{}, errors.New("gagal membuat user baru")
@@ -59,10 +56,6 @@ func (repo *UserRepository) GetAllUsers() ([]U.Users, error) {
 }
 
 func (repo *UserRepository) Update(userUpdate U.Users) (U.Users, error) {
-	if userUpdate.Password != "" {
-		userUpdate.Password, _ = hash.HashPassword(userUpdate.Password)
-	}
-
 	if rowsAffected := repo.db.Model(&userUpdate).Updates(userUpdate).RowsAffected; rowsAffected == 0 {
 		return U.Users{}, errors.New("tidak ada perubahan pada data user")
 	}

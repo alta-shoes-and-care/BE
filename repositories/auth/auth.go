@@ -3,7 +3,6 @@ package auth
 import (
 	"errors"
 	U "final-project/entities/user"
-	"final-project/repositories/hash"
 
 	"gorm.io/gorm"
 )
@@ -21,10 +20,7 @@ func NewAuthRepository(db *gorm.DB) *AuthRepository {
 func (repo *AuthRepository) Login(email, password string) (U.Users, error) {
 	var user U.Users
 
-	repo.db.Model(&user).Where("email = ?", email).First(&user)
-
-	isMatched := hash.CheckPasswordHash(user.Password, password)
-	if !isMatched {
+	if rowsAffected := repo.db.Model(&user).Where("email = ? AND password = ?", email, password).First(&user).RowsAffected; rowsAffected == 0 {
 		return U.Users{}, errors.New("email dan password tidak cocok")
 	}
 

@@ -22,11 +22,6 @@ func NewPaymentMethodController(repository _PMRepo.PaymentMethod) *PaymentMethod
 
 func (ctl *PaymentMethodController) Create() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		isAlive := middlewares.ExtractTokenIsAlive(c)
-		if !isAlive {
-			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("JWT token is expired"))
-		}
-
 		isAdmin := middlewares.ExtractTokenIsAdmin(c)
 		if !isAdmin {
 			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))
@@ -48,11 +43,6 @@ func (ctl *PaymentMethodController) Create() echo.HandlerFunc {
 
 func (ctl *PaymentMethodController) Get() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		isAlive := middlewares.ExtractTokenIsAlive(c)
-		if !isAlive {
-			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("JWT token is expired"))
-		}
-
 		isAdmin := middlewares.ExtractTokenIsAdmin(c)
 		if !isAdmin {
 			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))
@@ -68,11 +58,6 @@ func (ctl *PaymentMethodController) Get() echo.HandlerFunc {
 
 func (ctl *PaymentMethodController) Delete() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		isAlive := middlewares.ExtractTokenIsAlive(c)
-		if !isAlive {
-			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("JWT token is expired"))
-		}
-
 		isAdmin := middlewares.ExtractTokenIsAdmin(c)
 		if !isAdmin {
 			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))

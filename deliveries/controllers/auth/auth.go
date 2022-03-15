@@ -5,6 +5,7 @@ import (
 	"final-project/deliveries/middlewares"
 	_AuthRepo "final-project/repositories/auth"
 	"net/http"
+	"strings"
 
 	"github.com/labstack/echo/v4"
 )
@@ -22,7 +23,7 @@ func NewAuthController(repository _AuthRepo.Auth) *AuthController {
 func (ctl *AuthController) Login() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		var loginFormat RequestLogin
-		if err := c.Bind(&loginFormat); err != nil || loginFormat.Email == "" || loginFormat.Password == "" {
+		if err := c.Bind(&loginFormat); err != nil || strings.TrimSpace(loginFormat.Email) == "" || strings.TrimSpace(loginFormat.Password) == "" {
 			return c.JSON(http.StatusBadRequest, common.BadRequest("input dari user tidak sesuai, email atau password tidak boleh kosong"))
 		}
 

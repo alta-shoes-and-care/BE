@@ -3,16 +3,16 @@
 <div>
     <!-- Project Logo -->
     <div align="center">
-        <a href="https://images.unsplash.com/photo-1580902215262-9b941bc6eab3">
-            <img src="https://images.unsplash.com/photo-1580902215262-9b941bc6eab3" alt="logo" width="400">
+        <a href="images/shoes-service-station.png">
+            <img src="images/shoes-service-station.png" alt="Shoes Service Station Logo" width="400">
         </a>
         <h3 align="center">
-            Washing Shoes Platform
+            Shoes Service Station
         </h3>
     </div>
 </div>
 
-# Shoes and Care
+# Shoes Service Station
 <!-- Project Description -->
 <div>
     <p style="text-align:left">
@@ -22,7 +22,7 @@
 </div>
 
 # Table of Contents
-- [Shoes and Care](#shoes-and-care)
+- [Shoes Service Station](#shoes-service-station)
 - [Table of Contents](#table-of-contents)
 - [High Level Architecture](#high-level-architecture)
 - [Technology Stack](#technology-stack)

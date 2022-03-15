@@ -208,8 +208,8 @@ func TestGetAllUsers(t *testing.T) {
 
 	t.Run("login user", func(t *testing.T) {
 		requestBody, _ := json.Marshal(auth.RequestLogin{
-			Email:    "ucup@ucup.com",
-			Password: "ucup123",
+			Email:    "user@user.com",
+			Password: "user123",
 		})
 
 		req := httptest.NewRequest(http.MethodPost, "/login", bytes.NewBuffer(requestBody))
@@ -233,8 +233,8 @@ func TestGetAllUsers(t *testing.T) {
 
 	t.Run("login admin", func(t *testing.T) {
 		requestBody, _ := json.Marshal(auth.RequestLogin{
-			Email:    "ucup@ucup.com",
-			Password: "ucup123",
+			Email:    "admin@admin.com",
+			Password: "admin123",
 		})
 
 		req := httptest.NewRequest(http.MethodPost, "/login", bytes.NewBuffer(requestBody))
@@ -262,12 +262,33 @@ func TestGetAllUsers(t *testing.T) {
 
 		req.Header.Set("Content-Type", "application/json")
 		req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtTokenUser))
+		log.Info(jwtTokenUser)
+		context := e.NewContext(req, res)
+		context.SetPath(fmt.Sprintf("%v%v", rootPath, jwtPath))
+
+		userController := NewUserController(&MockUser.MockUserRepository{})
+		if err := middlewares.JWTMiddleware()(userController.GetAllUsers())(context); err != nil {
+			log.Fatal(err)
+		}
+
+		response := common.Response{}
+		json.Unmarshal([]byte(res.Body.Bytes()), &response)
+
+		assert.Equal(t, http.StatusUnauthorized, response.Code)
+	})
+
+	t.Run("fail to get all users", func(t *testing.T) {
+		req := httptest.NewRequest(http.MethodGet, "/", bytes.NewBuffer(nil))
+		res := httptest.NewRecorder()
+
+		req.Header.Set("Content-Type", "application/json")
+		req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtTokenAdmin))
 
 		context := e.NewContext(req, res)
 		context.SetPath(fmt.Sprintf("%v%v", rootPath, jwtPath))
 
 		userController := NewUserController(&MockUser.MockFalseAdminRepository{})
-		if err := middlewares.JWTMiddleware()(userController.Get())(context); err != nil {
+		if err := middlewares.JWTMiddleware()(userController.GetAllUsers())(context); err != nil {
 			log.Fatal(err)
 		}
 
@@ -275,5 +296,26 @@ func TestGetAllUsers(t *testing.T) {
 		json.Unmarshal([]byte(res.Body.Bytes()), &response)
 
 		assert.Equal(t, http.StatusInternalServerError, response.Code)
+	})
+
+	t.Run("succeed to get all users", func(t *testing.T) {
+		req := httptest.NewRequest(http.MethodGet, "/", bytes.NewBuffer(nil))
+		res := httptest.NewRecorder()
+
+		req.Header.Set("Content-Type", "application/json")
+		req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtTokenAdmin))
+
+		context := e.NewContext(req, res)
+		context.SetPath(fmt.Sprintf("%v%v", rootPath, jwtPath))
+
+		userController := NewUserController(&MockUser.MockUserRepository{})
+		if err := middlewares.JWTMiddleware()(userController.GetAllUsers())(context); err != nil {
+			log.Fatal(err)
+		}
+
+		response := common.Response{}
+		json.Unmarshal([]byte(res.Body.Bytes()), &response)
+
+		assert.Equal(t, http.StatusOK, response.Code)
 	})
 }

@@ -18,3 +18,9 @@ type MockFalseAuthRepository struct{}
 func (repo *MockFalseAuthRepository) Login(email, password string) (U.Users, error) {
 	return U.Users{}, errors.New("false login")
 }
+
+type MockFalseAuthRepositoryNotAcceptable struct{}
+
+func (repo *MockFalseAuthRepositoryNotAcceptable) Login(email, password string) (U.Users, error) {
+	return U.Users{}, nil
+}

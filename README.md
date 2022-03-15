@@ -39,7 +39,7 @@
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 # High Level Architecture
-![High Level Architecture](images/HLA.jpeg)
+![High Level Architecture](images/HLA-updated.jpeg)
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 # Technology Stack

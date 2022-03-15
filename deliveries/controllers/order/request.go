@@ -18,7 +18,7 @@ type RequestCreateOrder struct {
 	Phone           string `json:"phone" form:"phone"`
 }
 
-func (req RequestCreateOrder) ToEntityOrder(dateFormatted time.Time, userID uint) O.Orders {
+func (req RequestCreateOrder) ToEntityOrder(dateFormatted time.Time, userID uint, url string) O.Orders {
 	return O.Orders{
 		Qty:             req.Qty,
 		Date:            datatypes.Date(dateFormatted),
@@ -28,5 +28,6 @@ func (req RequestCreateOrder) ToEntityOrder(dateFormatted time.Time, userID uint
 		UserID:          userID,
 		ServiceID:       req.ServiceID,
 		PaymentMethodID: req.PaymentMethodID,
+		Url:             url,
 	}
 }

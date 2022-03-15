@@ -29,7 +29,7 @@ func CreateTransaction(client coreapi.Client, orderID, bill uint) *coreapi.Charg
 			Desc: "Pembayaran BCA Klik Pay",
 		},
 		TransactionDetails: midtrans.TransactionDetails{
-			OrderID:  fmt.Sprintf("test-bayar-%d", orderID),
+			OrderID:  fmt.Sprintf("test-bayar2-%d", orderID),
 			GrossAmt: int64(bill),
 		},
 	}

@@ -1,8 +1,8 @@
 package user
 
 import (
-	"final-project/entities/review"
 	"final-project/entities/order"
+	"final-project/entities/review"
 	"final-project/entities/service"
 
 	"gorm.io/gorm"
@@ -16,5 +16,5 @@ type Users struct {
 	IsAdmin  bool               `gorm:"type:boolean;default:false"`
 	Services []service.Services `gorm:"foreignKey:UserID"`
 	Orders   []order.Orders     `gorm:"foreignKey:UserID"`
-	Reviews   []review.Reviews     `gorm:"foreignKey:UserID"`
+	Reviews  []review.Reviews   `gorm:"foreignKey:UserID"`
 }

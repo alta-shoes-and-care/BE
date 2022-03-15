@@ -1,6 +1,5 @@
 *.env
 *.png
 *.jpg
-*.jpeg
 *.json
 secret.yaml

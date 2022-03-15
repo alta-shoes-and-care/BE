@@ -22,11 +22,6 @@ func NewReviewController(repository _ReviewRepo.Review) *ReviewController {
 
 func (ctl *ReviewController) Insert() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		isAlive := middlewares.ExtractTokenIsAlive(c)
-		if !isAlive {
-			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("JWT token is expired"))
-		}
-
 		userID := middlewares.ExtractTokenUserID(c)
 		NewReview := RequestInsertReview{}
 
@@ -54,11 +49,6 @@ func (ctl *ReviewController) Get() echo.HandlerFunc {
 
 func (ctl *ReviewController) Update() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		isAlive := middlewares.ExtractTokenIsAlive(c)
-		if !isAlive {
-			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("JWT token is expired"))
-		}
-
 		userID := middlewares.ExtractTokenUserID(c)
 		var UpdatedReview = RequestUpdateReview{}
 
@@ -76,11 +66,6 @@ func (ctl *ReviewController) Update() echo.HandlerFunc {
 
 func (ctl *ReviewController) Delete() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		isAlive := middlewares.ExtractTokenIsAlive(c)
-		if !isAlive {
-			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("JWT token is expired"))
-		}
-
 		userID := middlewares.ExtractTokenUserID(c)
 		ID, _ := strconv.Atoi(c.Param("id"))
 		err := ctl.repo.Delete(uint(ID), uint(userID))

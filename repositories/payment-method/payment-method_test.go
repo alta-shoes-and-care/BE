@@ -7,7 +7,7 @@ import (
 	R "final-project/entities/review"
 	S "final-project/entities/service"
 	U "final-project/entities/user"
-	SeederPaymentMethod "final-project/seeders/payment-method"
+	SeederPaymentMethod "final-project/repositories/mocks/payment-method"
 	"final-project/utils"
 	"testing"
 
@@ -36,7 +36,7 @@ func Migrator() {
 func TestCreate(t *testing.T) {
 	Migrator()
 	repo := NewPaymentMethodRepository(db)
-	
+
 	mockPM := SeederPaymentMethod.PaymentMethodSeeder()
 
 	t.Run("positive", func(t *testing.T) {

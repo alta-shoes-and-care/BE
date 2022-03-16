@@ -137,7 +137,7 @@ func TestGetByID(t *testing.T) {
 	mockPM := SeederPaymentMethod.PaymentMethodSeeder()
 
 	t.Run("negative", func(t *testing.T) {
-		_, err := repo.GetByID(1)
+		_, err := repo.GetByID(1, 1)
 		assert.NotNil(t, err)
 	})
 
@@ -146,7 +146,7 @@ func TestGetByID(t *testing.T) {
 		serviceRepo.Create(mockService)
 		PMRepo.Create(mockPM)
 		repo.Create(mockOrder)
-		_, err := repo.GetByID(1)
+		_, err := repo.GetByID(1, 1)
 		assert.Nil(t, err)
 	})
 }

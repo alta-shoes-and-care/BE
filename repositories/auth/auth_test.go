@@ -1,51 +1,56 @@
 package auth
 
-// import (
-// 	"group-project2/configs"
-// 	B "group-project2/entities/book"
-// 	I "group-project2/entities/image"
-// 	PM "group-project2/entities/payment-method"
-// 	Rat "group-project2/entities/rating"
-// 	R "group-project2/entities/room"
-// 	U "group-project2/entities/user"
-// 	"group-project2/repositories/user"
-// 	"group-project2/utils"
-// 	"testing"
+import (
+	"final-project/configs"
+	"final-project/deliveries/helpers/hash"
+	O "final-project/entities/order"
+	PM "final-project/entities/payment-method"
+	R "final-project/entities/review"
+	S "final-project/entities/service"
+	U "final-project/entities/user"
+	SeederUser "final-project/repositories/mocks/user"
+	"final-project/repositories/user"
+	"final-project/utils"
+	"testing"
 
-// 	"github.com/stretchr/testify/assert"
-// )
+	"github.com/stretchr/testify/assert"
+)
 
-// var (
-// 	config = configs.GetConfig(true)
-// 	db     = utils.InitDB(config)
-// )
+var (
+	config = configs.GetConfig(true)
+	db     = utils.InitDB(config)
+)
 
-// func TestLogin(t *testing.T) {
-// 	db.Migrator().DropTable(U.Users{}, PM.PaymentMethods{}, R.Rooms{}, Rat.Ratings{}, I.Images{}, B.Books{})
-// 	db.AutoMigrate(U.Users{}, PM.PaymentMethods{}, R.Rooms{}, Rat.Ratings{}, I.Images{}, B.Books{})
+func Migrator() {
+	db.Migrator().DropTable(&R.Reviews{})
+	db.Migrator().DropTable(&O.Orders{})
+	db.Migrator().DropTable(&S.Services{})
+	db.Migrator().DropTable(&PM.PaymentMethods{})
+	db.Migrator().DropTable(&U.Users{})
 
-// 	repo := New(db)
-// 	UR := user.New(db)
+	db.AutoMigrate(&U.Users{})
+	db.AutoMigrate(&PM.PaymentMethods{})
+	db.AutoMigrate(&S.Services{})
+	db.AutoMigrate(&O.Orders{})
+	db.AutoMigrate(&R.Reviews{})
+}
 
-// 	t.Run("fail to login", func(t *testing.T) {
-// 		mockUser := U.Users{
-// 			Email:    "ucup@ucup.com",
-// 			Password: "ucup123",
-// 		}
+func TestLogin(t *testing.T) {
+	Migrator()
+	userRepo := user.NewUserRepository(db)
+	repo := NewAuthRepository(db)
+	mockUser := SeederUser.UserSeeder()
 
-// 		_, err := repo.Login(mockUser.Email, mockUser.Password)
-// 		assert.NotNil(t, err)
-// 	})
+	t.Run("negative", func(t *testing.T) {
+		_, err := repo.Login(mockUser.Email, mockUser.Password)
+		assert.NotNil(t, err)
+	})
 
-// 	t.Run("success to login", func(t *testing.T) {
-// 		mockUser := U.Users{
-// 			Name:     "Ucup",
-// 			Email:    "ucup@ucup.com",
-// 			Password: "ucup123",
-// 		}
-// 		UR.Insert(mockUser)
-
-// 		_, err := repo.Login(mockUser.Email, mockUser.Password)
-// 		assert.Nil(t, err)
-// 	})
-// }
+	t.Run("success to login", func(t *testing.T) {
+		tempPassword := mockUser.Password
+		mockUser.Password, _ = hash.HashPassword(mockUser.Password)
+		userRepo.Create(mockUser)
+		_, err := repo.Login(mockUser.Email, tempPassword)
+		assert.Nil(t, err)
+	})
+}

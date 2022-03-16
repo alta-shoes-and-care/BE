@@ -9,7 +9,6 @@ import (
 	"final-project/deliveries/middlewares"
 	MockService "final-project/deliveries/mocks/service"
 	MockUser "final-project/deliveries/mocks/user"
-	awss3 "final-project/external/aws-s3"
 	"fmt"
 	"mime/multipart"
 	"net/http"
@@ -30,7 +29,6 @@ var (
 
 func TestCreate(t *testing.T) {
 	var jwtTokenUser, jwtTokenAdmin string
-	awsSess := awss3.InitS3(config.S3_KEY, config.S3_SECRET, config.S3_REGION)
 
 	t.Run("login user", func(t *testing.T) {
 		requestBody, _ := json.Marshal(auth.RequestLogin{
@@ -94,7 +92,7 @@ func TestCreate(t *testing.T) {
 		context := e.NewContext(req, res)
 		context.SetPath(fmt.Sprintf("%v%v", rootPath, jwtPath))
 
-		serviceController := NewServiceController(&MockService.MockServiceTrueRepository{}, config, awsSess)
+		serviceController := NewServiceController(&MockService.MockServiceTrueRepository{}, config, &MockService.MockAWSStructTrue{})
 		if err := middlewares.JWTMiddleware()(serviceController.Create())(context); err != nil {
 			log.Fatal(err)
 			return
@@ -120,7 +118,7 @@ func TestCreate(t *testing.T) {
 		context := e.NewContext(req, res)
 		context.SetPath(fmt.Sprintf("%v%v", rootPath, jwtPath))
 
-		serviceController := NewServiceController(&MockService.MockServiceTrueRepository{}, config, awsSess)
+		serviceController := NewServiceController(&MockService.MockServiceTrueRepository{}, config, &MockService.MockAWSStructTrue{})
 		if err := middlewares.JWTMiddleware()(serviceController.Create())(context); err != nil {
 			log.Fatal(err)
 			return
@@ -148,7 +146,7 @@ func TestCreate(t *testing.T) {
 		context := e.NewContext(req, res)
 		context.SetPath(fmt.Sprintf("%v%v", rootPath, jwtPath))
 
-		serviceController := NewServiceController(&MockService.MockServiceTrueRepository{}, config, awsSess)
+		serviceController := NewServiceController(&MockService.MockServiceTrueRepository{}, config, &MockService.MockAWSStructTrue{})
 		if err := middlewares.JWTMiddleware()(serviceController.Create())(context); err != nil {
 			log.Fatal(err)
 			return
@@ -177,7 +175,7 @@ func TestCreate(t *testing.T) {
 		context.SetPath(fmt.Sprintf("%v%v", rootPath, jwtPath))
 		context.FormFile("file")
 
-		serviceController := NewServiceController(&MockService.MockServiceTrueRepository{}, config, awsSess)
+		serviceController := NewServiceController(&MockService.MockServiceTrueRepository{}, config, &MockService.MockAWSStructTrue{})
 		if err := middlewares.JWTMiddleware()(serviceController.Create())(context); err != nil {
 			log.Fatal(err)
 			return
@@ -190,8 +188,6 @@ func TestCreate(t *testing.T) {
 	})
 
 	t.Run("upload error", func(t *testing.T) {
-		sess := awss3.InitS3(config.S3_KEY+"mock", config.S3_SECRET+"mock", config.S3_REGION+"mock")
-
 		body := new(bytes.Buffer)
 		writer := multipart.NewWriter(body)
 
@@ -217,7 +213,7 @@ func TestCreate(t *testing.T) {
 		context := e.NewContext(req, res)
 		context.SetPath(fmt.Sprintf("%v%v", rootPath, jwtPath))
 
-		serviceController := NewServiceController(&MockService.MockServiceTrueRepository{}, config, sess)
+		serviceController := NewServiceController(&MockService.MockServiceTrueRepository{}, config, &MockService.MockAWSStructFalse{})
 		if err := middlewares.JWTMiddleware()(serviceController.Create())(context); err != nil {
 			log.Fatal(err)
 			return
@@ -229,7 +225,7 @@ func TestCreate(t *testing.T) {
 		assert.Equal(t, http.StatusBadRequest, response.Code)
 	})
 
-	t.Run("internal error", func(t *testing.T) {
+	t.Run("internal server error", func(t *testing.T) {
 		body := new(bytes.Buffer)
 		writer := multipart.NewWriter(body)
 
@@ -255,7 +251,7 @@ func TestCreate(t *testing.T) {
 		context := e.NewContext(req, res)
 		context.SetPath(fmt.Sprintf("%v%v", rootPath, jwtPath))
 
-		serviceController := NewServiceController(&MockService.MockServiceTrueRepository{}, config, awsSess)
+		serviceController := NewServiceController(&MockService.MockServiceFalseRepository{}, config, &MockService.MockAWSStructTrue{})
 		if err := middlewares.JWTMiddleware()(serviceController.Create())(context); err != nil {
 			log.Fatal(err)
 			return
@@ -264,6 +260,44 @@ func TestCreate(t *testing.T) {
 		response := common.Response{}
 		json.Unmarshal([]byte(res.Body.Bytes()), &response)
 
-		assert.Equal(t, http.StatusBadRequest, response.Code)
+		assert.Equal(t, http.StatusInternalServerError, response.Code)
+	})
+
+	t.Run("success", func(t *testing.T) {
+		body := new(bytes.Buffer)
+		writer := multipart.NewWriter(body)
+
+		writer.WriteField("title", "Service 1")
+		writer.WriteField("description", "Layanan 1")
+		writer.WriteField("price", "15000")
+
+		part, err := writer.CreateFormFile("file", "../../../images/shoes-service-station.png")
+		if err != nil {
+			log.Fatal(err)
+			return
+		}
+
+		part.Write([]byte("file"))
+		writer.Close()
+
+		req := httptest.NewRequest(http.MethodPost, "/", body)
+		res := httptest.NewRecorder()
+
+		req.Header.Set("Content-Type", writer.FormDataContentType())
+		req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtTokenAdmin))
+
+		context := e.NewContext(req, res)
+		context.SetPath(fmt.Sprintf("%v%v", rootPath, jwtPath))
+
+		serviceController := NewServiceController(&MockService.MockServiceTrueRepository{}, config, &MockService.MockAWSStructTrue{})
+		if err := middlewares.JWTMiddleware()(serviceController.Create())(context); err != nil {
+			log.Fatal(err)
+			return
+		}
+
+		response := common.Response{}
+		json.Unmarshal([]byte(res.Body.Bytes()), &response)
+
+		assert.Equal(t, http.StatusInternalServerError, response.Code)
 	})
 }

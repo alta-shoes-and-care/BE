@@ -107,6 +107,11 @@ func (repo *MockTrueOrderRepository) GetByID(ID uint) (orderRepo.FormatOrder, er
 	return orderRepo.FormatOrder{ID: 1, UserID: 1, ServiceID: 1, ServiceTitle: "Regular Cleaning", Price: 15000, Qty: 1, PaymentMethodID: 1, PaymentMethodName: "BCA Klikpay", Date: datatypes.Date(date), Address: "Jl. Soedirman", City: "Jakarta", Phone: "080000000000", Status: "pending", IsPaid: false, Url: "http://foo.com/bar-1"}, nil
 }
 
+func (repo *MockTrueOrderRepository) GetByIDUser(ID, userID uint) (orderRepo.FormatOrder, error) {
+	date, _ := time.Parse(layoutISO, "2022-03-16")
+	return orderRepo.FormatOrder{ID: 1, UserID: 1, ServiceID: 1, ServiceTitle: "Regular Cleaning", Price: 15000, Qty: 1, PaymentMethodID: 1, PaymentMethodName: "BCA Klikpay", Date: datatypes.Date(date), Address: "Jl. Soedirman", City: "Jakarta", Phone: "080000000000", Status: "pending", IsPaid: false, Url: "http://foo.com/bar-1"}, nil
+}
+
 func (repo *MockTrueOrderRepository) GetLastOrderID() (uint, error) {
 	return 1, nil
 }
@@ -161,6 +166,10 @@ func (repo *MockFalseOrderRepository) GetByUserID(UserID uint) ([]orderRepo.Form
 }
 
 func (repo *MockFalseOrderRepository) GetByID(ID uint) (orderRepo.FormatOrder, error) {
+	return orderRepo.FormatOrder{}, errors.New("fail to get by id")
+}
+
+func (repo *MockFalseOrderRepository) GetByIDUser(ID, userID uint) (orderRepo.FormatOrder, error) {
 	return orderRepo.FormatOrder{}, errors.New("fail to get by id")
 }
 

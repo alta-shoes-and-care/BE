@@ -3,6 +3,7 @@ package service
 import (
 	"errors"
 	S "final-project/entities/service"
+	"mime/multipart"
 
 	"gorm.io/gorm"
 )
@@ -64,4 +65,24 @@ func (repo *MockServiceFalseRepository) Update(serviceUpdate S.Services) (S.Serv
 
 func (repo *MockServiceFalseRepository) Delete(ID uint) error {
 	return errors.New("delete error")
+}
+
+type MockAWSStructTrue struct{}
+
+func (awsStruct *MockAWSStructTrue) DoUpload(region, bucket string, file *multipart.FileHeader) (string, error) {
+	return "https://foo.com/bar.jpeg", nil
+}
+
+func (awsStruct *MockAWSStructTrue) DoDelete(fileName, bucket string) error {
+	return nil
+}
+
+type MockAWSStructFalse struct{}
+
+func (awsStruct *MockAWSStructFalse) DoUpload(region, bucket string, file *multipart.FileHeader) (string, error) {
+	return "https://foo.com/bar.jpeg", nil
+}
+
+func (awsStruct *MockAWSStructFalse) DoDelete(fileName, bucket string) error {
+	return nil
 }

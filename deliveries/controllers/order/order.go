@@ -89,12 +89,23 @@ func (ctl *OrderController) GetByUserID() echo.HandlerFunc {
 
 func (ctl *OrderController) GetByID() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		ID, _ := strconv.Atoi(c.Param("id"))
-		res, err := ctl.repo.GetByID(uint(ID))
-		if err != nil {
-			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
+		isAdmin := middlewares.ExtractTokenIsAdmin(c)
+		if !isAdmin {
+			ID, _ := strconv.Atoi(c.Param("id"))
+			userID := middlewares.ExtractTokenUserID(c)
+			res, err := ctl.repo.GetByIDUser(uint(ID), userID)
+			if err != nil {
+				return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
+			}
+			return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses mendapatkan detail order", ToResponseOrder(res)))
+		} else {
+			ID, _ := strconv.Atoi(c.Param("id"))
+			res, err := ctl.repo.GetByID(uint(ID))
+			if err != nil {
+				return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
+			}
+			return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses mendapatkan detail order", ToResponseOrder(res)))
 		}
-		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses mendapatkan detail order", ToResponseOrder(res)))
 	}
 }
 

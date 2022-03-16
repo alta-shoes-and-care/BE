@@ -84,7 +84,7 @@ func (ctl *ServiceController) GetDetails() echo.HandlerFunc {
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
 		}
-		return c.JSON(http.StatusCreated, common.Success(http.StatusCreated, "sukses mendapatkan detail service", ToResponseGetDetails(res)))
+		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses mendapatkan detail service", ToResponseGetDetails(res)))
 	}
 }
 
@@ -127,7 +127,7 @@ func (ctl *ServiceController) Update() echo.HandlerFunc {
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
 		}
-		return c.JSON(http.StatusCreated, common.Success(http.StatusCreated, "sukses memperbarui data service", ToResponseUpdate(res)))
+		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses memperbarui data service", ToResponseUpdate(res)))
 	}
 }
 
@@ -143,6 +143,6 @@ func (ctl *ServiceController) Delete() echo.HandlerFunc {
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
 		}
-		return c.JSON(http.StatusCreated, common.Success(http.StatusCreated, "sukses menghapus service", err))
+		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses menghapus service", err))
 	}
 }

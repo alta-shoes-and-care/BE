@@ -91,8 +91,8 @@ func TestCreate(t *testing.T) {
 		context := e.NewContext(req, res)
 		context.SetPath(rootPath)
 
-		userController := NewPaymentMethodController(&MockPM.MockPaymentMethodRepository{})
-		if err := middlewares.JWTMiddleware()(userController.Create())(context); err != nil {
+		paymentMethodController := NewPaymentMethodController(&MockPM.MockPaymentMethodRepository{})
+		if err := middlewares.JWTMiddleware()(paymentMethodController.Create())(context); err != nil {
 			log.Fatal(err)
 		}
 
@@ -116,8 +116,8 @@ func TestCreate(t *testing.T) {
 		context := e.NewContext(req, res)
 		context.SetPath(rootPath)
 
-		userController := NewPaymentMethodController(&MockPM.MockPaymentMethodRepository{})
-		if err := middlewares.JWTMiddleware()(userController.Create())(context); err != nil {
+		paymentMethodController := NewPaymentMethodController(&MockPM.MockPaymentMethodRepository{})
+		if err := middlewares.JWTMiddleware()(paymentMethodController.Create())(context); err != nil {
 			log.Fatal(err)
 		}
 
@@ -141,8 +141,8 @@ func TestCreate(t *testing.T) {
 		context := e.NewContext(req, res)
 		context.SetPath(rootPath)
 
-		userController := NewPaymentMethodController(&MockPM.MockFalsePaymentMethodRepository{})
-		if err := middlewares.JWTMiddleware()(userController.Create())(context); err != nil {
+		paymentMethodController := NewPaymentMethodController(&MockPM.MockFalsePaymentMethodRepository{})
+		if err := middlewares.JWTMiddleware()(paymentMethodController.Create())(context); err != nil {
 			log.Fatal(err)
 		}
 
@@ -167,8 +167,8 @@ func TestCreate(t *testing.T) {
 		context := e.NewContext(req, res)
 		context.SetPath(rootPath)
 
-		userController := NewPaymentMethodController(&MockPM.MockPaymentMethodRepository{})
-		if err := middlewares.JWTMiddleware()(userController.Create())(context); err != nil {
+		paymentMethodController := NewPaymentMethodController(&MockPM.MockPaymentMethodRepository{})
+		if err := middlewares.JWTMiddleware()(paymentMethodController.Create())(context); err != nil {
 			log.Fatal(err)
 		}
 
@@ -247,8 +247,8 @@ func TestGet(t *testing.T) {
 		context := e.NewContext(req, res)
 		context.SetPath(rootPath)
 
-		userController := NewPaymentMethodController(&MockPM.MockPaymentMethodRepository{})
-		if err := middlewares.JWTMiddleware()(userController.Get())(context); err != nil {
+		paymentMethodController := NewPaymentMethodController(&MockPM.MockPaymentMethodRepository{})
+		if err := middlewares.JWTMiddleware()(paymentMethodController.Get())(context); err != nil {
 			log.Fatal(err)
 		}
 
@@ -258,7 +258,7 @@ func TestGet(t *testing.T) {
 		assert.Equal(t, http.StatusUnauthorized, response.Code)
 	})
 
-	t.Run("fail to get all users", func(t *testing.T) {
+	t.Run("fail to get all payment methods", func(t *testing.T) {
 		req := httptest.NewRequest(http.MethodGet, "/", bytes.NewBuffer(nil))
 		res := httptest.NewRecorder()
 
@@ -268,8 +268,8 @@ func TestGet(t *testing.T) {
 		context := e.NewContext(req, res)
 		context.SetPath(rootPath)
 
-		userController := NewPaymentMethodController(&MockPM.MockFalsePaymentMethodRepository{})
-		if err := middlewares.JWTMiddleware()(userController.Get())(context); err != nil {
+		paymentMethodController := NewPaymentMethodController(&MockPM.MockFalsePaymentMethodRepository{})
+		if err := middlewares.JWTMiddleware()(paymentMethodController.Get())(context); err != nil {
 			log.Fatal(err)
 		}
 
@@ -279,7 +279,7 @@ func TestGet(t *testing.T) {
 		assert.Equal(t, http.StatusInternalServerError, response.Code)
 	})
 
-	t.Run("succeed to get all users", func(t *testing.T) {
+	t.Run("success to get all payment methods", func(t *testing.T) {
 		req := httptest.NewRequest(http.MethodGet, "/", bytes.NewBuffer(nil))
 		res := httptest.NewRecorder()
 
@@ -289,8 +289,8 @@ func TestGet(t *testing.T) {
 		context := e.NewContext(req, res)
 		context.SetPath(rootPath)
 
-		userController := NewPaymentMethodController(&MockPM.MockPaymentMethodRepository{})
-		if err := middlewares.JWTMiddleware()(userController.Get())(context); err != nil {
+		paymentMethodController := NewPaymentMethodController(&MockPM.MockPaymentMethodRepository{})
+		if err := middlewares.JWTMiddleware()(paymentMethodController.Get())(context); err != nil {
 			log.Fatal(err)
 		}
 
@@ -368,8 +368,8 @@ func TestDelete(t *testing.T) {
 		context := e.NewContext(req, res)
 		context.SetPath(rootPath)
 
-		userController := NewPaymentMethodController(&MockPM.MockPaymentMethodRepository{})
-		if err := middlewares.JWTMiddleware()(userController.Delete())(context); err != nil {
+		paymentMethodController := NewPaymentMethodController(&MockPM.MockPaymentMethodRepository{})
+		if err := middlewares.JWTMiddleware()(paymentMethodController.Delete())(context); err != nil {
 			log.Fatal(err)
 		}
 
@@ -389,8 +389,8 @@ func TestDelete(t *testing.T) {
 		context := e.NewContext(req, res)
 		context.SetPath(fmt.Sprintf("%v/1", rootPath))
 
-		userController := NewPaymentMethodController(&MockPM.MockFalsePaymentMethodRepository{})
-		if err := middlewares.JWTMiddleware()(userController.Delete())(context); err != nil {
+		paymentMethodController := NewPaymentMethodController(&MockPM.MockFalsePaymentMethodRepository{})
+		if err := middlewares.JWTMiddleware()(paymentMethodController.Delete())(context); err != nil {
 			log.Fatal(err)
 		}
 
@@ -400,7 +400,7 @@ func TestDelete(t *testing.T) {
 		assert.Equal(t, http.StatusInternalServerError, response.Code)
 	})
 
-	t.Run("succeed to delete", func(t *testing.T) {
+	t.Run("success to delete", func(t *testing.T) {
 		req := httptest.NewRequest(http.MethodDelete, "/", bytes.NewBuffer(nil))
 		res := httptest.NewRecorder()
 
@@ -410,8 +410,8 @@ func TestDelete(t *testing.T) {
 		context := e.NewContext(req, res)
 		context.SetPath(fmt.Sprintf("%v/1", rootPath))
 
-		userController := NewPaymentMethodController(&MockPM.MockPaymentMethodRepository{})
-		if err := middlewares.JWTMiddleware()(userController.Delete())(context); err != nil {
+		paymentMethodController := NewPaymentMethodController(&MockPM.MockPaymentMethodRepository{})
+		if err := middlewares.JWTMiddleware()(paymentMethodController.Delete())(context); err != nil {
 			log.Fatal(err)
 		}
 

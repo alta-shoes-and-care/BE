@@ -3,30 +3,29 @@ package service
 import (
 	"final-project/configs"
 	"final-project/deliveries/controllers/common"
-	"final-project/deliveries/helpers/uploader"
 	"final-project/deliveries/middlewares"
 	"final-project/deliveries/validators"
+	awss3 "final-project/external/aws-s3"
 	_ServiceRepo "final-project/repositories/service"
 	"net/http"
 	"strconv"
 	"strings"
 
-	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/gommon/log"
 )
 
 type ServiceController struct {
-	repo   _ServiceRepo.Service
-	config *configs.AppConfig
-	sess   *session.Session
+	repo        _ServiceRepo.Service
+	config      *configs.AppConfig
+	awsS3Client awss3.MyS3Client
 }
 
-func NewServiceController(repository _ServiceRepo.Service, config *configs.AppConfig, awsSess *session.Session) *ServiceController {
+func NewServiceController(repository _ServiceRepo.Service, config *configs.AppConfig, client awss3.MyS3Client) *ServiceController {
 	return &ServiceController{
-		repo:   repository,
-		sess:   awsSess,
-		config: config,
+		repo:        repository,
+		config:      config,
+		awsS3Client: client,
 	}
 }
 
@@ -52,7 +51,8 @@ func (ctl *ServiceController) Create() echo.HandlerFunc {
 			return c.JSON(http.StatusBadRequest, common.BadRequest("tidak dapat membaca file gambar"))
 		}
 
-		image, err := uploader.Uploader(ctl.sess, ctl.config.S3_REGION, ctl.config.S3_BUCKET, *file)
+		file.Filename = strings.ReplaceAll(file.Filename, " ", "_")
+		image, err := ctl.awsS3Client.DoUpload(ctl.config.S3_REGION, ctl.config.S3_BUCKET, file)
 		if err != nil {
 			return c.JSON(http.StatusBadRequest, common.BadRequest(err.Error()))
 		}
@@ -114,7 +114,10 @@ func (ctl *ServiceController) Update() echo.HandlerFunc {
 			}
 
 			var err error
-			image, err = uploader.Uploader(ctl.sess, ctl.config.S3_REGION, ctl.config.S3_BUCKET, *file)
+
+			file.Filename = strings.ReplaceAll(file.Filename, " ", "_")
+
+			image, err = ctl.awsS3Client.DoUpload(ctl.config.S3_REGION, ctl.config.S3_BUCKET, file)
 			if err != nil {
 				return c.JSON(http.StatusBadRequest, common.BadRequest(err.Error()))
 			}

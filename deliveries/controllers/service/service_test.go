@@ -298,7 +298,7 @@ func TestCreate(t *testing.T) {
 		response := common.Response{}
 		json.Unmarshal([]byte(res.Body.Bytes()), &response)
 
-		assert.Equal(t, http.StatusOK, response.Code)
+		assert.Equal(t, http.StatusCreated, response.Code)
 	})
 }
 
@@ -311,7 +311,7 @@ func TestGet(t *testing.T) {
 			Password: "ucup123",
 		})
 
-		req := httptest.NewRequest(http.MethodPost, "/", bytes.NewBuffer(requestBody))
+		req := httptest.NewRequest(http.MethodGet, "/", bytes.NewBuffer(requestBody))
 		res := httptest.NewRecorder()
 
 		req.Header.Set("Content-Type", "application/json")
@@ -337,7 +337,7 @@ func TestGet(t *testing.T) {
 			Password: "ucup123",
 		})
 
-		req := httptest.NewRequest(http.MethodPost, "/", bytes.NewBuffer(requestBody))
+		req := httptest.NewRequest(http.MethodGet, "/", bytes.NewBuffer(requestBody))
 		res := httptest.NewRecorder()
 
 		req.Header.Set("Content-Type", "application/json")
@@ -358,7 +358,7 @@ func TestGet(t *testing.T) {
 	})
 
 	t.Run("internal server error", func(t *testing.T) {
-		req := httptest.NewRequest(http.MethodPost, "/", bytes.NewBuffer(nil))
+		req := httptest.NewRequest(http.MethodGet, "/", bytes.NewBuffer(nil))
 		res := httptest.NewRecorder()
 
 		req.Header.Set("Content-Type", "application/json")
@@ -376,7 +376,7 @@ func TestGet(t *testing.T) {
 	})
 
 	t.Run("success", func(t *testing.T) {
-		req := httptest.NewRequest(http.MethodPost, "/", bytes.NewBuffer(nil))
+		req := httptest.NewRequest(http.MethodGet, "/", bytes.NewBuffer(nil))
 		res := httptest.NewRecorder()
 
 		req.Header.Set("Content-Type", "application/json")
@@ -403,7 +403,7 @@ func TestGetDetails(t *testing.T) {
 			Password: "ucup123",
 		})
 
-		req := httptest.NewRequest(http.MethodPost, "/", bytes.NewBuffer(requestBody))
+		req := httptest.NewRequest(http.MethodGet, "/", bytes.NewBuffer(requestBody))
 		res := httptest.NewRecorder()
 
 		req.Header.Set("Content-Type", "application/json")
@@ -429,7 +429,7 @@ func TestGetDetails(t *testing.T) {
 			Password: "ucup123",
 		})
 
-		req := httptest.NewRequest(http.MethodPost, "/", bytes.NewBuffer(requestBody))
+		req := httptest.NewRequest(http.MethodGet, "/", bytes.NewBuffer(requestBody))
 		res := httptest.NewRecorder()
 
 		req.Header.Set("Content-Type", "application/json")
@@ -450,7 +450,7 @@ func TestGetDetails(t *testing.T) {
 	})
 
 	t.Run("internal server error", func(t *testing.T) {
-		req := httptest.NewRequest(http.MethodPost, "/", bytes.NewBuffer(nil))
+		req := httptest.NewRequest(http.MethodGet, "/", bytes.NewBuffer(nil))
 		res := httptest.NewRecorder()
 
 		req.Header.Set("Content-Type", "application/json")
@@ -470,7 +470,7 @@ func TestGetDetails(t *testing.T) {
 	})
 
 	t.Run("success", func(t *testing.T) {
-		req := httptest.NewRequest(http.MethodPost, "/", bytes.NewBuffer(nil))
+		req := httptest.NewRequest(http.MethodGet, "/", bytes.NewBuffer(nil))
 		res := httptest.NewRecorder()
 
 		req.Header.Set("Content-Type", "application/json")
@@ -499,7 +499,7 @@ func TestDelete(t *testing.T) {
 			Password: "ucup123",
 		})
 
-		req := httptest.NewRequest(http.MethodPost, "/", bytes.NewBuffer(requestBody))
+		req := httptest.NewRequest(http.MethodDelete, "/", bytes.NewBuffer(requestBody))
 		res := httptest.NewRecorder()
 
 		req.Header.Set("Content-Type", "application/json")
@@ -525,7 +525,7 @@ func TestDelete(t *testing.T) {
 			Password: "ucup123",
 		})
 
-		req := httptest.NewRequest(http.MethodPost, "/", bytes.NewBuffer(requestBody))
+		req := httptest.NewRequest(http.MethodDelete, "/", bytes.NewBuffer(requestBody))
 		res := httptest.NewRecorder()
 
 		req.Header.Set("Content-Type", "application/json")
@@ -546,7 +546,7 @@ func TestDelete(t *testing.T) {
 	})
 
 	t.Run("admin error", func(t *testing.T) {
-		req := httptest.NewRequest(http.MethodPost, "/", bytes.NewBuffer(nil))
+		req := httptest.NewRequest(http.MethodDelete, "/", bytes.NewBuffer(nil))
 		res := httptest.NewRecorder()
 
 		req.Header.Set("Content-Type", "application/json")
@@ -566,11 +566,11 @@ func TestDelete(t *testing.T) {
 		response := common.Response{}
 		json.Unmarshal([]byte(res.Body.Bytes()), &response)
 
-		assert.Equal(t, http.StatusOK, response.Code)
+		assert.Equal(t, http.StatusUnauthorized, response.Code)
 	})
 
 	t.Run("internal server error", func(t *testing.T) {
-		req := httptest.NewRequest(http.MethodPost, "/", bytes.NewBuffer(nil))
+		req := httptest.NewRequest(http.MethodDelete, "/", bytes.NewBuffer(nil))
 		res := httptest.NewRecorder()
 
 		req.Header.Set("Content-Type", "application/json")
@@ -594,7 +594,7 @@ func TestDelete(t *testing.T) {
 	})
 
 	t.Run("success", func(t *testing.T) {
-		req := httptest.NewRequest(http.MethodPost, "/", bytes.NewBuffer(nil))
+		req := httptest.NewRequest(http.MethodDelete, "/", bytes.NewBuffer(nil))
 		res := httptest.NewRecorder()
 
 		req.Header.Set("Content-Type", "application/json")

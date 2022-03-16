@@ -89,8 +89,9 @@ func (ctl *OrderController) GetByUserID() echo.HandlerFunc {
 
 func (ctl *OrderController) GetByID() echo.HandlerFunc {
 	return func(c echo.Context) error {
+		userID := middlewares.ExtractTokenUserID(c)
 		ID, _ := strconv.Atoi(c.Param("id"))
-		res, err := ctl.repo.GetByID(uint(ID))
+		res, err := ctl.repo.GetByID(uint(ID), userID)
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
 		}

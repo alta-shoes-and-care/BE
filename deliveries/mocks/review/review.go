@@ -3,6 +3,7 @@ package review
 import (
 	"errors"
 	R "final-project/entities/review"
+	"final-project/repositories/review"
 	U "final-project/entities/user"
 
 	"gorm.io/gorm"
@@ -22,12 +23,12 @@ func (repo *MockAuthAdminRepository) Login(email, password string) (U.Users, err
 
 type MockReviewRepository struct{}
 
-func (repo *MockReviewRepository) Insert(newReview R.Reviews) (FormatReview, error) {
-	return FormatReview{ID: 1, ServiceID: 1, OrderID: 1, UserID: 1, Name: "Yusuf", Rating: 5, Review: "Bagus"}, nil
+func (repo *MockReviewRepository) Insert(newReview R.Reviews) (review.FormatReview, error) {
+	return review.FormatReview{ID: 1, ServiceID: 1, OrderID: 1, UserID: 1, Name: "Yusuf", Rating: 5, Review: "Bagus"}, nil
 }
 
-func (repo *MockReviewRepository) Get() ([]FormatReview, error) {
-	review1 := FormatReview{
+func (repo *MockReviewRepository) Get() ([]review.FormatReview, error) {
+	review1 := review.FormatReview{
 		ID: 1,
 		ServiceID: 1,
 		OrderID: 1,
@@ -37,7 +38,7 @@ func (repo *MockReviewRepository) Get() ([]FormatReview, error) {
 		Review: "Bagus",
 	}
 
-	review2 := FormatReview{
+	review2 := review.FormatReview{
 		ID: 2,
 		ServiceID: 1,
 		OrderID: 2,
@@ -47,11 +48,11 @@ func (repo *MockReviewRepository) Get() ([]FormatReview, error) {
 		Review: "Bagus",
 	}
 
-	return []FormatReview{review1, review2}, nil
+	return []review.FormatReview{review1, review2}, nil
 }
 
-func (repo *MockReviewRepository) Update(reviewUpdate R.Reviews) (FormatReview, error) {
-	return FormatReview{ID: 1, ServiceID: 1, OrderID: 1, UserID: 1, Name: "Yusuf", Rating: 5, Review: "Bagus"}, nil
+func (repo *MockReviewRepository) Update(reviewUpdate R.Reviews) (review.FormatReview, error) {
+	return review.FormatReview{ID: 1, ServiceID: 1, OrderID: 1, UserID: 1, Name: "Yusuf", Rating: 5, Review: "Bagus"}, nil
 }
 
 func (repo *MockReviewRepository) Delete(ID, UserID uint) error {
@@ -60,16 +61,16 @@ func (repo *MockReviewRepository) Delete(ID, UserID uint) error {
 
 type MockFalseReviewRepository struct{}
 
-func (repo *MockFalseReviewRepository) Insert(newReview R.Reviews) (FormatReview, error) {
-	return FormatReview{}, errors.New("false insert review")
+func (repo *MockFalseReviewRepository) Insert(newReview R.Reviews) (review.FormatReview, error) {
+	return review.FormatReview{}, errors.New("false insert review")
 }
 
-func (repo *MockFalseReviewRepository) Get() ([]FormatReview, error) {
+func (repo *MockFalseReviewRepository) Get() ([]review.FormatReview, error) {
 	return nil, errors.New("false get all reviews")
 }
 
-func (repo *MockFalseReviewRepository) Update(reviewUpdate R.Reviews) (FormatReview, error) {
-	return FormatReview{}, errors.New("false update review")
+func (repo *MockFalseReviewRepository) Update(reviewUpdate R.Reviews) (review.FormatReview, error) {
+	return review.FormatReview{}, errors.New("false update review")
 }
 
 func (repo *MockFalseReviewRepository) Delete(ID, UserID uint) error {

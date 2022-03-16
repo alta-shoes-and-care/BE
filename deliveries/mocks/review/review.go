@@ -1,6 +1,7 @@
 package review
 
 import (
+	"errors"
 	R "final-project/entities/review"
 	U "final-project/entities/user"
 
@@ -56,3 +57,22 @@ func (repo *MockReviewRepository) Update(reviewUpdate R.Reviews) (FormatReview, 
 func (repo *MockReviewRepository) Delete(ID, UserID uint) error {
 	return nil
 }
+
+type MockFalseReviewRepository struct{}
+
+func (repo *MockFalseReviewRepository) Insert(newReview R.Reviews) (FormatReview, error) {
+	return FormatReview{}, errors.New("false insert review")
+}
+
+func (repo *MockFalseReviewRepository) Get() ([]FormatReview, error) {
+	return nil, errors.New("false get all reviews")
+}
+
+func (repo *MockFalseReviewRepository) Update(reviewUpdate R.Reviews) (FormatReview, error) {
+	return FormatReview{}, errors.New("false update review")
+}
+
+func (repo *MockFalseReviewRepository) Delete(ID, UserID uint) error {
+	return errors.New("false delete review")
+}
+

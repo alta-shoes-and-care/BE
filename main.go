@@ -35,11 +35,12 @@ func main() {
 	orderRepo := _OrderRepo.NewOrderRepository(db)
 
 	awsSess := awss3.InitS3(config.S3_KEY, config.S3_SECRET, config.S3_REGION)
+	awsClient := awss3.NewAWSClient(awsSess)
 
 	ac := _AuthController.NewAuthController(authRepo)
 	uc := _UserController.NewUserController(userRepo)
 	pmc := _PMController.NewPaymentMethodController(paymentMethodRepo)
-	sc := _ServiceController.NewServiceController(serviceRepo, config, awsSess)
+	sc := _ServiceController.NewServiceController(serviceRepo, config, awsClient)
 	rc := _ReviewController.NewReviewController(reviewRepo)
 	oc := _OrderController.NewOrderController(orderRepo)
 

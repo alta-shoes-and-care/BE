@@ -15,6 +15,16 @@ import (
 	"github.com/labstack/gommon/log"
 )
 
+type AWSClient struct {
+	sess *session.Session
+}
+
+func NewAWSClient(sess *session.Session) *AWSClient {
+	return &AWSClient{
+		sess: sess,
+	}
+}
+
 func InitS3(key, secret, region string) *session.Session {
 	sess, err := session.NewSession(
 		&aws.Config{
@@ -30,7 +40,8 @@ func InitS3(key, secret, region string) *session.Session {
 	return sess
 }
 
-func DoUpload(sess *session.Session, region, bucket string, file multipart.FileHeader) (string, error) {
+func (client *AWSClient) DoUpload(region, bucket string, file *multipart.FileHeader) (string, error) {
+	sess := client.sess
 	manager := s3manager.NewUploader(sess)
 	src, err := file.Open()
 	if err != nil {
@@ -63,7 +74,8 @@ func DoUpload(sess *session.Session, region, bucket string, file multipart.FileH
 	return link, nil
 }
 
-func DoDelete(sess *session.Session, fileName, bucket string) error {
+func (client AWSClient) DoDelete(fileName, bucket string) error {
+	sess := client.sess
 	svc := s3.New(sess)
 
 	deleteInput := &s3.DeleteObjectInput{

@@ -44,21 +44,27 @@ func ValidateUpdateUser(name, email, password string) error {
 }
 
 func ValidateCreateService(title, description string) error {
-	if len(title) > 30 {
-		return errors.New("input title melebihi jumlah maksimal karakter (30 karakter)")
+	titlePattern, _ := regexp.Compile(`^[a-zA-Z0-9 ]*$`)
+	descPattern, _ := regexp.Compile(`^[a-zA-Z0-9\W ]*$`)
+	if len(title) > 30 || !titlePattern.MatchString(title) {
+		return errors.New("input title tidak sesuai (alfanumerik; tanpa simbol; boleh ada spasi di antara kata; total karakter: maksimal 30;)\ncontoh: \"Service 1\"")
 	}
-	if len(description) > 320 {
-		return errors.New("input description melebihi jumlah maksimal karakter (320 karakter)")
+
+	if len(description) > 320 || !descPattern.MatchString(description) {
+		return errors.New("input description tidak sesuai (alfanumerik; boleh simbol; boleh ada spasi di antara kata; total karakter: maksimal 320;)\ncontoh: \"Layanan regular yang disukai orang.\"")
 	}
 	return nil
 }
 
 func ValidateUpdateServiceData(title, description string) error {
-	if len(title) > 30 {
-		return errors.New("input title melebihi jumlah maksimal karakter (30 karakter)")
+	titlePattern, _ := regexp.Compile(`^[a-zA-Z0-9 ]*$`)
+	descPattern, _ := regexp.Compile(`^[a-zA-Z0-9\W ]*$`)
+	if len(title) > 30 || !titlePattern.MatchString(title) {
+		return errors.New("input title tidak sesuai (alfanumerik; tanpa simbol; boleh ada spasi di antara kata; total karakter: maksimal 30;)\ncontoh: \"Service 1\"")
 	}
-	if len(description) > 320 {
-		return errors.New("input description melebihi jumlah maksimal karakter (320 karakter)")
+
+	if len(description) > 320 || !descPattern.MatchString(description) {
+		return errors.New("input description tidak sesuai (alfanumerik; boleh simbol; boleh ada spasi di antara kata; total karakter: maksimal 320;)\ncontoh: \"Layanan regular yang disukai orang.\"")
 	}
 	return nil
 }

@@ -72,7 +72,7 @@ func (ctl *ServiceController) Get() echo.HandlerFunc {
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
 		}
-		return c.JSON(http.StatusCreated, common.Success(http.StatusCreated, "sukses mendapatkan semua service", ToResponseGet(res)))
+		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses mendapatkan semua service", ToResponseGet(res)))
 	}
 }
 

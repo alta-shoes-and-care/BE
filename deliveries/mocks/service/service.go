@@ -80,9 +80,9 @@ func (awsStruct *MockAWSStructTrue) DoDelete(fileName, bucket string) error {
 type MockAWSStructFalse struct{}
 
 func (awsStruct *MockAWSStructFalse) DoUpload(region, bucket string, file *multipart.FileHeader) (string, error) {
-	return "https://foo.com/bar.jpeg", nil
+	return "", errors.New("upload error")
 }
 
 func (awsStruct *MockAWSStructFalse) DoDelete(fileName, bucket string) error {
-	return nil
+	return errors.New("delete error")
 }

@@ -7,6 +7,7 @@ type Order interface {
 	Get() ([]FormatOrder, error)
 	GetByUserID(UserID uint) ([]FormatOrder, error)
 	GetByID(ID uint) (FormatOrder, error)
+	GetByIDUser(ID, userID uint) (FormatOrder, error)
 	GetLastOrderID() (uint, error)
 	SetPaid(ID uint) (FormatOrder, error)
 	SetAccepted(ID uint) (FormatOrder, error)

@@ -128,7 +128,7 @@ func (ctl *OrderController) CheckPaymentStatus() echo.HandlerFunc {
 				return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
 			}
 			return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses menjadikan status pembayaran menjadi paid", ToResponseOrder(res)))
-		} else if res == "status cancel" {
+		} else if res == "status cancel" || res == "status deny" {
 			res, err := ctl.repo.SetCancel(uint(ID))
 			if err != nil {
 				return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))

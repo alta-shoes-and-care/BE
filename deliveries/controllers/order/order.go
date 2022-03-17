@@ -14,18 +14,16 @@ import (
 )
 
 type OrderController struct {
-	repo _OrderRepo.Order
+	repo           _OrderRepo.Order
+	midtransClient midtranspay.MidtransClient
 }
 
-func NewOrderController(repository _OrderRepo.Order) *OrderController {
+func NewOrderController(repository _OrderRepo.Order, client midtranspay.MidtransClient) *OrderController {
 	return &OrderController{
-		repo: repository,
+		repo:           repository,
+		midtransClient: client,
 	}
 }
-
-var (
-	midtransClient = midtranspay.InitConnection()
-)
 
 const (
 	layoutISO = "2006-01-02"
@@ -43,7 +41,8 @@ func (ctl *OrderController) Create() echo.HandlerFunc {
 			lastID = 0
 		}
 
-		midtransCharge := midtranspay.CreateTransaction(midtransClient, lastID+1, newOrder.Total)
+		userID := middlewares.ExtractTokenUserID(c)
+		midtransCharge := ctl.midtransClient.CreateTransaction(userID, lastID+1, newOrder.Total)
 
 		url := midtransCharge.RedirectURL
 		if strings.TrimSpace(url) == "" {
@@ -51,7 +50,6 @@ func (ctl *OrderController) Create() echo.HandlerFunc {
 		}
 
 		date, _ := time.Parse(layoutISO, newOrder.Date)
-		userID := middlewares.ExtractTokenUserID(c)
 
 		res, err := ctl.repo.Create(newOrder.ToEntityOrder(date, userID, url))
 		if err != nil {
@@ -79,6 +77,7 @@ func (ctl *OrderController) Get() echo.HandlerFunc {
 func (ctl *OrderController) GetByUserID() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		userID := middlewares.ExtractTokenUserID(c)
+
 		res, err := ctl.repo.GetByUserID(userID)
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
@@ -93,6 +92,7 @@ func (ctl *OrderController) GetByID() echo.HandlerFunc {
 		if !isAdmin {
 			ID, _ := strconv.Atoi(c.Param("id"))
 			userID := middlewares.ExtractTokenUserID(c)
+
 			res, err := ctl.repo.GetByIDUser(uint(ID), userID)
 			if err != nil {
 				return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
@@ -100,6 +100,7 @@ func (ctl *OrderController) GetByID() echo.HandlerFunc {
 			return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses mendapatkan detail order", ToResponseOrder(res)))
 		} else {
 			ID, _ := strconv.Atoi(c.Param("id"))
+
 			res, err := ctl.repo.GetByID(uint(ID))
 			if err != nil {
 				return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
@@ -111,8 +112,10 @@ func (ctl *OrderController) GetByID() echo.HandlerFunc {
 
 func (ctl *OrderController) CheckPaymentStatus() echo.HandlerFunc {
 	return func(c echo.Context) error {
+		userID := middlewares.ExtractTokenUserID(c)
 		ID, _ := strconv.Atoi(c.Param("id"))
-		res, err := midtranspay.CheckTransaction(midtransClient, uint(ID))
+
+		res, err := ctl.midtransClient.CheckTransaction(userID, uint(ID))
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
 		}
@@ -144,6 +147,7 @@ func (ctl *OrderController) SetAccepted() echo.HandlerFunc {
 		}
 
 		ID, _ := strconv.Atoi(c.Param("id"))
+
 		res, err := ctl.repo.SetAccepted(uint(ID))
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
@@ -160,6 +164,7 @@ func (ctl *OrderController) SetRejected() echo.HandlerFunc {
 		}
 
 		ID, _ := strconv.Atoi(c.Param("id"))
+
 		res, err := ctl.repo.SetRejected(uint(ID))
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
@@ -176,6 +181,7 @@ func (ctl *OrderController) SetOnProcess() echo.HandlerFunc {
 		}
 
 		ID, _ := strconv.Atoi(c.Param("id"))
+
 		res, err := ctl.repo.SetOnProcess(uint(ID))
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
@@ -192,6 +198,7 @@ func (ctl *OrderController) SetDelivering() echo.HandlerFunc {
 		}
 
 		ID, _ := strconv.Atoi(c.Param("id"))
+
 		res, err := ctl.repo.SetDelivering(uint(ID))
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
@@ -203,6 +210,7 @@ func (ctl *OrderController) SetDelivering() echo.HandlerFunc {
 func (ctl *OrderController) SetCancel() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		ID, _ := strconv.Atoi(c.Param("id"))
+
 		res, err := ctl.repo.SetCancel(uint(ID))
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
@@ -214,6 +222,7 @@ func (ctl *OrderController) SetCancel() echo.HandlerFunc {
 func (ctl *OrderController) SetDone() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		ID, _ := strconv.Atoi(c.Param("id"))
+
 		res, err := ctl.repo.SetDone(uint(ID))
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))

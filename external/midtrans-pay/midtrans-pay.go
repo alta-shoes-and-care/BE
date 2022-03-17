@@ -28,14 +28,16 @@ func InitConnection() coreapi.Client {
 	return client
 }
 
-func (client *MidtransClientStruct) CreateTransaction(orderID, bill uint) *coreapi.ChargeResponse {
+func (client *MidtransClientStruct) CreateTransaction(userID, orderID, bill uint) *coreapi.ChargeResponse {
+	invoiceID := fmt.Sprintf("midtrans-%d%d", userID, orderID)
+
 	req := &coreapi.ChargeReq{
 		PaymentType: coreapi.PaymentTypeBCAKlikpay,
 		BCAKlikPay: &coreapi.BCAKlikPayDetails{
 			Desc: "Pembayaran BCA Klik Pay",
 		},
 		TransactionDetails: midtrans.TransactionDetails{
-			OrderID:  fmt.Sprintf("test-bayar2-%d", orderID),
+			OrderID:  invoiceID,
 			GrossAmt: int64(bill),
 		},
 		CustomExpiry: &coreapi.CustomExpiry{
@@ -51,10 +53,11 @@ func (client *MidtransClientStruct) CreateTransaction(orderID, bill uint) *corea
 	return apiRes
 }
 
-func (client *MidtransClientStruct) CheckTransaction(orderID uint) (string, error) {
+func (client *MidtransClientStruct) CheckTransaction(userID, orderID uint) (string, error) {
 	var result string
+	invoiceID := fmt.Sprintf("midtrans-%d%d", userID, orderID)
 
-	transactionStatusResp, err := client.CoreApiClient.CheckTransaction(fmt.Sprintf("test-bayar-%d", orderID))
+	transactionStatusResp, err := client.CoreApiClient.CheckTransaction(invoiceID)
 	if err != nil {
 		log.Warn(err)
 		return "", errors.New("gagal mengecek status transaksi")

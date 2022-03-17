@@ -1,8 +1,6 @@
 package order
 
-import (
-	"time"
-)
+import "time"
 
 type FormatOrder struct {
 	ID                uint

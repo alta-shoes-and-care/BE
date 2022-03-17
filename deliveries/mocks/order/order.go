@@ -5,6 +5,8 @@ import (
 	O "final-project/entities/order"
 	orderRepo "final-project/repositories/order"
 	"time"
+
+	"github.com/midtrans/midtrans-go/coreapi"
 )
 
 const (
@@ -201,4 +203,28 @@ func (repo *MockFalseOrderRepository) SetCancel(ID uint) (orderRepo.FormatOrder,
 
 func (repo *MockFalseOrderRepository) SetDone(ID uint) (orderRepo.FormatOrder, error) {
 	return orderRepo.FormatOrder{}, errors.New("fail to set done")
+}
+
+type MockTrueMidtrans struct{}
+
+func (repo *MockTrueMidtrans) CreateTransaction(userID, orderID, bill uint) *coreapi.ChargeResponse {
+	return &coreapi.ChargeResponse{
+		RedirectURL: "https://foo.com/bar-1",
+	}
+}
+
+func (repo *MockTrueMidtrans) CheckTransaction(userID, orderID uint) (string, error) {
+	return "status pending", nil
+}
+
+type MockFalseMidtrans struct{}
+
+func (repo *MockFalseMidtrans) CreateTransaction(userID, orderID, bill uint) *coreapi.ChargeResponse {
+	return &coreapi.ChargeResponse{
+		RedirectURL: "",
+	}
+}
+
+func (repo *MockFalseMidtrans) CheckTransaction(userID, orderID uint) (string, error) {
+	return "", errors.New("checking error")
 }

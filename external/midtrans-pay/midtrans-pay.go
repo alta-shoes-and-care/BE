@@ -5,16 +5,22 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/joho/godotenv"
 	"github.com/labstack/gommon/log"
 	"github.com/midtrans/midtrans-go"
 	"github.com/midtrans/midtrans-go/coreapi"
 )
 
-func InitConnection() coreapi.Client {
-	if err := godotenv.Load(".env"); err != nil {
-		log.Info(err)
+type MidtransClientStruct struct {
+	CoreApiClient coreapi.Client
+}
+
+func NewMidtransClient(client coreapi.Client) *MidtransClientStruct {
+	return &MidtransClientStruct{
+		CoreApiClient: client,
 	}
+}
+
+func InitConnection() coreapi.Client {
 	MIDTRANS_KEY := os.Getenv("MIDTRANS_KEY")
 
 	client := coreapi.Client{}
@@ -22,7 +28,7 @@ func InitConnection() coreapi.Client {
 	return client
 }
 
-func CreateTransaction(client coreapi.Client, orderID, bill uint) *coreapi.ChargeResponse {
+func (client *MidtransClientStruct) CreateTransaction(orderID, bill uint) *coreapi.ChargeResponse {
 	req := &coreapi.ChargeReq{
 		PaymentType: coreapi.PaymentTypeBCAKlikpay,
 		BCAKlikPay: &coreapi.BCAKlikPayDetails{
@@ -32,19 +38,23 @@ func CreateTransaction(client coreapi.Client, orderID, bill uint) *coreapi.Charg
 			OrderID:  fmt.Sprintf("test-bayar2-%d", orderID),
 			GrossAmt: int64(bill),
 		},
+		CustomExpiry: &coreapi.CustomExpiry{
+			ExpiryDuration: 5,
+			Unit:           "minute",
+		},
 	}
 
-	apiRes, err := client.ChargeTransaction(req)
+	apiRes, err := client.CoreApiClient.ChargeTransaction(req)
 	if err != nil {
 		log.Warn("payment error:", err)
 	}
 	return apiRes
 }
 
-func CheckTransaction(client coreapi.Client, orderID uint) (string, error) {
+func (client *MidtransClientStruct) CheckTransaction(orderID uint) (string, error) {
 	var result string
 
-	transactionStatusResp, err := client.CheckTransaction(fmt.Sprintf("test-bayar-%d", orderID))
+	transactionStatusResp, err := client.CoreApiClient.CheckTransaction(fmt.Sprintf("test-bayar-%d", orderID))
 	if err != nil {
 		log.Warn(err)
 		return "", errors.New("gagal mengecek status transaksi")

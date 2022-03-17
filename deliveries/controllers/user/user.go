@@ -85,36 +85,3 @@ func (ctl *UserController) GetAllUsers() echo.HandlerFunc {
 		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses mendapatkan semua user", ToResponseGetUsers(res)))
 	}
 }
-
-func (ctl *UserController) Update() echo.HandlerFunc {
-	return func(c echo.Context) error {
-		userID := middlewares.ExtractTokenUserID(c)
-		var updatedUser RequestUpdateUser
-
-		if err := c.Bind(&updatedUser); err != nil {
-			return c.JSON(http.StatusBadRequest, common.BadRequest("terdapat kesalahan input dari client"))
-		}
-
-		if err := validators.ValidateUpdateUser(updatedUser.Name, updatedUser.Email, updatedUser.Password); err != nil {
-			return c.JSON(http.StatusBadRequest, common.BadRequest(err.Error()))
-		}
-
-		res, err := ctl.repo.Update(updatedUser.ToEntityUser(uint(userID)))
-		if err != nil {
-			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
-		}
-		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses memperbarui data user", ToResponseUpdateUser(res)))
-	}
-}
-
-func (ctl *UserController) Delete() echo.HandlerFunc {
-	return func(c echo.Context) error {
-		userID := middlewares.ExtractTokenUserID(c)
-
-		err := ctl.repo.Delete(uint(userID))
-		if err != nil {
-			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
-		}
-		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses menghapus user", err))
-	}
-}

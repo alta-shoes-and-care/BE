@@ -54,31 +54,30 @@ func (client *MidtransClientStruct) CreateTransaction(userID, orderID, bill uint
 }
 
 func (client *MidtransClientStruct) CheckTransaction(userID, orderID uint) (string, error) {
-	var result string
 	invoiceID := fmt.Sprintf("midtrans-%d%d", userID, orderID)
 
 	transactionStatusResp, err := client.CoreApiClient.CheckTransaction(invoiceID)
 	if err != nil {
 		log.Warn(err)
-		return "", errors.New("gagal mengecek status transaksi")
+		return "", errors.New("gagal mengecek status pembayaran midtrans")
 	} else {
 		if transactionStatusResp != nil {
 			if transactionStatusResp.TransactionStatus == "capture" {
 				if transactionStatusResp.FraudStatus == "challenge" {
-					result = "status challenge"
+					return "status challenge", nil
 				} else if transactionStatusResp.FraudStatus == "accept" {
-					result = "status accept"
+					return "status accept", nil
 				}
 			} else if transactionStatusResp.TransactionStatus == "settlement" {
-				result = "status settlement"
+				return "status settlement", nil
 			} else if transactionStatusResp.TransactionStatus == "deny" {
-				result = "status deny"
+				return "status deny", nil
 			} else if transactionStatusResp.TransactionStatus == "cancel" || transactionStatusResp.TransactionStatus == "expire" {
-				result = "status cancel"
+				return "status cancel", nil
 			} else if transactionStatusResp.TransactionStatus == "pending" {
-				result = "status pending"
+				return "status pending", nil
 			}
 		}
+		return "", errors.New("respon status transaksi midtrans kosong")
 	}
-	return result, nil
 }

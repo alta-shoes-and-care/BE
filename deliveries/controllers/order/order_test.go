@@ -8,6 +8,7 @@ import (
 	"final-project/deliveries/middlewares"
 	MockOrder "final-project/deliveries/mocks/order"
 	MockUser "final-project/deliveries/mocks/user"
+	midtranspay "final-project/external/midtrans-pay"
 	"fmt"
 	"log"
 	"net/http"
@@ -19,8 +20,10 @@ import (
 )
 
 var (
-	e        = echo.New()
-	rootPath = "/orders"
+	e              = echo.New()
+	rootPath       = "/orders"
+	midtransSess   = midtranspay.InitConnection()
+	midtransClient = midtranspay.NewMidtransClient(midtransSess)
 )
 
 func TestCreate(t *testing.T) {
@@ -99,7 +102,7 @@ func TestCreate(t *testing.T) {
 		context := e.NewContext(req, res)
 		context.SetPath(fmt.Sprintf("%v", rootPath))
 
-		serviceController := NewOrderController(&MockOrder.MockTrueOrderRepository{})
+		serviceController := NewOrderController(&MockOrder.MockTrueOrderRepository{}, midtransClient)
 		if err := middlewares.JWTMiddleware()(serviceController.Create())(context); err != nil {
 			log.Fatal(err)
 			return

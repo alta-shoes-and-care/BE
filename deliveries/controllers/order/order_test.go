@@ -3,7 +3,6 @@ package order
 import (
 	"bytes"
 	"encoding/json"
-	"final-project/configs"
 	"final-project/deliveries/controllers/auth"
 	"final-project/deliveries/controllers/common"
 	"final-project/deliveries/middlewares"
@@ -22,7 +21,6 @@ import (
 var (
 	e        = echo.New()
 	rootPath = "/orders"
-	config   = configs.GetConfig(true)
 )
 
 func TestCreate(t *testing.T) {

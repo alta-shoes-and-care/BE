@@ -18,6 +18,7 @@ type FormatOrder struct {
 	Phone             string
 	Status            string
 	IsPaid            bool
+	HasRefunded       bool
 	CreatedAt         time.Time
 	Url               string
 }

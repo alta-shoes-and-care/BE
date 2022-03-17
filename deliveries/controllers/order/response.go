@@ -24,6 +24,7 @@ type ResponseOrder struct {
 	Phone             string `json:"phone"`
 	Status            string `json:"status"`
 	IsPaid            bool   `json:"is_paid"`
+	HasRefunded       bool   `json:"has_refunded"`
 	CreatedAt         string `json:"created_at"`
 	Url               string `json:"url"`
 	Total             uint   `json:"total"`
@@ -46,10 +47,10 @@ func ToResponseOrder(order _OrderRepo.FormatOrder) ResponseOrder {
 		Phone:             order.Phone,
 		Status:            order.Status,
 		IsPaid:            order.IsPaid,
+		HasRefunded:       order.HasRefunded,
 		CreatedAt:         order.CreatedAt.Format(layoutISOResponse),
 		Url:               order.Url,
-
-		Total: order.Price * order.Qty,
+		Total:             order.Price * order.Qty,
 	}
 }
 
@@ -72,6 +73,7 @@ func ToResponseOrderArr(orders []_OrderRepo.FormatOrder) []ResponseOrder {
 		responses[i].Phone = orders[i].Phone
 		responses[i].Status = orders[i].Status
 		responses[i].IsPaid = orders[i].IsPaid
+		responses[i].HasRefunded = orders[i].HasRefunded
 		responses[i].CreatedAt = orders[i].CreatedAt.Format(layoutISOResponse)
 		responses[i].Url = orders[i].Url
 		responses[i].Total = orders[i].Price * orders[i].Qty

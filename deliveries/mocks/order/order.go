@@ -431,6 +431,10 @@ func (repo *MockFalseOrderRepository) SetDone(ID uint) (orderRepo.FormatOrder, e
 	return orderRepo.FormatOrder{}, errors.New("fail to set done")
 }
 
+func (repo *MockFalseOrderRepository) SetRefund(ID uint) (orderRepo.FormatOrder, error) {
+	return orderRepo.FormatOrder{}, errors.New("fail to set refund")
+}
+
 type MockTrueMidtrans struct{}
 
 func (repo *MockTrueMidtrans) CreateTransaction(userID, orderID, bill uint) *coreapi.ChargeResponse {

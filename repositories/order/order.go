@@ -204,7 +204,7 @@ func (repo *OrderRepository) SetDone(ID, userID uint) (FormatOrder, error) {
 func (repo *OrderRepository) SetRefund(ID uint) (FormatOrder, error) {
 	var order FormatOrder
 
-	if rowsAffected := repo.db.Table("orders").Where("id = ? AND status = ?", ID, "cancel").Update("has_refunded", true).RowsAffected; rowsAffected == 0 {
+	if rowsAffected := repo.db.Table("orders").Where("id = ? AND status = ? AND is_paid = ?", ID, "cancel", true).Update("has_refunded", true).RowsAffected; rowsAffected == 0 {
 		return FormatOrder{}, errors.New("gagal mengubah status refund menjadi true")
 	}
 

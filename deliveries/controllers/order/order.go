@@ -55,7 +55,7 @@ func (ctl *OrderController) Create() echo.HandlerFunc {
 
 		url := GetPaymentURL(strings.ToLower(newOrder.PaymentMethodName), midtransCharge)
 		if strings.TrimSpace(url) == "" {
-			return c.JSON(http.StatusBadRequest, common.BadRequest("gagal membuat invoice pembayaran"))
+			return c.JSON(http.StatusBadRequest, common.BadRequest("gagal mendapatkan link pembayaran"))
 		}
 
 		date, _ := time.Parse(layoutISO, newOrder.Date)

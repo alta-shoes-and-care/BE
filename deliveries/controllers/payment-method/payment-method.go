@@ -43,11 +43,6 @@ func (ctl *PaymentMethodController) Create() echo.HandlerFunc {
 
 func (ctl *PaymentMethodController) Get() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		isAdmin := middlewares.ExtractTokenIsAdmin(c)
-		if !isAdmin {
-			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))
-		}
-
 		res, err := ctl.repo.Get()
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))

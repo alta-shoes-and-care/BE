@@ -38,8 +38,8 @@ func (ctl *OrderController) Create() echo.HandlerFunc {
 		}
 
 		var newOrder RequestCreateOrder
-		if err := c.Bind(&newOrder); err != nil || newOrder.ServiceID == 0 || newOrder.Qty == 0 || newOrder.Total == 0 || newOrder.PaymentMethodID == 0 || strings.TrimSpace(newOrder.Date) == "" || strings.TrimSpace(newOrder.Address) == "" || strings.TrimSpace(newOrder.City) == "" || strings.TrimSpace(newOrder.Phone) == "" {
-			return c.JSON(http.StatusBadRequest, common.BadRequest("input dari user tidak sesuai, service_id, qty, total, payment_method_id, date, address, city, atau phone tidak boleh kosong"))
+		if err := c.Bind(&newOrder); err != nil || newOrder.ServiceID == 0 || newOrder.Qty == 0 || newOrder.Total == 0 || newOrder.PaymentMethodID == 0 || strings.TrimSpace(newOrder.PaymentMethodName) == "" || strings.TrimSpace(newOrder.Date) == "" || strings.TrimSpace(newOrder.Address) == "" || strings.TrimSpace(newOrder.City) == "" || strings.TrimSpace(newOrder.Phone) == "" {
+			return c.JSON(http.StatusBadRequest, common.BadRequest("input dari user tidak sesuai, service_id, qty, total, payment_method_id, payment_method_name, date, address, city, atau phone tidak boleh kosong"))
 		}
 
 		lastID, err := ctl.repo.GetLastOrderID()
@@ -48,11 +48,14 @@ func (ctl *OrderController) Create() echo.HandlerFunc {
 		}
 
 		userID := middlewares.ExtractTokenUserID(c)
-		midtransCharge := ctl.midtransClient.CreateTransaction(userID, lastID+1, newOrder.Total)
+		midtransCharge, err := ctl.midtransClient.CreateTransaction(userID, lastID+1, newOrder.Total, strings.ToLower(newOrder.PaymentMethodName))
+		if err != nil {
+			return c.JSON(http.StatusBadRequest, common.BadRequest(err.Error()))
+		}
 
-		url := midtransCharge.RedirectURL
+		url := GetPaymentURL(strings.ToLower(newOrder.PaymentMethodName), midtransCharge)
 		if strings.TrimSpace(url) == "" {
-			return c.JSON(http.StatusInternalServerError, common.InternalServerError("gagal membuat invoice pembayaran"))
+			return c.JSON(http.StatusBadRequest, common.BadRequest("gagal membuat invoice pembayaran"))
 		}
 
 		date, _ := time.Parse(layoutISO, newOrder.Date)

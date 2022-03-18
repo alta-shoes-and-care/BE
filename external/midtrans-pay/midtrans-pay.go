@@ -20,6 +20,10 @@ func NewMidtransClient(client coreapi.Client) *MidtransClientStruct {
 	}
 }
 
+var (
+	invoiceID string
+)
+
 func InitConnection() coreapi.Client {
 	MIDTRANS_KEY := os.Getenv("MIDTRANS_KEY")
 
@@ -29,7 +33,7 @@ func InitConnection() coreapi.Client {
 }
 
 func (client *MidtransClientStruct) CreateTransaction(userID, orderID, bill uint) *coreapi.ChargeResponse {
-	invoiceID := fmt.Sprintf("midtrans-%d%d", userID, orderID)
+	invoiceID = fmt.Sprintf("midtrans-%d%d", userID, orderID)
 
 	req := &coreapi.ChargeReq{
 		PaymentType: coreapi.PaymentTypeBCAKlikpay,
@@ -54,8 +58,6 @@ func (client *MidtransClientStruct) CreateTransaction(userID, orderID, bill uint
 }
 
 func (client *MidtransClientStruct) CheckTransaction(userID, orderID uint) (string, error) {
-	invoiceID := fmt.Sprintf("midtrans-%d%d", userID, orderID)
-
 	transactionStatusResp, err := client.CoreApiClient.CheckTransaction(invoiceID)
 	if err != nil {
 		log.Warn(err)

@@ -106,15 +106,15 @@ func (ctl *OrderController) GetByID() echo.HandlerFunc {
 			if err != nil {
 				return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
 			}
-			return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses mendapatkan detail order", ToResponseOrder(res)))
+			return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses mendapatkan detail order oleh user", ToResponseOrder(res)))
 		} else {
 			ID, _ := strconv.Atoi(c.Param("id"))
 
-			res, err := ctl.repo.GetByID(uint(ID))
+			res, err := ctl.repo.GetByIDAdmin(uint(ID))
 			if err != nil {
 				return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
 			}
-			return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses mendapatkan detail order", ToResponseOrder(res)))
+			return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses mendapatkan detail order oleh admin", ToResponseOrder(res)))
 		}
 	}
 }
@@ -139,7 +139,7 @@ func (ctl *OrderController) CheckPaymentStatus() echo.HandlerFunc {
 			}
 			return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses menjadikan status pembayaran menjadi paid", ToResponseOrder(res)))
 		} else if res == "status cancel" || res == "status deny" {
-			res, err := ctl.repo.SetCancel(uint(ID))
+			res, err := ctl.repo.SetCancelAdmin(uint(ID))
 			if err != nil {
 				return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
 			}
@@ -224,13 +224,25 @@ func (ctl *OrderController) SetDelivering() echo.HandlerFunc {
 // Set order status cancel
 func (ctl *OrderController) SetCancel() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		ID, _ := strconv.Atoi(c.Param("id"))
+		isAdmin := middlewares.ExtractTokenIsAdmin(c)
+		if !isAdmin {
+			ID, _ := strconv.Atoi(c.Param("id"))
+			userID := middlewares.ExtractTokenUserID(c)
 
-		res, err := ctl.repo.SetCancel(uint(ID))
-		if err != nil {
-			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
+			res, err := ctl.repo.SetCancelUser(uint(ID), userID)
+			if err != nil {
+				return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
+			}
+			return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses mengubah status order menjadi cancel oleh user", ToResponseOrder(res)))
+		} else {
+			ID, _ := strconv.Atoi(c.Param("id"))
+
+			res, err := ctl.repo.SetCancelAdmin(uint(ID))
+			if err != nil {
+				return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
+			}
+			return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses mengubah status order menjadi cancel admin", ToResponseOrder(res)))
 		}
-		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses mengubah status order menjadi cancel", ToResponseOrder(res)))
 	}
 }
 

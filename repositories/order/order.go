@@ -54,11 +54,11 @@ func (repo *OrderRepository) GetByUserID(UserID uint) ([]FormatOrder, error) {
 	return orders, nil
 }
 
-func (repo *OrderRepository) GetByID(ID uint) (FormatOrder, error) {
+func (repo *OrderRepository) GetByIDAdmin(ID uint) (FormatOrder, error) {
 	var order FormatOrder
 
 	if rowsAffected := repo.db.Table("orders as o").Select("o.id as ID, o.user_id as UserID, u.name as UserName, o.service_id as ServiceID, s.title as ServiceTitle, s.price as Price, o.qty as Qty, pm.id as PaymentMethodID, pm.name as PaymentMethodName, o.date as Date, o.address as Address, o.city as City, o.phone as Phone, o.status as Status, o.is_paid as IsPaid, o.has_refunded as HasRefunded, o.created_at as CreatedAt, o.url as Url").Joins("inner join services as s on s.id = o.service_id").Joins("inner join payment_methods as pm on pm.id = o.payment_method_id").Joins("inner join users as u on u.id = o.user_id").Where("o.id = ?", ID).First(&order).RowsAffected; rowsAffected == 0 {
-		return FormatOrder{}, errors.New("gagal mendapatkan detail order")
+		return FormatOrder{}, errors.New("gagal mendapatkan detail order oleh admin")
 	}
 	return order, nil
 }
@@ -67,7 +67,7 @@ func (repo *OrderRepository) GetByIDUser(ID, userID uint) (FormatOrder, error) {
 	var order FormatOrder
 
 	if rowsAffected := repo.db.Table("orders as o").Select("o.id as ID, o.user_id as UserID, u.name as UserName, o.service_id as ServiceID, s.title as ServiceTitle, s.price as Price, o.qty as Qty, pm.id as PaymentMethodID, pm.name as PaymentMethodName, o.date as Date, o.address as Address, o.city as City, o.phone as Phone, o.status as Status, o.is_paid as IsPaid, o.has_refunded as HasRefunded, o.created_at as CreatedAt, o.url as Url").Joins("inner join services as s on s.id = o.service_id").Joins("inner join payment_methods as pm on pm.id = o.payment_method_id").Joins("inner join users as u on u.id = o.user_id").Where("o.id = ? AND o.user_id = ?", ID, userID).First(&order).RowsAffected; rowsAffected == 0 {
-		return FormatOrder{}, errors.New("gagal mendapatkan detail order")
+		return FormatOrder{}, errors.New("gagal mendapatkan detail order oleh user")
 	}
 	return order, nil
 }
@@ -156,11 +156,26 @@ func (repo *OrderRepository) SetDelivering(ID uint) (FormatOrder, error) {
 	return order, nil
 }
 
-func (repo *OrderRepository) SetCancel(ID uint) (FormatOrder, error) {
+func (repo *OrderRepository) SetCancelAdmin(ID uint) (FormatOrder, error) {
 	var order FormatOrder
 
 	if rowsAffected := repo.db.Table("orders").Where("id = ?", ID).Update("status", "cancel").RowsAffected; rowsAffected == 0 {
-		return FormatOrder{}, errors.New("gagal mengubah status order menjadi cancel")
+		return FormatOrder{}, errors.New("gagal mengubah status order menjadi cancel oleh admin")
+	}
+
+	repo.db.Table("orders as o").Select("o.id as ID, o.user_id as UserID, u.name as UserName, o.service_id as ServiceID, s.title as ServiceTitle, s.price as Price, o.qty as Qty, pm.id as PaymentMethodID, pm.name as PaymentMethodName, o.date as Date, o.address as Address, o.city as City, o.phone as Phone, o.status as Status, o.is_paid as IsPaid, o.has_refunded as HasRefunded, o.created_at as CreatedAt, o.url as Url").
+		Joins("inner join services as s on s.id = o.service_id").
+		Joins("inner join payment_methods as pm on pm.id = o.payment_method_id").
+		Joins("inner join users as u on u.id = o.user_id").
+		Where("o.id = ?", ID).First(&order)
+	return order, nil
+}
+
+func (repo *OrderRepository) SetCancelUser(ID, userID uint) (FormatOrder, error) {
+	var order FormatOrder
+
+	if rowsAffected := repo.db.Table("orders").Where("id = ? AND user_id = ?", ID, userID).Update("status", "cancel").RowsAffected; rowsAffected == 0 {
+		return FormatOrder{}, errors.New("gagal mengubah status order menjadi cancel oleh user")
 	}
 
 	repo.db.Table("orders as o").Select("o.id as ID, o.user_id as UserID, u.name as UserName, o.service_id as ServiceID, s.title as ServiceTitle, s.price as Price, o.qty as Qty, pm.id as PaymentMethodID, pm.name as PaymentMethodName, o.date as Date, o.address as Address, o.city as City, o.phone as Phone, o.status as Status, o.is_paid as IsPaid, o.has_refunded as HasRefunded, o.created_at as CreatedAt, o.url as Url").

@@ -1481,7 +1481,31 @@ func TestSetCancel(t *testing.T) {
 		assert.Equal(t, http.StatusOK, response.Code)
 	})
 
-	t.Run("admin error", func(t *testing.T) {
+	t.Run("user internal server error", func(t *testing.T) {
+		req := httptest.NewRequest(http.MethodPut, "/", bytes.NewBuffer(nil))
+		res := httptest.NewRecorder()
+
+		req.Header.Set("Content-Type", "application/json")
+		req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtTokenUser))
+
+		context := e.NewContext(req, res)
+		context.SetPath(fmt.Sprintf("%v", rootPath))
+		context.SetParamNames("id")
+		context.SetParamValues("1")
+
+		serviceController := NewOrderController(&MockOrder.MockFalseOrderRepository{}, &MockOrder.MockTrueMidtrans{})
+		if err := middlewares.JWTMiddleware()(serviceController.SetCancel())(context); err != nil {
+			log.Fatal(err)
+			return
+		}
+
+		response := common.Response{}
+		json.Unmarshal([]byte(res.Body.Bytes()), &response)
+
+		assert.Equal(t, http.StatusInternalServerError, response.Code)
+	})
+
+	t.Run("user successful", func(t *testing.T) {
 		req := httptest.NewRequest(http.MethodPut, "/", bytes.NewBuffer(nil))
 		res := httptest.NewRecorder()
 
@@ -1502,10 +1526,10 @@ func TestSetCancel(t *testing.T) {
 		response := common.Response{}
 		json.Unmarshal([]byte(res.Body.Bytes()), &response)
 
-		assert.Equal(t, http.StatusUnauthorized, response.Code)
+		assert.Equal(t, http.StatusOK, response.Code)
 	})
 
-	t.Run("internal server error", func(t *testing.T) {
+	t.Run("admin internal server error", func(t *testing.T) {
 		req := httptest.NewRequest(http.MethodPut, "/", bytes.NewBuffer(nil))
 		res := httptest.NewRecorder()
 
@@ -1529,7 +1553,7 @@ func TestSetCancel(t *testing.T) {
 		assert.Equal(t, http.StatusInternalServerError, response.Code)
 	})
 
-	t.Run("succeed", func(t *testing.T) {
+	t.Run("admin successful", func(t *testing.T) {
 		req := httptest.NewRequest(http.MethodPut, "/", bytes.NewBuffer(nil))
 		res := httptest.NewRecorder()
 

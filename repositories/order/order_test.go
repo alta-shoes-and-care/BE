@@ -124,7 +124,7 @@ func TestGetByUserID(t *testing.T) {
 	})
 }
 
-func TestGetByID(t *testing.T) {
+func TestGetByIDAdmin(t *testing.T) {
 	Migrator()
 	userRepo := user.NewUserRepository(db)
 	serviceRepo := service.NewServiceRepository(db)
@@ -137,7 +137,7 @@ func TestGetByID(t *testing.T) {
 	mockPM := SeederPaymentMethod.PaymentMethodSeeder()
 
 	t.Run("negative", func(t *testing.T) {
-		_, err := repo.GetByID(1)
+		_, err := repo.GetByIDAdmin(1)
 		assert.NotNil(t, err)
 	})
 
@@ -146,7 +146,34 @@ func TestGetByID(t *testing.T) {
 		serviceRepo.Create(mockService)
 		PMRepo.Create(mockPM)
 		repo.Create(mockOrder)
-		_, err := repo.GetByID(1)
+		_, err := repo.GetByIDAdmin(1)
+		assert.Nil(t, err)
+	})
+}
+
+func TestGetByIDUser(t *testing.T) {
+	Migrator()
+	userRepo := user.NewUserRepository(db)
+	serviceRepo := service.NewServiceRepository(db)
+	PMRepo := paymentmethod.NewPaymentMethodRepository(db)
+	repo := NewOrderRepository(db)
+
+	mockUser := SeederUser.UserSeeder()
+	mockService := SeederService.ServiceSeeder()
+	mockOrder := SeederOrder.OrderSeeder()
+	mockPM := SeederPaymentMethod.PaymentMethodSeeder()
+
+	t.Run("negative", func(t *testing.T) {
+		_, err := repo.GetByIDUser(1, 1)
+		assert.NotNil(t, err)
+	})
+
+	t.Run("positive", func(t *testing.T) {
+		userRepo.Create(mockUser)
+		serviceRepo.Create(mockService)
+		PMRepo.Create(mockPM)
+		repo.Create(mockOrder)
+		_, err := repo.GetByIDUser(1, 1)
 		assert.Nil(t, err)
 	})
 }
@@ -319,7 +346,7 @@ func TestSetDelivering(t *testing.T) {
 	})
 }
 
-func TestSetCancel(t *testing.T) {
+func TestSetCancelAdmin(t *testing.T) {
 	Migrator()
 	userRepo := user.NewUserRepository(db)
 	serviceRepo := service.NewServiceRepository(db)
@@ -332,7 +359,7 @@ func TestSetCancel(t *testing.T) {
 	mockPM := SeederPaymentMethod.PaymentMethodSeeder()
 
 	t.Run("negative", func(t *testing.T) {
-		_, err := repo.SetCancel(1)
+		_, err := repo.SetCancelAdmin(1)
 		assert.NotNil(t, err)
 	})
 
@@ -341,7 +368,35 @@ func TestSetCancel(t *testing.T) {
 		serviceRepo.Create(mockService)
 		PMRepo.Create(mockPM)
 		repo.Create(mockOrder)
-		res, err := repo.SetCancel(1)
+		res, err := repo.SetCancelAdmin(1)
+		assert.Nil(t, err)
+		assert.Equal(t, "cancel", res.Status)
+	})
+}
+
+func TestSetCancelUser(t *testing.T) {
+	Migrator()
+	userRepo := user.NewUserRepository(db)
+	serviceRepo := service.NewServiceRepository(db)
+	PMRepo := paymentmethod.NewPaymentMethodRepository(db)
+	repo := NewOrderRepository(db)
+
+	mockUser := SeederUser.UserSeeder()
+	mockService := SeederService.ServiceSeeder()
+	mockOrder := SeederOrder.OrderSeeder()
+	mockPM := SeederPaymentMethod.PaymentMethodSeeder()
+
+	t.Run("negative", func(t *testing.T) {
+		_, err := repo.SetCancelUser(1, 1)
+		assert.NotNil(t, err)
+	})
+
+	t.Run("positive", func(t *testing.T) {
+		userRepo.Create(mockUser)
+		serviceRepo.Create(mockService)
+		PMRepo.Create(mockPM)
+		repo.Create(mockOrder)
+		res, err := repo.SetCancelUser(1, 1)
 		assert.Nil(t, err)
 		assert.Equal(t, "cancel", res.Status)
 	})
@@ -360,7 +415,7 @@ func TestSetDone(t *testing.T) {
 	mockPM := SeederPaymentMethod.PaymentMethodSeeder()
 
 	t.Run("negative", func(t *testing.T) {
-		_, err := repo.SetDone(1)
+		_, err := repo.SetDone(1, 1)
 		assert.NotNil(t, err)
 	})
 
@@ -369,8 +424,37 @@ func TestSetDone(t *testing.T) {
 		serviceRepo.Create(mockService)
 		PMRepo.Create(mockPM)
 		repo.Create(mockOrder)
-		res, err := repo.SetDone(1)
+		res, err := repo.SetDone(1, 1)
 		assert.Nil(t, err)
 		assert.Equal(t, "done", res.Status)
+	})
+}
+
+func TestSetRefund(t *testing.T) {
+	Migrator()
+	userRepo := user.NewUserRepository(db)
+	serviceRepo := service.NewServiceRepository(db)
+	PMRepo := paymentmethod.NewPaymentMethodRepository(db)
+	repo := NewOrderRepository(db)
+
+	mockUser := SeederUser.UserSeeder()
+	mockService := SeederService.ServiceSeeder()
+	mockOrder := SeederOrder.OrderSeeder()
+	mockPM := SeederPaymentMethod.PaymentMethodSeeder()
+
+	t.Run("negative", func(t *testing.T) {
+		_, err := repo.SetRefund(1)
+		assert.NotNil(t, err)
+	})
+
+	t.Run("positive", func(t *testing.T) {
+		userRepo.Create(mockUser)
+		serviceRepo.Create(mockService)
+		PMRepo.Create(mockPM)
+		mockOrder.Status = "cancel"
+		repo.Create(mockOrder)
+		res, err := repo.SetRefund(1)
+		assert.Nil(t, err)
+		assert.Equal(t, true, res.HasRefunded)
 	})
 }

@@ -29,6 +29,7 @@ const (
 	layoutISO = "2006-01-02"
 )
 
+// Create new order
 func (ctl *OrderController) Create() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		var newOrder RequestCreateOrder
@@ -59,6 +60,7 @@ func (ctl *OrderController) Create() echo.HandlerFunc {
 	}
 }
 
+// Get all orders
 func (ctl *OrderController) Get() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		isAdmin := middlewares.ExtractTokenIsAdmin(c)
@@ -74,6 +76,7 @@ func (ctl *OrderController) Get() echo.HandlerFunc {
 	}
 }
 
+// Get all orders by user id
 func (ctl *OrderController) GetByUserID() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		userID := middlewares.ExtractTokenUserID(c)
@@ -86,6 +89,7 @@ func (ctl *OrderController) GetByUserID() echo.HandlerFunc {
 	}
 }
 
+// Get order by id
 func (ctl *OrderController) GetByID() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		isAdmin := middlewares.ExtractTokenIsAdmin(c)
@@ -110,6 +114,7 @@ func (ctl *OrderController) GetByID() echo.HandlerFunc {
 	}
 }
 
+// Check payment status of order
 func (ctl *OrderController) CheckPaymentStatus() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		userID := middlewares.ExtractTokenUserID(c)
@@ -139,6 +144,7 @@ func (ctl *OrderController) CheckPaymentStatus() echo.HandlerFunc {
 	}
 }
 
+// Set order status accepted
 func (ctl *OrderController) SetAccepted() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		isAdmin := middlewares.ExtractTokenIsAdmin(c)
@@ -156,6 +162,7 @@ func (ctl *OrderController) SetAccepted() echo.HandlerFunc {
 	}
 }
 
+// Set order status rejected
 func (ctl *OrderController) SetRejected() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		isAdmin := middlewares.ExtractTokenIsAdmin(c)
@@ -173,6 +180,7 @@ func (ctl *OrderController) SetRejected() echo.HandlerFunc {
 	}
 }
 
+// Set order status on process
 func (ctl *OrderController) SetOnProcess() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		isAdmin := middlewares.ExtractTokenIsAdmin(c)
@@ -190,6 +198,7 @@ func (ctl *OrderController) SetOnProcess() echo.HandlerFunc {
 	}
 }
 
+// Set order status delivering
 func (ctl *OrderController) SetDelivering() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		isAdmin := middlewares.ExtractTokenIsAdmin(c)
@@ -207,6 +216,7 @@ func (ctl *OrderController) SetDelivering() echo.HandlerFunc {
 	}
 }
 
+// Set order status cancel
 func (ctl *OrderController) SetCancel() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		ID, _ := strconv.Atoi(c.Param("id"))
@@ -219,6 +229,7 @@ func (ctl *OrderController) SetCancel() echo.HandlerFunc {
 	}
 }
 
+// Set order status done
 func (ctl *OrderController) SetDone() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		ID, _ := strconv.Atoi(c.Param("id"))
@@ -231,6 +242,7 @@ func (ctl *OrderController) SetDone() echo.HandlerFunc {
 	}
 }
 
+// Set order refund status true
 func (ctl *OrderController) SetRefund() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		isAdmin := middlewares.ExtractTokenIsAdmin(c)

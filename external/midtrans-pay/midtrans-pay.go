@@ -71,9 +71,9 @@ func (client *MidtransClientStruct) CreateTransaction(userID, orderID, bill uint
 			TransactionDetails: trxDetails,
 			CustomExpiry:       &expiry,
 		}
-	case "bri epay":
+	case "danamon online":
 		req = &coreapi.ChargeReq{
-			PaymentType:        coreapi.PaymentTypeBRIEpay,
+			PaymentType:        coreapi.PaymentTypeDanamonOnline,
 			TransactionDetails: trxDetails,
 			CustomExpiry:       &expiry,
 		}

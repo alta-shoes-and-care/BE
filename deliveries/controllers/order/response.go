@@ -92,7 +92,7 @@ func GetPaymentURL(payment string, charge *coreapi.ChargeResponse) string {
 		return charge.Actions[1].URL
 	case "cimb clicks":
 		return charge.RedirectURL
-	case "bri epay":
+	case "danamon online":
 		return charge.RedirectURL
 	default:
 		return ""

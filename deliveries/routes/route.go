@@ -66,6 +66,7 @@ func RegisterPaths(e *echo.Echo, ac *auth.AuthController, uc *user.UserControlle
 	o.PUT("/deliver/:id", oc.SetDelivering())
 	o.PUT("/cancel/:id", oc.SetCancel())
 	o.PUT("/done/:id", oc.SetDone())
+	o.PUT("/refund/:id", oc.SetRefund())
 
 	// Review Method Route
 	r := e.Group("/reviews")

@@ -88,8 +88,6 @@ func GetPaymentURL(payment string, charge *coreapi.ChargeResponse) string {
 	switch payment {
 	case "bca klikpay":
 		return charge.RedirectURL
-	case "klikbca":
-		return charge.RedirectURL
 	case "gopay":
 		return charge.Actions[1].URL
 	case "cimb clicks":

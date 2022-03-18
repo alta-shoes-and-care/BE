@@ -33,7 +33,7 @@ func InitConnection() coreapi.Client {
 }
 
 func (client *MidtransClientStruct) CreateTransaction(userID, orderID, bill uint, payment string) (*coreapi.ChargeResponse, error) {
-	invoiceID = fmt.Sprintf("midtrans-testxxx-%d%d", userID, orderID)
+	invoiceID = fmt.Sprintf("midtrans-testxxz-%d%d", userID, orderID)
 	var req *coreapi.ChargeReq
 
 	trxDetails := midtrans.TransactionDetails{
@@ -52,16 +52,6 @@ func (client *MidtransClientStruct) CreateTransaction(userID, orderID, bill uint
 			PaymentType: coreapi.PaymentTypeBCAKlikpay,
 			BCAKlikPay: &coreapi.BCAKlikPayDetails{
 				Desc: "Pembayaran BCA Klik Pay",
-			},
-			TransactionDetails: trxDetails,
-			CustomExpiry:       &expiry,
-		}
-	case "klikbca":
-		req = &coreapi.ChargeReq{
-			PaymentType: coreapi.PaymentTypeKlikBca,
-			BCAKlikBCA: &coreapi.BcaKlikBCADetails{
-				Desc:   "Pembayaran Klik BCA",
-				UserID: fmt.Sprintf("%d", userID),
 			},
 			TransactionDetails: trxDetails,
 			CustomExpiry:       &expiry,

@@ -32,6 +32,8 @@ func RegisterPaths(e *echo.Echo, ac *auth.AuthController, uc *user.UserControlle
 	uj.GET("", uc.GetAllUsers())
 	uj.GET("/:id", uc.GetByID())
 	uj.GET("/me", uc.Get())
+	uj.PUT("/me", uc.Update())
+	uj.DELETE("/me", uc.Delete())
 
 	// Payment Method Route
 	pm := e.Group("/payments")

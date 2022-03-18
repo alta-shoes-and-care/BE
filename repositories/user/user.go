@@ -54,3 +54,19 @@ func (repo *UserRepository) GetAllUsers() ([]U.Users, error) {
 	}
 	return users, nil
 }
+
+func (repo *UserRepository) Update(userUpdate U.Users) (U.Users, error) {
+	if rowsAffected := repo.db.Model(&userUpdate).Updates(userUpdate).RowsAffected; rowsAffected == 0 {
+		return U.Users{}, errors.New("tidak ada perubahan pada data user")
+	}
+
+	repo.db.First(&userUpdate)
+	return userUpdate, nil
+}
+
+func (repo *UserRepository) Delete(ID uint) error {
+	if rowsAffected := repo.db.Delete(&U.Users{}, ID).RowsAffected; rowsAffected == 0 {
+		return errors.New("tidak ada user yang dihapus")
+	}
+	return nil
+}

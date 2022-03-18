@@ -110,3 +110,48 @@ func TestGetAllUsers(t *testing.T) {
 		assert.Equal(t, mockUser.Name, res[0].Name)
 	})
 }
+
+func TestUpdate(t *testing.T) {
+	Migrator()
+	repo := NewUserRepository(db)
+
+	mockUser := SeederUser.UserSeeder()
+
+	t.Run("positive", func(t *testing.T) {
+		repo.Create(mockUser)
+
+		mockUser2 := SeederUser.UserSeeder()
+		mockUser2.ID = 1
+		mockUser2.Name = "ucup_Updated"
+
+		res, err := repo.Update(mockUser2)
+		assert.Nil(t, err)
+		assert.Equal(t, mockUser2.Name, res.Name)
+	})
+
+	t.Run("negative", func(t *testing.T) {
+		mockUser2 := SeederUser.UserSeeder()
+
+		_, err := repo.Update(mockUser2)
+		assert.NotNil(t, err)
+	})
+}
+
+func TestDelete(t *testing.T) {
+	Migrator()
+	repo := NewUserRepository(db)
+
+	mockUser := SeederUser.UserSeeder()
+
+	t.Run("negative", func(t *testing.T) {
+		err := repo.Delete(1)
+		assert.NotNil(t, err)
+	})
+
+	t.Run("positive", func(t *testing.T) {
+		repo.Create(mockUser)
+
+		err := repo.Delete(1)
+		assert.Nil(t, err)
+	})
+}

@@ -63,7 +63,7 @@ func (ctl *OrderController) Get() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		isAdmin := middlewares.ExtractTokenIsAdmin(c)
 		if !isAdmin {
-			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))
+			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed jwt"))
 		}
 
 		res, err := ctl.repo.Get()
@@ -143,7 +143,7 @@ func (ctl *OrderController) SetAccepted() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		isAdmin := middlewares.ExtractTokenIsAdmin(c)
 		if !isAdmin {
-			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))
+			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed jwt"))
 		}
 
 		ID, _ := strconv.Atoi(c.Param("id"))
@@ -160,7 +160,7 @@ func (ctl *OrderController) SetRejected() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		isAdmin := middlewares.ExtractTokenIsAdmin(c)
 		if !isAdmin {
-			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))
+			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed jwt"))
 		}
 
 		ID, _ := strconv.Atoi(c.Param("id"))
@@ -177,7 +177,7 @@ func (ctl *OrderController) SetOnProcess() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		isAdmin := middlewares.ExtractTokenIsAdmin(c)
 		if !isAdmin {
-			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))
+			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed jwt"))
 		}
 
 		ID, _ := strconv.Atoi(c.Param("id"))
@@ -194,7 +194,7 @@ func (ctl *OrderController) SetDelivering() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		isAdmin := middlewares.ExtractTokenIsAdmin(c)
 		if !isAdmin {
-			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))
+			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed jwt"))
 		}
 
 		ID, _ := strconv.Atoi(c.Param("id"))
@@ -228,5 +228,22 @@ func (ctl *OrderController) SetDone() echo.HandlerFunc {
 			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
 		}
 		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses mengubah status order menjadi done", ToResponseOrder(res)))
+	}
+}
+
+func (ctl *OrderController) SetRefund() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		isAdmin := middlewares.ExtractTokenIsAdmin(c)
+		if !isAdmin {
+			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed jwt"))
+		}
+
+		ID, _ := strconv.Atoi(c.Param("id"))
+
+		res, err := ctl.repo.SetRefund(uint(ID))
+		if err != nil {
+			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
+		}
+		return c.JSON(http.StatusOK, common.Success(http.StatusOK, "sukses mengubah status refund menjadi true", ToResponseOrder(res)))
 	}
 }

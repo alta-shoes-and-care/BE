@@ -329,7 +329,7 @@ func (repo *MockTrueOrderRepository) SetCancelAdmin(ID uint) (orderRepo.FormatOr
 	}, nil
 }
 
-func (repo *MockTrueOrderRepository) SetCancelUser(ID uint) (orderRepo.FormatOrder, error) {
+func (repo *MockTrueOrderRepository) SetCancelUser(ID, userID uint) (orderRepo.FormatOrder, error) {
 	date, _ := time.Parse(layoutISO, "2022-03-16")
 	return orderRepo.FormatOrder{
 		ID:                1,

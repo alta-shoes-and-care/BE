@@ -2,6 +2,8 @@ package order
 
 import (
 	_OrderRepo "final-project/repositories/order"
+
+	"github.com/midtrans/midtrans-go/coreapi"
 )
 
 var (
@@ -80,4 +82,21 @@ func ToResponseOrderArr(orders []_OrderRepo.FormatOrder) []ResponseOrder {
 	}
 
 	return responses
+}
+
+func GetPaymentURL(payment string, charge *coreapi.ChargeResponse) string {
+	switch payment {
+	case "bca klikpay":
+		return charge.RedirectURL
+	case "klikbca":
+		return charge.RedirectURL
+	case "gopay":
+		return charge.Actions[1].URL
+	case "cimb clicks":
+		return charge.RedirectURL
+	case "bri epay":
+		return charge.RedirectURL
+	default:
+		return ""
+	}
 }

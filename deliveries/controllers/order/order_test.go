@@ -977,7 +977,7 @@ func TestSetAccepted(t *testing.T) {
 		req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtTokenUser))
 
 		context := e.NewContext(req, res)
-		context.SetPath(fmt.Sprintf("%v", rootPath))
+		context.SetPath(fmt.Sprintf("%v/accept", rootPath))
 		context.SetParamNames("id")
 		context.SetParamValues("1")
 
@@ -1001,7 +1001,7 @@ func TestSetAccepted(t *testing.T) {
 		req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtTokenAdmin))
 
 		context := e.NewContext(req, res)
-		context.SetPath(fmt.Sprintf("%v", rootPath))
+		context.SetPath(fmt.Sprintf("%v/accept", rootPath))
 		context.SetParamNames("id")
 		context.SetParamValues("1")
 
@@ -1025,7 +1025,7 @@ func TestSetAccepted(t *testing.T) {
 		req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtTokenAdmin))
 
 		context := e.NewContext(req, res)
-		context.SetPath(fmt.Sprintf("%v", rootPath))
+		context.SetPath(fmt.Sprintf("%v/accept", rootPath))
 		context.SetParamNames("id")
 		context.SetParamValues("1")
 
@@ -1105,7 +1105,7 @@ func TestSetRejected(t *testing.T) {
 		req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtTokenUser))
 
 		context := e.NewContext(req, res)
-		context.SetPath(fmt.Sprintf("%v", rootPath))
+		context.SetPath(fmt.Sprintf("%v/reject", rootPath))
 		context.SetParamNames("id")
 		context.SetParamValues("1")
 
@@ -1129,7 +1129,7 @@ func TestSetRejected(t *testing.T) {
 		req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtTokenAdmin))
 
 		context := e.NewContext(req, res)
-		context.SetPath(fmt.Sprintf("%v", rootPath))
+		context.SetPath(fmt.Sprintf("%v/reject", rootPath))
 		context.SetParamNames("id")
 		context.SetParamValues("1")
 
@@ -1153,7 +1153,7 @@ func TestSetRejected(t *testing.T) {
 		req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtTokenAdmin))
 
 		context := e.NewContext(req, res)
-		context.SetPath(fmt.Sprintf("%v", rootPath))
+		context.SetPath(fmt.Sprintf("%v/reject", rootPath))
 		context.SetParamNames("id")
 		context.SetParamValues("1")
 
@@ -1233,7 +1233,7 @@ func TestSetOnProcess(t *testing.T) {
 		req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtTokenUser))
 
 		context := e.NewContext(req, res)
-		context.SetPath(fmt.Sprintf("%v", rootPath))
+		context.SetPath(fmt.Sprintf("%v/process", rootPath))
 		context.SetParamNames("id")
 		context.SetParamValues("1")
 
@@ -1257,7 +1257,7 @@ func TestSetOnProcess(t *testing.T) {
 		req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtTokenAdmin))
 
 		context := e.NewContext(req, res)
-		context.SetPath(fmt.Sprintf("%v", rootPath))
+		context.SetPath(fmt.Sprintf("%v/process", rootPath))
 		context.SetParamNames("id")
 		context.SetParamValues("1")
 
@@ -1281,7 +1281,7 @@ func TestSetOnProcess(t *testing.T) {
 		req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtTokenAdmin))
 
 		context := e.NewContext(req, res)
-		context.SetPath(fmt.Sprintf("%v", rootPath))
+		context.SetPath(fmt.Sprintf("%v/process", rootPath))
 		context.SetParamNames("id")
 		context.SetParamValues("1")
 
@@ -1361,7 +1361,7 @@ func TestSetDelivering(t *testing.T) {
 		req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtTokenUser))
 
 		context := e.NewContext(req, res)
-		context.SetPath(fmt.Sprintf("%v", rootPath))
+		context.SetPath(fmt.Sprintf("%v/deliver", rootPath))
 		context.SetParamNames("id")
 		context.SetParamValues("1")
 
@@ -1385,7 +1385,7 @@ func TestSetDelivering(t *testing.T) {
 		req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtTokenAdmin))
 
 		context := e.NewContext(req, res)
-		context.SetPath(fmt.Sprintf("%v", rootPath))
+		context.SetPath(fmt.Sprintf("%v/deliver", rootPath))
 		context.SetParamNames("id")
 		context.SetParamValues("1")
 
@@ -1409,7 +1409,7 @@ func TestSetDelivering(t *testing.T) {
 		req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtTokenAdmin))
 
 		context := e.NewContext(req, res)
-		context.SetPath(fmt.Sprintf("%v", rootPath))
+		context.SetPath(fmt.Sprintf("%v/deliver", rootPath))
 		context.SetParamNames("id")
 		context.SetParamValues("1")
 
@@ -1489,7 +1489,7 @@ func TestSetCancel(t *testing.T) {
 		req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtTokenUser))
 
 		context := e.NewContext(req, res)
-		context.SetPath(fmt.Sprintf("%v", rootPath))
+		context.SetPath(fmt.Sprintf("%v/cancel", rootPath))
 		context.SetParamNames("id")
 		context.SetParamValues("1")
 
@@ -1513,7 +1513,7 @@ func TestSetCancel(t *testing.T) {
 		req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtTokenUser))
 
 		context := e.NewContext(req, res)
-		context.SetPath(fmt.Sprintf("%v", rootPath))
+		context.SetPath(fmt.Sprintf("%v/cancel", rootPath))
 		context.SetParamNames("id")
 		context.SetParamValues("1")
 
@@ -1537,7 +1537,7 @@ func TestSetCancel(t *testing.T) {
 		req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtTokenAdmin))
 
 		context := e.NewContext(req, res)
-		context.SetPath(fmt.Sprintf("%v", rootPath))
+		context.SetPath(fmt.Sprintf("%v/cancel", rootPath))
 		context.SetParamNames("id")
 		context.SetParamValues("1")
 
@@ -1561,7 +1561,7 @@ func TestSetCancel(t *testing.T) {
 		req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtTokenAdmin))
 
 		context := e.NewContext(req, res)
-		context.SetPath(fmt.Sprintf("%v", rootPath))
+		context.SetPath(fmt.Sprintf("%v/cancel", rootPath))
 		context.SetParamNames("id")
 		context.SetParamValues("1")
 

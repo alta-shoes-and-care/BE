@@ -8,7 +8,6 @@ import (
 	"final-project/deliveries/middlewares"
 	MockOrder "final-project/deliveries/mocks/order"
 	MockUser "final-project/deliveries/mocks/user"
-	midtranspay "final-project/external/midtrans-pay"
 	"fmt"
 	"log"
 	"net/http"
@@ -20,10 +19,8 @@ import (
 )
 
 var (
-	e              = echo.New()
-	rootPath       = "/orders"
-	midtransSess   = midtranspay.InitConnection()
-	midtransClient = midtranspay.NewMidtransClient(midtransSess)
+	e        = echo.New()
+	rootPath = "/orders"
 )
 
 func TestCreate(t *testing.T) {
@@ -102,7 +99,7 @@ func TestCreate(t *testing.T) {
 		context := e.NewContext(req, res)
 		context.SetPath(fmt.Sprintf("%v", rootPath))
 
-		serviceController := NewOrderController(&MockOrder.MockTrueOrderRepository{}, midtransClient)
+		serviceController := NewOrderController(&MockOrder.MockTrueOrderRepository{}, &MockOrder.MockTrueMidtrans{})
 		if err := middlewares.JWTMiddleware()(serviceController.Create())(context); err != nil {
 			log.Fatal(err)
 			return
@@ -112,5 +109,104 @@ func TestCreate(t *testing.T) {
 		json.Unmarshal([]byte(res.Body.Bytes()), &response)
 
 		assert.Equal(t, http.StatusBadRequest, response.Code)
+	})
+
+	t.Run("last order id and midtrans link error", func(t *testing.T) {
+		requestBody, _ := json.Marshal(RequestCreateOrder{
+			ServiceID:       1,
+			Qty:             1,
+			Total:           10000,
+			PaymentMethodID: 1,
+			Date:            "2022-03-18",
+			Address:         "Jl. Soedirman",
+			City:            "Surabaya",
+			Phone:           "080000000000",
+		})
+
+		req := httptest.NewRequest(http.MethodPost, "/", bytes.NewBuffer(requestBody))
+		res := httptest.NewRecorder()
+
+		req.Header.Set("Content-Type", "application/json")
+		req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtTokenAdmin))
+
+		context := e.NewContext(req, res)
+		context.SetPath(fmt.Sprintf("%v", rootPath))
+
+		serviceController := NewOrderController(&MockOrder.MockFalseOrderRepository{}, &MockOrder.MockFalseMidtrans{})
+		if err := middlewares.JWTMiddleware()(serviceController.Create())(context); err != nil {
+			log.Fatal(err)
+			return
+		}
+
+		response := common.Response{}
+		json.Unmarshal([]byte(res.Body.Bytes()), &response)
+
+		assert.Equal(t, http.StatusInternalServerError, response.Code)
+	})
+
+	t.Run("create order error", func(t *testing.T) {
+		requestBody, _ := json.Marshal(RequestCreateOrder{
+			ServiceID:       1,
+			Qty:             1,
+			Total:           10000,
+			PaymentMethodID: 1,
+			Date:            "2022-03-18",
+			Address:         "Jl. Soedirman",
+			City:            "Surabaya",
+			Phone:           "080000000000",
+		})
+
+		req := httptest.NewRequest(http.MethodPost, "/", bytes.NewBuffer(requestBody))
+		res := httptest.NewRecorder()
+
+		req.Header.Set("Content-Type", "application/json")
+		req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtTokenAdmin))
+
+		context := e.NewContext(req, res)
+		context.SetPath(fmt.Sprintf("%v", rootPath))
+
+		serviceController := NewOrderController(&MockOrder.MockFalseOrderRepository{}, &MockOrder.MockTrueMidtrans{})
+		if err := middlewares.JWTMiddleware()(serviceController.Create())(context); err != nil {
+			log.Fatal(err)
+			return
+		}
+
+		response := common.Response{}
+		json.Unmarshal([]byte(res.Body.Bytes()), &response)
+
+		assert.Equal(t, http.StatusInternalServerError, response.Code)
+	})
+
+	t.Run("success", func(t *testing.T) {
+		requestBody, _ := json.Marshal(RequestCreateOrder{
+			ServiceID:       1,
+			Qty:             1,
+			Total:           10000,
+			PaymentMethodID: 1,
+			Date:            "2022-03-18",
+			Address:         "Jl. Soedirman",
+			City:            "Surabaya",
+			Phone:           "080000000000",
+		})
+
+		req := httptest.NewRequest(http.MethodPost, "/", bytes.NewBuffer(requestBody))
+		res := httptest.NewRecorder()
+
+		req.Header.Set("Content-Type", "application/json")
+		req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtTokenAdmin))
+
+		context := e.NewContext(req, res)
+		context.SetPath(fmt.Sprintf("%v", rootPath))
+
+		serviceController := NewOrderController(&MockOrder.MockTrueOrderRepository{}, &MockOrder.MockTrueMidtrans{})
+		if err := middlewares.JWTMiddleware()(serviceController.Create())(context); err != nil {
+			log.Fatal(err)
+			return
+		}
+
+		response := common.Response{}
+		json.Unmarshal([]byte(res.Body.Bytes()), &response)
+
+		assert.Equal(t, http.StatusCreated, response.Code)
 	})
 }

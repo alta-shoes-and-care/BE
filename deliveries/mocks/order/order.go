@@ -17,7 +17,26 @@ type MockTrueOrderRepository struct{}
 
 func (repo *MockTrueOrderRepository) Create(newOrder O.Orders) (orderRepo.FormatOrder, error) {
 	date, _ := time.Parse(layoutISO, "2022-03-16")
-	return orderRepo.FormatOrder{ID: 1, UserID: 1, ServiceID: 1, ServiceTitle: "Regular Cleaning", Price: 15000, Qty: 1, PaymentMethodID: 1, PaymentMethodName: "BCA Klikpay", Date: date, Address: "Jl. Soedirman", City: "Jakarta", Phone: "080000000000", Status: "pending", IsPaid: false, Url: "http://foo.com/bar-1"}, nil
+	return orderRepo.FormatOrder{
+		ID:                1,
+		UserID:            1,
+		UserName:          "Ucup",
+		ServiceID:         1,
+		ServiceTitle:      "Regular Cleaning",
+		Price:             15000,
+		Qty:               1,
+		PaymentMethodID:   1,
+		PaymentMethodName: "BCA Klikpay",
+		Date:              date,
+		Address:           "Jl. Soedirman",
+		City:              "Jakarta",
+		Phone:             "080000000000",
+		Status:            "pending",
+		IsPaid:            false,
+		HasRefunded:       false,
+		CreatedAt:         time.Now(),
+		Url:               "http://foo.com/bar-1",
+	}, nil
 }
 
 func (repo *MockTrueOrderRepository) Get() ([]orderRepo.FormatOrder, error) {
@@ -26,6 +45,7 @@ func (repo *MockTrueOrderRepository) Get() ([]orderRepo.FormatOrder, error) {
 	order1 := orderRepo.FormatOrder{
 		ID:                1,
 		UserID:            1,
+		UserName:          "Ucup",
 		ServiceID:         1,
 		ServiceTitle:      "Regular Cleaning",
 		Price:             15000,
@@ -38,11 +58,14 @@ func (repo *MockTrueOrderRepository) Get() ([]orderRepo.FormatOrder, error) {
 		Phone:             "080000000000",
 		Status:            "pending",
 		IsPaid:            false,
+		HasRefunded:       false,
+		CreatedAt:         time.Now(),
 		Url:               "http://foo.com/bar-1",
 	}
 	order2 := orderRepo.FormatOrder{
 		ID:                2,
 		UserID:            1,
+		UserName:          "Ucup",
 		ServiceID:         1,
 		ServiceTitle:      "Regular Cleaning",
 		Price:             15000,
@@ -55,6 +78,8 @@ func (repo *MockTrueOrderRepository) Get() ([]orderRepo.FormatOrder, error) {
 		Phone:             "080000000000",
 		Status:            "pending",
 		IsPaid:            false,
+		HasRefunded:       false,
+		CreatedAt:         time.Now(),
 		Url:               "http://foo.com/bar-2",
 	}
 
@@ -67,6 +92,7 @@ func (repo *MockTrueOrderRepository) GetByUserID(UserID uint) ([]orderRepo.Forma
 	order1 := orderRepo.FormatOrder{
 		ID:                1,
 		UserID:            1,
+		UserName:          "Ucup",
 		ServiceID:         1,
 		ServiceTitle:      "Regular Cleaning",
 		Price:             15000,
@@ -79,11 +105,14 @@ func (repo *MockTrueOrderRepository) GetByUserID(UserID uint) ([]orderRepo.Forma
 		Phone:             "080000000000",
 		Status:            "pending",
 		IsPaid:            false,
+		HasRefunded:       false,
+		CreatedAt:         time.Now(),
 		Url:               "http://foo.com/bar-1",
 	}
 	order2 := orderRepo.FormatOrder{
 		ID:                2,
 		UserID:            1,
+		UserName:          "Ucup",
 		ServiceID:         1,
 		ServiceTitle:      "Regular Cleaning",
 		Price:             15000,
@@ -96,6 +125,8 @@ func (repo *MockTrueOrderRepository) GetByUserID(UserID uint) ([]orderRepo.Forma
 		Phone:             "080000000000",
 		Status:            "pending",
 		IsPaid:            false,
+		HasRefunded:       false,
+		CreatedAt:         time.Now(),
 		Url:               "http://foo.com/bar-2",
 	}
 
@@ -104,12 +135,50 @@ func (repo *MockTrueOrderRepository) GetByUserID(UserID uint) ([]orderRepo.Forma
 
 func (repo *MockTrueOrderRepository) GetByID(ID uint) (orderRepo.FormatOrder, error) {
 	date, _ := time.Parse(layoutISO, "2022-03-16")
-	return orderRepo.FormatOrder{ID: 1, UserID: 1, ServiceID: 1, ServiceTitle: "Regular Cleaning", Price: 15000, Qty: 1, PaymentMethodID: 1, PaymentMethodName: "BCA Klikpay", Date: date, Address: "Jl. Soedirman", City: "Jakarta", Phone: "080000000000", Status: "pending", IsPaid: false, Url: "http://foo.com/bar-1"}, nil
+	return orderRepo.FormatOrder{
+		ID:                1,
+		UserID:            1,
+		UserName:          "Ucup",
+		ServiceID:         1,
+		ServiceTitle:      "Regular Cleaning",
+		Price:             15000,
+		Qty:               1,
+		PaymentMethodID:   1,
+		PaymentMethodName: "BCA Klikpay",
+		Date:              date,
+		Address:           "Jl. Soedirman",
+		City:              "Jakarta",
+		Phone:             "080000000000",
+		Status:            "pending",
+		IsPaid:            false,
+		HasRefunded:       false,
+		CreatedAt:         time.Now(),
+		Url:               "http://foo.com/bar-1",
+	}, nil
 }
 
 func (repo *MockTrueOrderRepository) GetByIDUser(ID, userID uint) (orderRepo.FormatOrder, error) {
 	date, _ := time.Parse(layoutISO, "2022-03-16")
-	return orderRepo.FormatOrder{ID: 1, UserID: 1, ServiceID: 1, ServiceTitle: "Regular Cleaning", Price: 15000, Qty: 1, PaymentMethodID: 1, PaymentMethodName: "BCA Klikpay", Date: date, Address: "Jl. Soedirman", City: "Jakarta", Phone: "080000000000", Status: "pending", IsPaid: false, Url: "http://foo.com/bar-1"}, nil
+	return orderRepo.FormatOrder{
+		ID:                1,
+		UserID:            1,
+		UserName:          "Ucup",
+		ServiceID:         1,
+		ServiceTitle:      "Regular Cleaning",
+		Price:             15000,
+		Qty:               1,
+		PaymentMethodID:   1,
+		PaymentMethodName: "BCA Klikpay",
+		Date:              date,
+		Address:           "Jl. Soedirman",
+		City:              "Jakarta",
+		Phone:             "080000000000",
+		Status:            "pending",
+		IsPaid:            false,
+		HasRefunded:       false,
+		CreatedAt:         time.Now(),
+		Url:               "http://foo.com/bar-1",
+	}, nil
 }
 
 func (repo *MockTrueOrderRepository) GetLastOrderID() (uint, error) {
@@ -118,37 +187,194 @@ func (repo *MockTrueOrderRepository) GetLastOrderID() (uint, error) {
 
 func (repo *MockTrueOrderRepository) SetPaid(ID uint) (orderRepo.FormatOrder, error) {
 	date, _ := time.Parse(layoutISO, "2022-03-16")
-	return orderRepo.FormatOrder{ID: 1, UserID: 1, ServiceID: 1, ServiceTitle: "Regular Cleaning", Price: 15000, Qty: 1, PaymentMethodID: 1, PaymentMethodName: "BCA Klikpay", Date: date, Address: "Jl. Soedirman", City: "Jakarta", Phone: "080000000000", Status: "pending", IsPaid: true, Url: "http://foo.com/bar-1"}, nil
+	return orderRepo.FormatOrder{
+		ID:                1,
+		UserID:            1,
+		UserName:          "Ucup",
+		ServiceID:         1,
+		ServiceTitle:      "Regular Cleaning",
+		Price:             15000,
+		Qty:               1,
+		PaymentMethodID:   1,
+		PaymentMethodName: "BCA Klikpay",
+		Date:              date,
+		Address:           "Jl. Soedirman",
+		City:              "Jakarta",
+		Phone:             "080000000000",
+		Status:            "pending",
+		IsPaid:            true,
+		HasRefunded:       false,
+		CreatedAt:         time.Now(),
+		Url:               "http://foo.com/bar-1",
+	}, nil
 }
 
 func (repo *MockTrueOrderRepository) SetAccepted(ID uint) (orderRepo.FormatOrder, error) {
 	date, _ := time.Parse(layoutISO, "2022-03-16")
-	return orderRepo.FormatOrder{ID: 1, UserID: 1, ServiceID: 1, ServiceTitle: "Regular Cleaning", Price: 15000, Qty: 1, PaymentMethodID: 1, PaymentMethodName: "BCA Klikpay", Date: date, Address: "Jl. Soedirman", City: "Jakarta", Phone: "080000000000", Status: "accepted", IsPaid: true, Url: "http://foo.com/bar-1"}, nil
+	return orderRepo.FormatOrder{
+		ID:                1,
+		UserID:            1,
+		UserName:          "Ucup",
+		ServiceID:         1,
+		ServiceTitle:      "Regular Cleaning",
+		Price:             15000,
+		Qty:               1,
+		PaymentMethodID:   1,
+		PaymentMethodName: "BCA Klikpay",
+		Date:              date,
+		Address:           "Jl. Soedirman",
+		City:              "Jakarta",
+		Phone:             "080000000000",
+		Status:            "accepted",
+		IsPaid:            true,
+		HasRefunded:       false,
+		CreatedAt:         time.Now(),
+		Url:               "http://foo.com/bar-1",
+	}, nil
 }
 
 func (repo *MockTrueOrderRepository) SetRejected(ID uint) (orderRepo.FormatOrder, error) {
 	date, _ := time.Parse(layoutISO, "2022-03-16")
-	return orderRepo.FormatOrder{ID: 1, UserID: 1, ServiceID: 1, ServiceTitle: "Regular Cleaning", Price: 15000, Qty: 1, PaymentMethodID: 1, PaymentMethodName: "BCA Klikpay", Date: date, Address: "Jl. Soedirman", City: "Jakarta", Phone: "080000000000", Status: "rejected", IsPaid: false, Url: "http://foo.com/bar-1"}, nil
+	return orderRepo.FormatOrder{
+		ID:                1,
+		UserID:            1,
+		UserName:          "Ucup",
+		ServiceID:         1,
+		ServiceTitle:      "Regular Cleaning",
+		Price:             15000,
+		Qty:               1,
+		PaymentMethodID:   1,
+		PaymentMethodName: "BCA Klikpay",
+		Date:              date,
+		Address:           "Jl. Soedirman",
+		City:              "Jakarta",
+		Phone:             "080000000000",
+		Status:            "rejected",
+		IsPaid:            false,
+		HasRefunded:       false,
+		CreatedAt:         time.Now(),
+		Url:               "http://foo.com/bar-1",
+	}, nil
 }
 
 func (repo *MockTrueOrderRepository) SetOnProcess(ID uint) (orderRepo.FormatOrder, error) {
 	date, _ := time.Parse(layoutISO, "2022-03-16")
-	return orderRepo.FormatOrder{ID: 1, UserID: 1, ServiceID: 1, ServiceTitle: "Regular Cleaning", Price: 15000, Qty: 1, PaymentMethodID: 1, PaymentMethodName: "BCA Klikpay", Date: date, Address: "Jl. Soedirman", City: "Jakarta", Phone: "080000000000", Status: "on process", IsPaid: true, Url: "http://foo.com/bar-1"}, nil
+	return orderRepo.FormatOrder{
+		ID:                1,
+		UserID:            1,
+		UserName:          "Ucup",
+		ServiceID:         1,
+		ServiceTitle:      "Regular Cleaning",
+		Price:             15000,
+		Qty:               1,
+		PaymentMethodID:   1,
+		PaymentMethodName: "BCA Klikpay",
+		Date:              date,
+		Address:           "Jl. Soedirman",
+		City:              "Jakarta",
+		Phone:             "080000000000",
+		Status:            "on process",
+		IsPaid:            true,
+		HasRefunded:       false,
+		CreatedAt:         time.Now(),
+		Url:               "http://foo.com/bar-1",
+	}, nil
 }
 
 func (repo *MockTrueOrderRepository) SetDelivering(ID uint) (orderRepo.FormatOrder, error) {
 	date, _ := time.Parse(layoutISO, "2022-03-16")
-	return orderRepo.FormatOrder{ID: 1, UserID: 1, ServiceID: 1, ServiceTitle: "Regular Cleaning", Price: 15000, Qty: 1, PaymentMethodID: 1, PaymentMethodName: "BCA Klikpay", Date: date, Address: "Jl. Soedirman", City: "Jakarta", Phone: "080000000000", Status: "delivering", IsPaid: true, Url: "http://foo.com/bar-1"}, nil
+	return orderRepo.FormatOrder{
+		ID:                1,
+		UserID:            1,
+		UserName:          "Ucup",
+		ServiceID:         1,
+		ServiceTitle:      "Regular Cleaning",
+		Price:             15000,
+		Qty:               1,
+		PaymentMethodID:   1,
+		PaymentMethodName: "BCA Klikpay",
+		Date:              date,
+		Address:           "Jl. Soedirman",
+		City:              "Jakarta",
+		Phone:             "080000000000",
+		Status:            "delivering",
+		IsPaid:            true,
+		HasRefunded:       false,
+		CreatedAt:         time.Now(),
+		Url:               "http://foo.com/bar-1",
+	}, nil
 }
 
 func (repo *MockTrueOrderRepository) SetCancel(ID uint) (orderRepo.FormatOrder, error) {
 	date, _ := time.Parse(layoutISO, "2022-03-16")
-	return orderRepo.FormatOrder{ID: 1, UserID: 1, ServiceID: 1, ServiceTitle: "Regular Cleaning", Price: 15000, Qty: 1, PaymentMethodID: 1, PaymentMethodName: "BCA Klikpay", Date: date, Address: "Jl. Soedirman", City: "Jakarta", Phone: "080000000000", Status: "cancel", IsPaid: true, Url: "http://foo.com/bar-1"}, nil
+	return orderRepo.FormatOrder{
+		ID:                1,
+		UserID:            1,
+		UserName:          "Ucup",
+		ServiceID:         1,
+		ServiceTitle:      "Regular Cleaning",
+		Price:             15000,
+		Qty:               1,
+		PaymentMethodID:   1,
+		PaymentMethodName: "BCA Klikpay",
+		Date:              date,
+		Address:           "Jl. Soedirman",
+		City:              "Jakarta",
+		Phone:             "080000000000",
+		Status:            "cancel",
+		IsPaid:            true,
+		HasRefunded:       false,
+		CreatedAt:         time.Now(),
+		Url:               "http://foo.com/bar-1",
+	}, nil
 }
 
 func (repo *MockTrueOrderRepository) SetDone(ID uint) (orderRepo.FormatOrder, error) {
 	date, _ := time.Parse(layoutISO, "2022-03-16")
-	return orderRepo.FormatOrder{ID: 1, UserID: 1, ServiceID: 1, ServiceTitle: "Regular Cleaning", Price: 15000, Qty: 1, PaymentMethodID: 1, PaymentMethodName: "BCA Klikpay", Date: date, Address: "Jl. Soedirman", City: "Jakarta", Phone: "080000000000", Status: "done", IsPaid: true, Url: "http://foo.com/bar-1"}, nil
+	return orderRepo.FormatOrder{
+		ID:                1,
+		UserID:            1,
+		UserName:          "Ucup",
+		ServiceID:         1,
+		ServiceTitle:      "Regular Cleaning",
+		Price:             15000,
+		Qty:               1,
+		PaymentMethodID:   1,
+		PaymentMethodName: "BCA Klikpay",
+		Date:              date,
+		Address:           "Jl. Soedirman",
+		City:              "Jakarta",
+		Phone:             "080000000000",
+		Status:            "done",
+		IsPaid:            true,
+		HasRefunded:       false,
+		CreatedAt:         time.Now(),
+		Url:               "http://foo.com/bar-1",
+	}, nil
+}
+
+func (repo *MockTrueOrderRepository) SetRefund(ID uint) (orderRepo.FormatOrder, error) {
+	date, _ := time.Parse(layoutISO, "2022-03-16")
+	return orderRepo.FormatOrder{
+		ID:                1,
+		UserID:            1,
+		UserName:          "Ucup",
+		ServiceID:         1,
+		ServiceTitle:      "Regular Cleaning",
+		Price:             15000,
+		Qty:               1,
+		PaymentMethodID:   1,
+		PaymentMethodName: "BCA Klikpay",
+		Date:              date,
+		Address:           "Jl. Soedirman",
+		City:              "Jakarta",
+		Phone:             "080000000000",
+		Status:            "done",
+		IsPaid:            true,
+		HasRefunded:       true,
+		CreatedAt:         time.Now(),
+		Url:               "http://foo.com/bar-1",
+	}, nil
 }
 
 type MockFalseOrderRepository struct{}

@@ -305,7 +305,31 @@ func (repo *MockTrueOrderRepository) SetDelivering(ID uint) (orderRepo.FormatOrd
 	}, nil
 }
 
-func (repo *MockTrueOrderRepository) SetCancel(ID uint) (orderRepo.FormatOrder, error) {
+func (repo *MockTrueOrderRepository) SetCancelAdmin(ID uint) (orderRepo.FormatOrder, error) {
+	date, _ := time.Parse(layoutISO, "2022-03-16")
+	return orderRepo.FormatOrder{
+		ID:                1,
+		UserID:            1,
+		UserName:          "Ucup",
+		ServiceID:         1,
+		ServiceTitle:      "Regular Cleaning",
+		Price:             15000,
+		Qty:               1,
+		PaymentMethodID:   1,
+		PaymentMethodName: "BCA Klikpay",
+		Date:              date,
+		Address:           "Jl. Soedirman",
+		City:              "Jakarta",
+		Phone:             "080000000000",
+		Status:            "cancel",
+		IsPaid:            true,
+		HasRefunded:       false,
+		CreatedAt:         time.Now(),
+		Url:               "http://foo.com/bar-1",
+	}, nil
+}
+
+func (repo *MockTrueOrderRepository) SetCancelUser(ID uint) (orderRepo.FormatOrder, error) {
 	date, _ := time.Parse(layoutISO, "2022-03-16")
 	return orderRepo.FormatOrder{
 		ID:                1,
@@ -423,7 +447,11 @@ func (repo *MockFalseOrderRepository) SetDelivering(ID uint) (orderRepo.FormatOr
 	return orderRepo.FormatOrder{}, errors.New("fail to set delivering")
 }
 
-func (repo *MockFalseOrderRepository) SetCancel(ID uint) (orderRepo.FormatOrder, error) {
+func (repo *MockFalseOrderRepository) SetCancelAdmin(ID uint) (orderRepo.FormatOrder, error) {
+	return orderRepo.FormatOrder{}, errors.New("fail to set cancel")
+}
+
+func (repo *MockFalseOrderRepository) SetCancelUser(ID, userID uint) (orderRepo.FormatOrder, error) {
 	return orderRepo.FormatOrder{}, errors.New("fail to set cancel")
 }
 

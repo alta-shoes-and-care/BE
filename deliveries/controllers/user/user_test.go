@@ -576,7 +576,8 @@ func TestUpdate(t *testing.T) {
 
 	t.Run("succeed to update", func(t *testing.T) {
 		requestBody, _ := json.Marshal(RequestUpdateUser{
-			Name: "Ucup Updated",
+			Name:     "Ucup Updated",
+			Password: "ucup1234",
 		})
 
 		req := httptest.NewRequest(http.MethodPut, "/", bytes.NewBuffer(requestBody))

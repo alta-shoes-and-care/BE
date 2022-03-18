@@ -33,7 +33,7 @@ func InitConnection() coreapi.Client {
 }
 
 func (client *MidtransClientStruct) CreateTransaction(userID, orderID, bill uint) *coreapi.ChargeResponse {
-	invoiceID = fmt.Sprintf("midtrans-%d%d", userID, orderID)
+	invoiceID = fmt.Sprintf("midtrans-test-%d%d", userID, orderID)
 
 	req := &coreapi.ChargeReq{
 		PaymentType: coreapi.PaymentTypeBCAKlikpay,

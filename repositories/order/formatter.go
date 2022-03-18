@@ -1,25 +1,26 @@
 package order
 
-import (
-	"gorm.io/datatypes"
-)
+import "time"
 
 type FormatOrder struct {
-	ID                uint           `json:"id"`
-	UserID            uint           `json:"user_id"`
-	ServiceID         uint           `json:"service_id"`
-	ServiceTitle      string         `json:"service_title"`
-	Price             uint           `json:"price"`
-	Qty               uint           `json:"qty"`
-	PaymentMethodID   uint           `json:"payment_method_id"`
-	PaymentMethodName string         `json:"payment_method_name"`
-	Date              datatypes.Date `json:"date"`
-	Address           string         `json:"address"`
-	City              string         `json:"city"`
-	Phone             string         `json:"phone"`
-	Status            string         `json:"status"`
-	IsPaid            bool           `json:"is_paid"`
-	Url               string         `json:"url"`
+	ID                uint
+	UserID            uint
+	UserName          string
+	ServiceID         uint
+	ServiceTitle      string
+	Price             uint
+	Qty               uint
+	PaymentMethodID   uint
+	PaymentMethodName string
+	Date              time.Time
+	Address           string
+	City              string
+	Phone             string
+	Status            string
+	IsPaid            bool
+	HasRefunded       bool
+	CreatedAt         time.Time
+	Url               string
 }
 
 type LastOrderID struct {

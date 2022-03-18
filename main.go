@@ -10,6 +10,7 @@ import (
 	_UserController "final-project/deliveries/controllers/user"
 	"final-project/deliveries/routes"
 	awss3 "final-project/external/aws-s3"
+	midtranspay "final-project/external/midtrans-pay"
 	_AuthRepo "final-project/repositories/auth"
 	_OrderRepo "final-project/repositories/order"
 	_PMRepo "final-project/repositories/payment-method"
@@ -37,12 +38,15 @@ func main() {
 	awsSess := awss3.InitS3(config.S3_KEY, config.S3_SECRET, config.S3_REGION)
 	awsClient := awss3.NewAWSClient(awsSess)
 
+	midtransSess := midtranspay.InitConnection()
+	midtransClient := midtranspay.NewMidtransClient(midtransSess)
+
 	ac := _AuthController.NewAuthController(authRepo)
 	uc := _UserController.NewUserController(userRepo)
 	pmc := _PMController.NewPaymentMethodController(paymentMethodRepo)
 	sc := _ServiceController.NewServiceController(serviceRepo, config, awsClient)
 	rc := _ReviewController.NewReviewController(reviewRepo)
-	oc := _OrderController.NewOrderController(orderRepo)
+	oc := _OrderController.NewOrderController(orderRepo, midtransClient)
 
 	e := echo.New()
 

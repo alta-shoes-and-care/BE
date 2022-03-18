@@ -16,4 +16,5 @@ type Order interface {
 	SetDelivering(ID uint) (FormatOrder, error)
 	SetCancel(ID uint) (FormatOrder, error)
 	SetDone(ID uint) (FormatOrder, error)
+	SetRefund(ID uint) (FormatOrder, error)
 }

@@ -27,7 +27,7 @@ func (repo *OrderRepository) Create(newOrder O.Orders) (FormatOrder, error) {
 	}
 
 	repo.db.Table("orders as o").
-		Select("o.id as ID, o.user_id as UserID, u.name as UserName, o.service_id as ServiceID, s.title as ServiceTitle, s.price as Price, o.qty as Qty, pm.id as PaymentMethodID, pm.name as PaymentMethodName, o.date as Date, o.address as Address, o.city as City, o.phone as Phone, o.status as Status, o.is_paid as IsPaid, o.created_at as CreatedAt, o.url as Url").
+		Select("o.id as ID, o.user_id as UserID, u.name as UserName, o.service_id as ServiceID, s.title as ServiceTitle, s.price as Price, o.qty as Qty, pm.id as PaymentMethodID, pm.name as PaymentMethodName, o.date as Date, o.address as Address, o.city as City, o.phone as Phone, o.status as Status, o.is_paid as IsPaid, o.has_refunded as HasRefunded, o.created_at as CreatedAt, o.url as Url").
 		Joins("inner join services as s on s.id = o.service_id").
 		Joins("inner join payment_methods as pm on pm.id = o.payment_method_id").
 		Joins("inner join users as u on u.id = o.user_id").
@@ -39,7 +39,7 @@ func (repo *OrderRepository) Create(newOrder O.Orders) (FormatOrder, error) {
 func (repo *OrderRepository) Get() ([]FormatOrder, error) {
 	var orders []FormatOrder
 
-	if rowsAffected := repo.db.Table("orders as o").Select("o.id as ID, o.user_id as UserID, u.name as UserName, o.service_id as ServiceID, s.title as ServiceTitle, s.price as Price, o.qty as Qty, pm.id as PaymentMethodID, pm.name as PaymentMethodName, o.date as Date, o.address as Address, o.city as City, o.phone as Phone, o.status as Status, o.is_paid as IsPaid, o.created_at as CreatedAt, o.url as Url").Joins("inner join services as s on s.id = o.service_id").Joins("inner join payment_methods as pm on pm.id = o.payment_method_id").Joins("inner join users as u on u.id = o.user_id").Find(&orders).RowsAffected; rowsAffected == 0 {
+	if rowsAffected := repo.db.Table("orders as o").Select("o.id as ID, o.user_id as UserID, u.name as UserName, o.service_id as ServiceID, s.title as ServiceTitle, s.price as Price, o.qty as Qty, pm.id as PaymentMethodID, pm.name as PaymentMethodName, o.date as Date, o.address as Address, o.city as City, o.phone as Phone, o.status as Status, o.is_paid as IsPaid, o.has_refunded as HasRefunded, o.created_at as CreatedAt, o.url as Url").Joins("inner join services as s on s.id = o.service_id").Joins("inner join payment_methods as pm on pm.id = o.payment_method_id").Joins("inner join users as u on u.id = o.user_id").Find(&orders).RowsAffected; rowsAffected == 0 {
 		return nil, errors.New("tidak terdapat order sama sekali")
 	}
 	return orders, nil
@@ -48,7 +48,7 @@ func (repo *OrderRepository) Get() ([]FormatOrder, error) {
 func (repo *OrderRepository) GetByUserID(UserID uint) ([]FormatOrder, error) {
 	var orders []FormatOrder
 
-	if rowsAffected := repo.db.Table("orders as o").Select("o.id as ID, o.user_id as UserID, u.name as UserName, o.service_id as ServiceID, s.title as ServiceTitle, s.price as Price, o.qty as Qty, pm.id as PaymentMethodID, pm.name as PaymentMethodName, o.date as Date, o.address as Address, o.city as City, o.phone as Phone, o.status as Status, o.is_paid as IsPaid, o.created_at as CreatedAt, o.url as Url").Joins("inner join services as s on s.id = o.service_id").Joins("inner join payment_methods as pm on pm.id = o.payment_method_id").Joins("inner join users as u on u.id = o.user_id").Where("o.user_id = ?", UserID).Find(&orders).RowsAffected; rowsAffected == 0 {
+	if rowsAffected := repo.db.Table("orders as o").Select("o.id as ID, o.user_id as UserID, u.name as UserName, o.service_id as ServiceID, s.title as ServiceTitle, s.price as Price, o.qty as Qty, pm.id as PaymentMethodID, pm.name as PaymentMethodName, o.date as Date, o.address as Address, o.city as City, o.phone as Phone, o.status as Status, o.is_paid as IsPaid, o.has_refunded as HasRefunded, o.created_at as CreatedAt, o.url as Url").Joins("inner join services as s on s.id = o.service_id").Joins("inner join payment_methods as pm on pm.id = o.payment_method_id").Joins("inner join users as u on u.id = o.user_id").Where("o.user_id = ?", UserID).Find(&orders).RowsAffected; rowsAffected == 0 {
 		return nil, errors.New("tidak terdapat order sama sekali")
 	}
 	return orders, nil
@@ -57,7 +57,7 @@ func (repo *OrderRepository) GetByUserID(UserID uint) ([]FormatOrder, error) {
 func (repo *OrderRepository) GetByID(ID uint) (FormatOrder, error) {
 	var order FormatOrder
 
-	if rowsAffected := repo.db.Table("orders as o").Select("o.id as ID, o.user_id as UserID, u.name as UserName, o.service_id as ServiceID, s.title as ServiceTitle, s.price as Price, o.qty as Qty, pm.id as PaymentMethodID, pm.name as PaymentMethodName, o.date as Date, o.address as Address, o.city as City, o.phone as Phone, o.status as Status, o.is_paid as IsPaid, o.created_at as CreatedAt, o.url as Url").Joins("inner join services as s on s.id = o.service_id").Joins("inner join payment_methods as pm on pm.id = o.payment_method_id").Joins("inner join users as u on u.id = o.user_id").Where("o.id = ?", ID).First(&order).RowsAffected; rowsAffected == 0 {
+	if rowsAffected := repo.db.Table("orders as o").Select("o.id as ID, o.user_id as UserID, u.name as UserName, o.service_id as ServiceID, s.title as ServiceTitle, s.price as Price, o.qty as Qty, pm.id as PaymentMethodID, pm.name as PaymentMethodName, o.date as Date, o.address as Address, o.city as City, o.phone as Phone, o.status as Status, o.is_paid as IsPaid, o.has_refunded as HasRefunded, o.created_at as CreatedAt, o.url as Url").Joins("inner join services as s on s.id = o.service_id").Joins("inner join payment_methods as pm on pm.id = o.payment_method_id").Joins("inner join users as u on u.id = o.user_id").Where("o.id = ?", ID).First(&order).RowsAffected; rowsAffected == 0 {
 		return FormatOrder{}, errors.New("gagal mendapatkan detail order")
 	}
 	return order, nil
@@ -66,7 +66,7 @@ func (repo *OrderRepository) GetByID(ID uint) (FormatOrder, error) {
 func (repo *OrderRepository) GetByIDUser(ID, userID uint) (FormatOrder, error) {
 	var order FormatOrder
 
-	if rowsAffected := repo.db.Table("orders as o").Select("o.id as ID, o.user_id as UserID, u.name as UserName, o.service_id as ServiceID, s.title as ServiceTitle, s.price as Price, o.qty as Qty, pm.id as PaymentMethodID, pm.name as PaymentMethodName, o.date as Date, o.address as Address, o.city as City, o.phone as Phone, o.status as Status, o.is_paid as IsPaid, o.created_at as CreatedAt, o.url as Url").Joins("inner join services as s on s.id = o.service_id").Joins("inner join payment_methods as pm on pm.id = o.payment_method_id").Joins("inner join users as u on u.id = o.user_id").Where("o.id = ? AND o.user_id = ?", ID, userID).First(&order).RowsAffected; rowsAffected == 0 {
+	if rowsAffected := repo.db.Table("orders as o").Select("o.id as ID, o.user_id as UserID, u.name as UserName, o.service_id as ServiceID, s.title as ServiceTitle, s.price as Price, o.qty as Qty, pm.id as PaymentMethodID, pm.name as PaymentMethodName, o.date as Date, o.address as Address, o.city as City, o.phone as Phone, o.status as Status, o.is_paid as IsPaid, o.has_refunded as HasRefunded, o.created_at as CreatedAt, o.url as Url").Joins("inner join services as s on s.id = o.service_id").Joins("inner join payment_methods as pm on pm.id = o.payment_method_id").Joins("inner join users as u on u.id = o.user_id").Where("o.id = ? AND o.user_id = ?", ID, userID).First(&order).RowsAffected; rowsAffected == 0 {
 		return FormatOrder{}, errors.New("gagal mendapatkan detail order")
 	}
 	return order, nil
@@ -88,7 +88,7 @@ func (repo *OrderRepository) SetPaid(ID uint) (FormatOrder, error) {
 		return FormatOrder{}, errors.New("gagal mengubah status pembayaran menjadi paid")
 	}
 
-	repo.db.Table("orders as o").Select("o.id as ID, o.user_id as UserID, u.name as UserName, o.service_id as ServiceID, s.title as ServiceTitle, s.price as Price, o.qty as Qty, pm.id as PaymentMethodID, pm.name as PaymentMethodName, o.date as Date, o.address as Address, o.city as City, o.phone as Phone, o.status as Status, o.is_paid as IsPaid, o.created_at as CreatedAt, o.url as Url").
+	repo.db.Table("orders as o").Select("o.id as ID, o.user_id as UserID, u.name as UserName, o.service_id as ServiceID, s.title as ServiceTitle, s.price as Price, o.qty as Qty, pm.id as PaymentMethodID, pm.name as PaymentMethodName, o.date as Date, o.address as Address, o.city as City, o.phone as Phone, o.status as Status, o.is_paid as IsPaid, o.has_refunded as HasRefunded, o.created_at as CreatedAt, o.url as Url").
 		Joins("inner join services as s on s.id = o.service_id").
 		Joins("inner join payment_methods as pm on pm.id = o.payment_method_id").
 		Joins("inner join users as u on u.id = o.user_id").
@@ -103,7 +103,7 @@ func (repo *OrderRepository) SetAccepted(ID uint) (FormatOrder, error) {
 		return FormatOrder{}, errors.New("gagal mengubah status order menjadi accepted")
 	}
 
-	repo.db.Table("orders as o").Select("o.id as ID, o.user_id as UserID, u.name as UserName, o.service_id as ServiceID, s.title as ServiceTitle, s.price as Price, o.qty as Qty, pm.id as PaymentMethodID, pm.name as PaymentMethodName, o.date as Date, o.address as Address, o.city as City, o.phone as Phone, o.status as Status, o.is_paid as IsPaid, o.created_at as CreatedAt, o.url as Url").
+	repo.db.Table("orders as o").Select("o.id as ID, o.user_id as UserID, u.name as UserName, o.service_id as ServiceID, s.title as ServiceTitle, s.price as Price, o.qty as Qty, pm.id as PaymentMethodID, pm.name as PaymentMethodName, o.date as Date, o.address as Address, o.city as City, o.phone as Phone, o.status as Status, o.is_paid as IsPaid, o.has_refunded as HasRefunded, o.created_at as CreatedAt, o.url as Url").
 		Joins("inner join services as s on s.id = o.service_id").
 		Joins("inner join payment_methods as pm on pm.id = o.payment_method_id").
 		Joins("inner join users as u on u.id = o.user_id").
@@ -118,7 +118,7 @@ func (repo *OrderRepository) SetRejected(ID uint) (FormatOrder, error) {
 		return FormatOrder{}, errors.New("gagal mengubah status order menjadi rejected")
 	}
 
-	repo.db.Table("orders as o").Select("o.id as ID, o.user_id as UserID, u.name as UserName, o.service_id as ServiceID, s.title as ServiceTitle, s.price as Price, o.qty as Qty, pm.id as PaymentMethodID, pm.name as PaymentMethodName, o.date as Date, o.address as Address, o.city as City, o.phone as Phone, o.status as Status, o.is_paid as IsPaid, o.created_at as CreatedAt, o.url as Url").
+	repo.db.Table("orders as o").Select("o.id as ID, o.user_id as UserID, u.name as UserName, o.service_id as ServiceID, s.title as ServiceTitle, s.price as Price, o.qty as Qty, pm.id as PaymentMethodID, pm.name as PaymentMethodName, o.date as Date, o.address as Address, o.city as City, o.phone as Phone, o.status as Status, o.is_paid as IsPaid, o.has_refunded as HasRefunded, o.created_at as CreatedAt, o.url as Url").
 		Joins("inner join services as s on s.id = o.service_id").
 		Joins("inner join payment_methods as pm on pm.id = o.payment_method_id").
 		Joins("inner join users as u on u.id = o.user_id").
@@ -133,7 +133,7 @@ func (repo *OrderRepository) SetOnProcess(ID uint) (FormatOrder, error) {
 		return FormatOrder{}, errors.New("gagal mengubah status order menjadi on process")
 	}
 
-	repo.db.Table("orders as o").Select("o.id as ID, o.user_id as UserID, u.name as UserName, o.service_id as ServiceID, s.title as ServiceTitle, s.price as Price, o.qty as Qty, pm.id as PaymentMethodID, pm.name as PaymentMethodName, o.date as Date, o.address as Address, o.city as City, o.phone as Phone, o.status as Status, o.is_paid as IsPaid, o.created_at as CreatedAt, o.url as Url").
+	repo.db.Table("orders as o").Select("o.id as ID, o.user_id as UserID, u.name as UserName, o.service_id as ServiceID, s.title as ServiceTitle, s.price as Price, o.qty as Qty, pm.id as PaymentMethodID, pm.name as PaymentMethodName, o.date as Date, o.address as Address, o.city as City, o.phone as Phone, o.status as Status, o.is_paid as IsPaid, o.has_refunded as HasRefunded, o.created_at as CreatedAt, o.url as Url").
 		Joins("inner join services as s on s.id = o.service_id").
 		Joins("inner join payment_methods as pm on pm.id = o.payment_method_id").
 		Joins("inner join users as u on u.id = o.user_id").
@@ -148,7 +148,7 @@ func (repo *OrderRepository) SetDelivering(ID uint) (FormatOrder, error) {
 		return FormatOrder{}, errors.New("gagal mengubah status order menjadi delivering")
 	}
 
-	repo.db.Table("orders as o").Select("o.id as ID, o.user_id as UserID, u.name as UserName, o.service_id as ServiceID, s.title as ServiceTitle, s.price as Price, o.qty as Qty, pm.id as PaymentMethodID, pm.name as PaymentMethodName, o.date as Date, o.address as Address, o.city as City, o.phone as Phone, o.status as Status, o.is_paid as IsPaid, o.created_at as CreatedAt, o.url as Url").
+	repo.db.Table("orders as o").Select("o.id as ID, o.user_id as UserID, u.name as UserName, o.service_id as ServiceID, s.title as ServiceTitle, s.price as Price, o.qty as Qty, pm.id as PaymentMethodID, pm.name as PaymentMethodName, o.date as Date, o.address as Address, o.city as City, o.phone as Phone, o.status as Status, o.is_paid as IsPaid, o.has_refunded as HasRefunded, o.created_at as CreatedAt, o.url as Url").
 		Joins("inner join services as s on s.id = o.service_id").
 		Joins("inner join payment_methods as pm on pm.id = o.payment_method_id").
 		Joins("inner join users as u on u.id = o.user_id").
@@ -163,7 +163,7 @@ func (repo *OrderRepository) SetCancel(ID uint) (FormatOrder, error) {
 		return FormatOrder{}, errors.New("gagal mengubah status order menjadi cancel")
 	}
 
-	repo.db.Table("orders as o").Select("o.id as ID, o.user_id as UserID, u.name as UserName, o.service_id as ServiceID, s.title as ServiceTitle, s.price as Price, o.qty as Qty, pm.id as PaymentMethodID, pm.name as PaymentMethodName, o.date as Date, o.address as Address, o.city as City, o.phone as Phone, o.status as Status, o.is_paid as IsPaid, o.created_at as CreatedAt, o.url as Url").
+	repo.db.Table("orders as o").Select("o.id as ID, o.user_id as UserID, u.name as UserName, o.service_id as ServiceID, s.title as ServiceTitle, s.price as Price, o.qty as Qty, pm.id as PaymentMethodID, pm.name as PaymentMethodName, o.date as Date, o.address as Address, o.city as City, o.phone as Phone, o.status as Status, o.is_paid as IsPaid, o.has_refunded as HasRefunded, o.created_at as CreatedAt, o.url as Url").
 		Joins("inner join services as s on s.id = o.service_id").
 		Joins("inner join payment_methods as pm on pm.id = o.payment_method_id").
 		Joins("inner join users as u on u.id = o.user_id").
@@ -178,7 +178,22 @@ func (repo *OrderRepository) SetDone(ID uint) (FormatOrder, error) {
 		return FormatOrder{}, errors.New("gagal mengubah status order menjadi done")
 	}
 
-	repo.db.Table("orders as o").Select("o.id as ID, o.user_id as UserID, u.name as UserName, o.service_id as ServiceID, s.title as ServiceTitle, s.price as Price, o.qty as Qty, pm.id as PaymentMethodID, pm.name as PaymentMethodName, o.date as Date, o.address as Address, o.city as City, o.phone as Phone, o.status as Status, o.is_paid as IsPaid, o.created_at as CreatedAt, o.url as Url").
+	repo.db.Table("orders as o").Select("o.id as ID, o.user_id as UserID, u.name as UserName, o.service_id as ServiceID, s.title as ServiceTitle, s.price as Price, o.qty as Qty, pm.id as PaymentMethodID, pm.name as PaymentMethodName, o.date as Date, o.address as Address, o.city as City, o.phone as Phone, o.status as Status, o.is_paid as IsPaid, o.has_refunded as HasRefunded, o.created_at as CreatedAt, o.url as Url").
+		Joins("inner join services as s on s.id = o.service_id").
+		Joins("inner join payment_methods as pm on pm.id = o.payment_method_id").
+		Joins("inner join users as u on u.id = o.user_id").
+		Where("o.id = ?", ID).First(&order)
+	return order, nil
+}
+
+func (repo *OrderRepository) SetRefund(ID uint) (FormatOrder, error) {
+	var order FormatOrder
+
+	if rowsAffected := repo.db.Table("orders").Where("id = ? AND status = ?", ID, "cancel").Update("has_refunded", true).RowsAffected; rowsAffected == 0 {
+		return FormatOrder{}, errors.New("gagal mengubah status refund menjadi true")
+	}
+
+	repo.db.Table("orders as o").Select("o.id as ID, o.user_id as UserID, u.name as UserName, o.service_id as ServiceID, s.title as ServiceTitle, s.price as Price, o.qty as Qty, pm.id as PaymentMethodID, pm.name as PaymentMethodName, o.date as Date, o.address as Address, o.city as City, o.phone as Phone, o.status as Status, o.is_paid as IsPaid, o.has_refunded as HasRefunded, o.created_at as CreatedAt, o.url as Url").
 		Joins("inner join services as s on s.id = o.service_id").
 		Joins("inner join payment_methods as pm on pm.id = o.payment_method_id").
 		Joins("inner join users as u on u.id = o.user_id").

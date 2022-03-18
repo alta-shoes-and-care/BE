@@ -94,7 +94,7 @@ func TestCreate(t *testing.T) {
 		res := httptest.NewRecorder()
 
 		req.Header.Set("Content-Type", "application/json")
-		req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtTokenAdmin))
+		req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtTokenUser))
 
 		context := e.NewContext(req, res)
 		context.SetPath(fmt.Sprintf("%v", rootPath))
@@ -127,7 +127,7 @@ func TestCreate(t *testing.T) {
 		res := httptest.NewRecorder()
 
 		req.Header.Set("Content-Type", "application/json")
-		req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtTokenAdmin))
+		req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtTokenUser))
 
 		context := e.NewContext(req, res)
 		context.SetPath(fmt.Sprintf("%v", rootPath))
@@ -160,7 +160,7 @@ func TestCreate(t *testing.T) {
 		res := httptest.NewRecorder()
 
 		req.Header.Set("Content-Type", "application/json")
-		req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtTokenAdmin))
+		req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtTokenUser))
 
 		context := e.NewContext(req, res)
 		context.SetPath(fmt.Sprintf("%v", rootPath))
@@ -193,7 +193,7 @@ func TestCreate(t *testing.T) {
 		res := httptest.NewRecorder()
 
 		req.Header.Set("Content-Type", "application/json")
-		req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtTokenAdmin))
+		req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtTokenUser))
 
 		context := e.NewContext(req, res)
 		context.SetPath(fmt.Sprintf("%v", rootPath))

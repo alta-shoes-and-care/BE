@@ -32,29 +32,59 @@ func InitConnection() coreapi.Client {
 	return client
 }
 
-func (client *MidtransClientStruct) CreateTransaction(userID, orderID, bill uint) *coreapi.ChargeResponse {
-	invoiceID = fmt.Sprintf("midtrans-test-%d%d", userID, orderID)
+func (client *MidtransClientStruct) CreateTransaction(userID, orderID, bill uint, payment string) (*coreapi.ChargeResponse, error) {
+	invoiceID = fmt.Sprintf("midtrans-testxxz-%d%d", userID, orderID)
+	var req *coreapi.ChargeReq
 
-	req := &coreapi.ChargeReq{
-		PaymentType: coreapi.PaymentTypeBCAKlikpay,
-		BCAKlikPay: &coreapi.BCAKlikPayDetails{
-			Desc: "Pembayaran BCA Klik Pay",
-		},
-		TransactionDetails: midtrans.TransactionDetails{
-			OrderID:  invoiceID,
-			GrossAmt: int64(bill),
-		},
-		CustomExpiry: &coreapi.CustomExpiry{
-			ExpiryDuration: 5,
-			Unit:           "minute",
-		},
+	trxDetails := midtrans.TransactionDetails{
+		OrderID:  invoiceID,
+		GrossAmt: int64(bill),
+	}
+
+	expiry := coreapi.CustomExpiry{
+		ExpiryDuration: 5,
+		Unit:           "minute",
+	}
+
+	switch payment {
+	case "bca klikpay":
+		req = &coreapi.ChargeReq{
+			PaymentType: coreapi.PaymentTypeBCAKlikpay,
+			BCAKlikPay: &coreapi.BCAKlikPayDetails{
+				Desc: "Pembayaran BCA Klik Pay",
+			},
+			TransactionDetails: trxDetails,
+			CustomExpiry:       &expiry,
+		}
+	case "gopay":
+		req = &coreapi.ChargeReq{
+			PaymentType:        coreapi.PaymentTypeGopay,
+			TransactionDetails: trxDetails,
+			CustomExpiry:       &expiry,
+		}
+	case "cimb clicks":
+		req = &coreapi.ChargeReq{
+			PaymentType: coreapi.PaymentTypeCimbClicks,
+			CIMBClicks: &coreapi.CIMBClicksDetails{
+				Desc: "Pembayaran CIMB Clicks",
+			},
+			TransactionDetails: trxDetails,
+			CustomExpiry:       &expiry,
+		}
+	case "danamon online":
+		req = &coreapi.ChargeReq{
+			PaymentType:        coreapi.PaymentTypeDanamonOnline,
+			TransactionDetails: trxDetails,
+			CustomExpiry:       &expiry,
+		}
 	}
 
 	apiRes, err := client.CoreApiClient.ChargeTransaction(req)
 	if err != nil {
 		log.Warn("payment error:", err)
+		return nil, errors.New("gagal melakukan charge transaction midtrans")
 	}
-	return apiRes
+	return apiRes, nil
 }
 
 func (client *MidtransClientStruct) CheckTransaction(userID, orderID uint) (string, error) {

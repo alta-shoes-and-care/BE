@@ -133,7 +133,7 @@ func (repo *MockTrueOrderRepository) GetByUserID(UserID uint) ([]orderRepo.Forma
 	return []orderRepo.FormatOrder{order1, order2}, nil
 }
 
-func (repo *MockTrueOrderRepository) GetByID(ID uint) (orderRepo.FormatOrder, error) {
+func (repo *MockTrueOrderRepository) GetByIDAdmin(ID uint) (orderRepo.FormatOrder, error) {
 	date, _ := time.Parse(layoutISO, "2022-03-16")
 	return orderRepo.FormatOrder{
 		ID:                1,
@@ -415,7 +415,7 @@ func (repo *MockFalseOrderRepository) GetByUserID(UserID uint) ([]orderRepo.Form
 	return nil, errors.New("fail to get by user id")
 }
 
-func (repo *MockFalseOrderRepository) GetByID(ID uint) (orderRepo.FormatOrder, error) {
+func (repo *MockFalseOrderRepository) GetByIDAdmin(ID uint) (orderRepo.FormatOrder, error) {
 	return orderRepo.FormatOrder{}, errors.New("fail to get by id")
 }
 

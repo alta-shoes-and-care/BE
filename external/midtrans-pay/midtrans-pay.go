@@ -92,8 +92,9 @@ func (client *MidtransClientStruct) CreateTransaction(userID, orderID, bill uint
 	apiRes, err := client.CoreApiClient.ChargeTransaction(req)
 	if err != nil {
 		log.Warn("payment error:", err)
+		return nil, errors.New("gagal melakukan charge transaction midtrans")
 	}
-	return apiRes, errors.New("gagal melakukan charge transaction midtrans")
+	return apiRes, nil
 }
 
 func (client *MidtransClientStruct) CheckTransaction(userID, orderID uint) (string, error) {

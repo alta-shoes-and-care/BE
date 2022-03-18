@@ -329,7 +329,7 @@ func (repo *MockTrueOrderRepository) SetCancel(ID uint) (orderRepo.FormatOrder, 
 	}, nil
 }
 
-func (repo *MockTrueOrderRepository) SetDone(ID uint) (orderRepo.FormatOrder, error) {
+func (repo *MockTrueOrderRepository) SetDone(ID, userID uint) (orderRepo.FormatOrder, error) {
 	date, _ := time.Parse(layoutISO, "2022-03-16")
 	return orderRepo.FormatOrder{
 		ID:                1,
@@ -427,7 +427,7 @@ func (repo *MockFalseOrderRepository) SetCancel(ID uint) (orderRepo.FormatOrder,
 	return orderRepo.FormatOrder{}, errors.New("fail to set cancel")
 }
 
-func (repo *MockFalseOrderRepository) SetDone(ID uint) (orderRepo.FormatOrder, error) {
+func (repo *MockFalseOrderRepository) SetDone(ID, userID uint) (orderRepo.FormatOrder, error) {
 	return orderRepo.FormatOrder{}, errors.New("fail to set done")
 }
 

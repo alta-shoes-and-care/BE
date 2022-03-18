@@ -32,6 +32,11 @@ const (
 // Create new order
 func (ctl *OrderController) Create() echo.HandlerFunc {
 	return func(c echo.Context) error {
+		isAdmin := middlewares.ExtractTokenIsAdmin(c)
+		if isAdmin {
+			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed jwt"))
+		}
+
 		var newOrder RequestCreateOrder
 		if err := c.Bind(&newOrder); err != nil || newOrder.ServiceID == 0 || newOrder.Qty == 0 || newOrder.Total == 0 || newOrder.PaymentMethodID == 0 || strings.TrimSpace(newOrder.Date) == "" || strings.TrimSpace(newOrder.Address) == "" || strings.TrimSpace(newOrder.City) == "" || strings.TrimSpace(newOrder.Phone) == "" {
 			return c.JSON(http.StatusBadRequest, common.BadRequest("input dari user tidak sesuai, service_id, qty, total, payment_method_id, date, address, city, atau phone tidak boleh kosong"))

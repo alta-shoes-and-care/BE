@@ -232,9 +232,10 @@ func (ctl *OrderController) SetCancel() echo.HandlerFunc {
 // Set order status done
 func (ctl *OrderController) SetDone() echo.HandlerFunc {
 	return func(c echo.Context) error {
+		userID := middlewares.ExtractTokenUserID(c)
 		ID, _ := strconv.Atoi(c.Param("id"))
 
-		res, err := ctl.repo.SetDone(uint(ID))
+		res, err := ctl.repo.SetDone(uint(ID), uint(userID))
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, common.InternalServerError(err.Error()))
 		}

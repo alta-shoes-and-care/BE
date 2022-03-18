@@ -171,10 +171,10 @@ func (repo *OrderRepository) SetCancel(ID uint) (FormatOrder, error) {
 	return order, nil
 }
 
-func (repo *OrderRepository) SetDone(ID uint) (FormatOrder, error) {
+func (repo *OrderRepository) SetDone(ID, userID uint) (FormatOrder, error) {
 	var order FormatOrder
 
-	if rowsAffected := repo.db.Table("orders").Where("id = ?", ID).Update("status", "done").RowsAffected; rowsAffected == 0 {
+	if rowsAffected := repo.db.Table("orders").Where("id = ? AND user_id", ID, userID).Update("status", "done").RowsAffected; rowsAffected == 0 {
 		return FormatOrder{}, errors.New("gagal mengubah status order menjadi done")
 	}
 

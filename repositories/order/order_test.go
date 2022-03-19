@@ -451,8 +451,11 @@ func TestSetRefund(t *testing.T) {
 		userRepo.Create(mockUser)
 		serviceRepo.Create(mockService)
 		PMRepo.Create(mockPM)
+
 		mockOrder.Status = "cancel"
+		mockOrder.IsPaid = true
 		repo.Create(mockOrder)
+
 		res, err := repo.SetRefund(1)
 		assert.Nil(t, err)
 		assert.Equal(t, true, res.HasRefunded)

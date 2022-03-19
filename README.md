@@ -38,28 +38,7 @@
 ![Swagger](https://img.shields.io/badge/-Swagger-%23Clojure?style=for-the-badge&logo=swagger&logoColor=white)
 ![Trello](https://img.shields.io/badge/Trello-%23026AA7.svg?style=for-the-badge&logo=Trello&logoColor=white)
 ![Google Meet](https://img.shields.io/badge/Google%20Meet-00897B?style=for-the-badge&logo=google-meet&logoColor=white)
-## Framework
 
-- [Echo (Go Web Framework)](https://echo.labstack.com/)
-
-## Packages
-- [GORM (Golang ORM Library)](https://gorm.io/)
-- [Testify (Unit Test)](https://pkg.go.dev/github.com/stretchr/testify)
-- [Midtrans (Payment Gateway)](https://midtrans.com/)
-- [AWS SDK V1 (AWS Software Development Kit for Go)](https://docs.aws.amazon.com/sdk-for-go/v1/developer-guide/welcome.html)
-
-## Database
-- [MySQL (Open Source Database)](https://www.mysql.com/)
-
-## Deployments
-- [AWS S3 (Cloud Storage)](https://aws.amazon.com/s3)
-- [Docker (Image Container)](https://www.docker.com/)
-- [Kubernetes (Container Orchestration)](https://kubernetes.io/)
-- [Okteto (Kubernetes Platform)](https://www.okteto.com/)
-
-## Collaboration
-- [Trello (Work Management Tool)](https://trello.com/)
-- [GitHub (Version Control System Platform)](https://github.com/)
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 # High Level Architecture
@@ -73,37 +52,147 @@ BE
 │   └── config.go
 ├── deliveries
 │   ├── controllers
+│   │   ├── auth
+│   │   │   ├── .env
+│   │   │   ├── auth_test.go
+│   │   │   ├── auth.go
+│   │   │   ├── request.go
+│   │   │   └── response.go
 │   │   ├── common
 │   │   │   └── common.go
+│   │   ├── order
+│   │   │   ├── order_test.go
+│   │   │   ├── order.go
+│   │   │   ├── request.go
+│   │   │   └── response.go
+│   │   ├── payment-method
+│   │   │   ├── payment-method_test.go
+│   │   │   ├── payment-method.go
+│   │   │   ├── request.go
+│   │   │   └── response.go
+│   │   ├── review
+│   │   │   ├── request.go
+│   │   │   ├── review_test.go
+│   │   │   └── review.go
+│   │   ├── service
+│   │   │   ├── .env
+│   │   │   ├── request.go
+│   │   │   ├── response.go
+│   │   │   ├── service_test.go
+│   │   │   └── service.go
 │   │   └── user
+│   │       ├── .env
+│   │       ├── request.go
+│   │       ├── response.go
+│   │       ├── user_test.go
+│   │       └── user.go
+│   ├── helpers
+│   │   └── hash
+│   │       └── hash.go
 │   ├── middlewares
 │   │   ├── jwtAuth.go
 │   │   └── jwtMiddleware.go
-│   └── routes
-│       └── route.go
+│   ├── mocks
+│   │   ├── auth
+│   │   │   └── auth.go
+│   │   ├── order
+│   │   │   └── order.go
+│   │   ├── payment-method
+│   │   │   └── payment-method.go
+│   │   ├── review
+│   │   │   └── review.go
+│   │   ├── service
+│   │   │   └── service.go
+│   │   └── user
+│   │       └── user.go
+│   ├── routes
+│   │   └── route.go
+│   └── validators
+│       └── validator.go
 ├── entities
+│   ├── order
+│   │   └── order.go
+│   ├── payment-method
+│   │   └── payment-method.go
+│   ├── review
+│   │   └── review.go
+│   ├── service
+│   │   └── service.go
 │   └── user
+│       └── user.go
 ├── ERD
+│   └── erd.drawio
+├── external
+│   ├── aws-s3
+│   │   ├── aws-s3.go
+│   │   └── interface.go
+│   └── midtrans-pay
+│       ├── interface.go
+│       └── midtrans-pay.go
+├── images
+│   ├── HLA-updated.jpeg
+│   └── shoes-service-station.png
 ├── OpenAPI
 │   └── openapi.yaml
 ├── repositories
 │   ├── auth
+│   │   ├── .env
+│   │   ├── auth_test.go
+│   │   ├── auth.go
+│   │   └── interface.go
 │   ├── hash
+│   │   └── hash.go
+│   ├── mocks
+│   │   ├── order
+│   │   │   └── order.go
+│   │   ├── payment-method
+│   │   │   └── payment-method.go
+│   │   ├── review
+│   │   │   └── review.go
+│   │   ├── service
+│   │   │   └── service.go
+│   │   └── user
+│   │       └── user.go
+│   ├── order
+│   │   ├── .env
+│   │   ├── formatter.go
+│   │   ├── interface.go
+│   │   ├── order_test.go
+│   │   └── order.go
+│   ├── payment-method
+│   │   ├── .env
+│   │   ├── interface.go
+│   │   ├── payment-method_test.go
+│   │   └── payment-method.go
+│   ├── review
+│   │   ├── .env
+│   │   ├── formatter.go
+│   │   ├── interface.go
+│   │   ├── review_test.go
+│   │   └── review.go
+│   ├── service
+│   │   ├── .env
+│   │   ├── interface.go
+│   │   ├── service_test.go
+│   │   └── service.go
 │   └── user
-├── services
-│   ├── aws-s3
-│   │   └── aws-s3.go
-│   └── midtrans-pay
-│       └── midtrans-pay.go
+│       ├── .env
+│       ├── interface.go
+│       ├── user_test.go
+│       └── user.go
 ├── utils
 │   └── mysqldriver.go
 ├── .env
 ├── .gitignore
+├── app-pod.yaml
+├── coverage.out
 ├── docker-compose.yaml
 ├── dockerfile
 ├── go.mod
 ├── go.sum
-└── README.md
+├── main.go
+├── README.md
+└── secret.yaml
 ```
 <p align="right">(<a href="#top">back to top</a>)</p>
 

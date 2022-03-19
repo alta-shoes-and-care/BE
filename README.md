@@ -12,17 +12,9 @@
     </div>
 </div>
 
-# Shoes Service Station
-<!-- Project Description -->
-<div>
-    <p style="text-align:left">
-        Nowadays, some people are very busy and don't even have time to clean their shoes.
-        Therefore we need a platform that is able to connect customers with shoes washing service provider.
-    </p>
-</div>
-
 # Technology Stack
-![Repositroy Star](https://img.shields.io/github/stars/alta-shoes-and-care/BE?style=social)
+![GitHub Contributors](https://img.shields.io/github/contributors/alta-shoes-and-care/BE?style=social)
+![Last Commit](https://img.shields.io/github/last-commit/alta-shoes-and-care/BE?style=for-the-badge)
 ![Visual Studio Code](https://img.shields.io/badge/Visual%20Studio%20Code-0078d7.svg?style=for-the-badge&logo=visual-studio-code&logoColor=white)
 ![Golang](https://img.shields.io/badge/Go-00ADD8?style=for-the-badge&logo=go&logoColor=white)
 ![Testify](https://img.shields.io/badge/Testify-blue?style=for-the-badge&logo=go&logoColor=white)
@@ -38,8 +30,16 @@
 ![Swagger](https://img.shields.io/badge/-Swagger-%23Clojure?style=for-the-badge&logo=swagger&logoColor=white)
 ![Trello](https://img.shields.io/badge/Trello-%23026AA7.svg?style=for-the-badge&logo=Trello&logoColor=white)
 ![Google Meet](https://img.shields.io/badge/Google%20Meet-00897B?style=for-the-badge&logo=google-meet&logoColor=white)
-
 <p align="right">(<a href="#top">back to top</a>)</p>
+
+# About the Project
+<!-- Project Description -->
+<div>
+    <p style="text-align:left">
+        Nowadays, some people are very busy and don't even have time to clean their shoes.
+        Therefore we need a platform that is able to connect customers with shoes washing service provider.
+    </p>
+</div>
 
 # High Level Architecture
 ![High Level Architecture](images/HLA-updated.jpeg)

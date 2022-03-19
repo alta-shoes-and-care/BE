@@ -463,36 +463,66 @@ func (repo *MockFalseOrderRepository) SetRefund(ID uint) (orderRepo.FormatOrder,
 	return orderRepo.FormatOrder{}, errors.New("fail to set refund")
 }
 
-type MockTrueMidtrans struct{}
+type MockTrueRedirectURLMidtrans struct{}
 
-func (repo *MockTrueMidtrans) CreateTransaction(userID, orderID, bill uint) *coreapi.ChargeResponse {
-	return &coreapi.ChargeResponse{
-		RedirectURL: "https://foo.com/bar-1",
-	}
+func (repo *MockTrueRedirectURLMidtrans) CreateTransaction(userID, orderID, bill uint, payment string) (*coreapi.ChargeResponse, error) {
+	return &coreapi.ChargeResponse{RedirectURL: "https://foo.com/bar-1"}, nil
 }
 
-func (repo *MockTrueMidtrans) CheckTransaction(userID, orderID uint) (string, error) {
+func (repo *MockTrueRedirectURLMidtrans) CheckTransaction(userID, orderID uint) (string, error) {
 	return "status pending", nil
+}
+
+type MockTrueActionsMidtrans struct{}
+
+func (repo *MockTrueActionsMidtrans) CreateTransaction(userID, orderID, bill uint, payment string) (*coreapi.ChargeResponse, error) {
+	var a coreapi.Action
+	a.URL = "https://foo.com/bar-1"
+
+	return &coreapi.ChargeResponse{Actions: []coreapi.Action{a, a}}, nil
+}
+
+func (repo *MockTrueActionsMidtrans) CheckTransaction(userID, orderID uint) (string, error) {
+	return "pending", nil
 }
 
 type MockFalseMidtrans struct{}
 
-func (repo *MockFalseMidtrans) CreateTransaction(userID, orderID, bill uint) *coreapi.ChargeResponse {
-	return &coreapi.ChargeResponse{
-		RedirectURL: "",
-	}
+func (repo *MockFalseMidtrans) CreateTransaction(userID, orderID, bill uint, payment string) (*coreapi.ChargeResponse, error) {
+	return &coreapi.ChargeResponse{RedirectURL: ""}, errors.New("checking error")
 }
 
 func (repo *MockFalseMidtrans) CheckTransaction(userID, orderID uint) (string, error) {
 	return "", errors.New("checking error")
 }
 
+type MockFalseRedirectURLMidtrans struct{}
+
+func (repo *MockFalseRedirectURLMidtrans) CreateTransaction(userID, orderID, bill uint, payment string) (*coreapi.ChargeResponse, error) {
+	return &coreapi.ChargeResponse{RedirectURL: ""}, nil
+}
+
+func (repo *MockFalseRedirectURLMidtrans) CheckTransaction(userID, orderID uint) (string, error) {
+	return "", errors.New("checking error")
+}
+
+type MockFalseActionsMidtrans struct{}
+
+func (repo *MockFalseActionsMidtrans) CreateTransaction(userID, orderID, bill uint, payment string) (*coreapi.ChargeResponse, error) {
+	var a coreapi.Action
+	a.URL = ""
+
+	return &coreapi.ChargeResponse{Actions: []coreapi.Action{a, a}}, nil
+}
+
+func (repo *MockFalseActionsMidtrans) CheckTransaction(userID, orderID uint) (string, error) {
+	return "", errors.New("checking error")
+}
+
 type MockSettlementMidtrans struct{}
 
-func (repo *MockSettlementMidtrans) CreateTransaction(userID, orderID, bill uint) *coreapi.ChargeResponse {
-	return &coreapi.ChargeResponse{
-		RedirectURL: "https://foo.com/bar-1",
-	}
+func (repo *MockSettlementMidtrans) CreateTransaction(userID, orderID, bill uint, payment string) (*coreapi.ChargeResponse, error) {
+	return &coreapi.ChargeResponse{RedirectURL: "https://foo.com/bar-1"}, nil
 }
 
 func (repo *MockSettlementMidtrans) CheckTransaction(userID, orderID uint) (string, error) {
@@ -501,10 +531,8 @@ func (repo *MockSettlementMidtrans) CheckTransaction(userID, orderID uint) (stri
 
 type MockCancelMidtrans struct{}
 
-func (repo *MockCancelMidtrans) CreateTransaction(userID, orderID, bill uint) *coreapi.ChargeResponse {
-	return &coreapi.ChargeResponse{
-		RedirectURL: "https://foo.com/bar-1",
-	}
+func (repo *MockCancelMidtrans) CreateTransaction(userID, orderID, bill uint, payment string) (*coreapi.ChargeResponse, error) {
+	return &coreapi.ChargeResponse{RedirectURL: "https://foo.com/bar-1"}, nil
 }
 
 func (repo *MockCancelMidtrans) CheckTransaction(userID, orderID uint) (string, error) {
@@ -513,10 +541,8 @@ func (repo *MockCancelMidtrans) CheckTransaction(userID, orderID uint) (string, 
 
 type MockDenyMidtrans struct{}
 
-func (repo *MockDenyMidtrans) CreateTransaction(userID, orderID, bill uint) *coreapi.ChargeResponse {
-	return &coreapi.ChargeResponse{
-		RedirectURL: "https://foo.com/bar-1",
-	}
+func (repo *MockDenyMidtrans) CreateTransaction(userID, orderID, bill uint, payment string) (*coreapi.ChargeResponse, error) {
+	return &coreapi.ChargeResponse{RedirectURL: "https://foo.com/bar-1"}, nil
 }
 
 func (repo *MockDenyMidtrans) CheckTransaction(userID, orderID uint) (string, error) {
@@ -525,10 +551,8 @@ func (repo *MockDenyMidtrans) CheckTransaction(userID, orderID uint) (string, er
 
 type MockAcceptMidtrans struct{}
 
-func (repo *MockAcceptMidtrans) CreateTransaction(userID, orderID, bill uint) *coreapi.ChargeResponse {
-	return &coreapi.ChargeResponse{
-		RedirectURL: "https://foo.com/bar-1",
-	}
+func (repo *MockAcceptMidtrans) CreateTransaction(userID, orderID, bill uint, payment string) (*coreapi.ChargeResponse, error) {
+	return &coreapi.ChargeResponse{RedirectURL: "https://foo.com/bar-1"}, nil
 }
 
 func (repo *MockAcceptMidtrans) CheckTransaction(userID, orderID uint) (string, error) {
@@ -537,10 +561,8 @@ func (repo *MockAcceptMidtrans) CheckTransaction(userID, orderID uint) (string, 
 
 type MockChallengeMidtrans struct{}
 
-func (repo *MockChallengeMidtrans) CreateTransaction(userID, orderID, bill uint) *coreapi.ChargeResponse {
-	return &coreapi.ChargeResponse{
-		RedirectURL: "https://foo.com/bar-1",
-	}
+func (repo *MockChallengeMidtrans) CreateTransaction(userID, orderID, bill uint, payment string) (*coreapi.ChargeResponse, error) {
+	return &coreapi.ChargeResponse{RedirectURL: "https://foo.com/bar-1"}, nil
 }
 
 func (repo *MockChallengeMidtrans) CheckTransaction(userID, orderID uint) (string, error) {

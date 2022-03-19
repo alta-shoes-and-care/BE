@@ -53,7 +53,6 @@ BE
 ├── deliveries
 │   ├── controllers
 │   │   ├── auth
-│   │   │   ├── .env
 │   │   │   ├── auth_test.go
 │   │   │   ├── auth.go
 │   │   │   ├── request.go
@@ -75,13 +74,11 @@ BE
 │   │   │   ├── review_test.go
 │   │   │   └── review.go
 │   │   ├── service
-│   │   │   ├── .env
 │   │   │   ├── request.go
 │   │   │   ├── response.go
 │   │   │   ├── service_test.go
 │   │   │   └── service.go
 │   │   └── user
-│   │       ├── .env
 │   │       ├── request.go
 │   │       ├── response.go
 │   │       ├── user_test.go
@@ -136,7 +133,6 @@ BE
 │   └── openapi.yaml
 ├── repositories
 │   ├── auth
-│   │   ├── .env
 │   │   ├── auth_test.go
 │   │   ├── auth.go
 │   │   └── interface.go
@@ -154,35 +150,29 @@ BE
 │   │   └── user
 │   │       └── user.go
 │   ├── order
-│   │   ├── .env
 │   │   ├── formatter.go
 │   │   ├── interface.go
 │   │   ├── order_test.go
 │   │   └── order.go
 │   ├── payment-method
-│   │   ├── .env
 │   │   ├── interface.go
 │   │   ├── payment-method_test.go
 │   │   └── payment-method.go
 │   ├── review
-│   │   ├── .env
 │   │   ├── formatter.go
 │   │   ├── interface.go
 │   │   ├── review_test.go
 │   │   └── review.go
 │   ├── service
-│   │   ├── .env
 │   │   ├── interface.go
 │   │   ├── service_test.go
 │   │   └── service.go
 │   └── user
-│       ├── .env
 │       ├── interface.go
 │       ├── user_test.go
 │       └── user.go
 ├── utils
 │   └── mysqldriver.go
-├── .env
 ├── .gitignore
 ├── app-pod.yaml
 ├── coverage.out
@@ -192,7 +182,6 @@ BE
 ├── go.sum
 ├── main.go
 ├── README.md
-└── secret.yaml
 ```
 <p align="right">(<a href="#top">back to top</a>)</p>
 

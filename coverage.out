@@ -1,5 +1,4 @@
 mode: set
-final-project/deliveries/controllers/auth/response.go:12.78,19.2 1 1
 final-project/deliveries/controllers/auth/auth.go:17.67,21.2 1 1
 final-project/deliveries/controllers/auth/auth.go:23.53,24.36 1 1
 final-project/deliveries/controllers/auth/auth.go:24.36,26.141 2 1
@@ -9,6 +8,7 @@ final-project/deliveries/controllers/auth/auth.go:40.3,40.152 1 1
 final-project/deliveries/controllers/auth/auth.go:26.141,28.4 1 1
 final-project/deliveries/controllers/auth/auth.go:31.17,33.4 1 1
 final-project/deliveries/controllers/auth/auth.go:37.17,39.4 1 1
+final-project/deliveries/controllers/auth/response.go:12.78,19.2 1 1
 final-project/deliveries/controllers/order/order.go:21.106,26.2 1 1
 final-project/deliveries/controllers/order/order.go:33.55,34.36 1 1
 final-project/deliveries/controllers/order/order.go:34.36,36.14 2 1
@@ -109,6 +109,10 @@ final-project/deliveries/controllers/order/response.go:91.15,92.31 1 1
 final-project/deliveries/controllers/order/response.go:93.21,94.28 1 1
 final-project/deliveries/controllers/order/response.go:95.24,96.28 1 1
 final-project/deliveries/controllers/order/response.go:97.10,98.12 1 1
+final-project/deliveries/controllers/payment-method/response.go:9.97,13.2 1 1
+final-project/deliveries/controllers/payment-method/response.go:20.95,22.42 2 1
+final-project/deliveries/controllers/payment-method/response.go:26.2,26.18 1 1
+final-project/deliveries/controllers/payment-method/response.go:22.42,25.3 2 1
 final-project/deliveries/controllers/payment-method/payment-method.go:17.92,21.2 1 1
 final-project/deliveries/controllers/payment-method/payment-method.go:23.63,24.36 1 1
 final-project/deliveries/controllers/payment-method/payment-method.go:24.36,26.15 2 1
@@ -129,10 +133,6 @@ final-project/deliveries/controllers/payment-method/payment-method.go:67.3,67.10
 final-project/deliveries/controllers/payment-method/payment-method.go:57.15,59.4 1 1
 final-project/deliveries/controllers/payment-method/payment-method.go:64.17,66.4 1 1
 final-project/deliveries/controllers/payment-method/request.go:11.81,15.2 1 1
-final-project/deliveries/controllers/payment-method/response.go:9.97,13.2 1 1
-final-project/deliveries/controllers/payment-method/response.go:20.95,22.42 2 1
-final-project/deliveries/controllers/payment-method/response.go:26.2,26.18 1 1
-final-project/deliveries/controllers/payment-method/response.go:22.42,25.3 2 1
 final-project/deliveries/controllers/review/request.go:14.70,22.2 1 1
 final-project/deliveries/controllers/review/review.go:16.75,20.2 1 1
 final-project/deliveries/controllers/review/review.go:22.56,23.36 1 1
@@ -198,12 +198,6 @@ final-project/deliveries/controllers/service/service.go:141.3,143.17 3 1
 final-project/deliveries/controllers/service/service.go:146.3,146.95 1 1
 final-project/deliveries/controllers/service/service.go:137.15,139.4 1 1
 final-project/deliveries/controllers/service/service.go:143.17,145.4 1 1
-final-project/deliveries/controllers/user/response.go:12.60,19.2 1 1
-final-project/deliveries/controllers/user/response.go:28.54,35.2 1 1
-final-project/deliveries/controllers/user/response.go:44.61,46.34 2 1
-final-project/deliveries/controllers/user/response.go:52.2,52.18 1 1
-final-project/deliveries/controllers/user/response.go:46.34,51.3 4 1
-final-project/deliveries/controllers/user/response.go:62.60,69.2 1 1
 final-project/deliveries/controllers/user/user.go:19.67,23.2 1 1
 final-project/deliveries/controllers/user/user.go:25.54,26.36 1 1
 final-project/deliveries/controllers/user/user.go:26.36,29.170 2 1
@@ -245,6 +239,12 @@ final-project/deliveries/controllers/user/request.go:18.53,27.2 2 1
 final-project/deliveries/controllers/user/request.go:37.64,38.43 1 1
 final-project/deliveries/controllers/user/request.go:42.2,48.3 1 1
 final-project/deliveries/controllers/user/request.go:38.43,40.3 1 1
+final-project/deliveries/controllers/user/response.go:12.60,19.2 1 1
+final-project/deliveries/controllers/user/response.go:28.54,35.2 1 1
+final-project/deliveries/controllers/user/response.go:44.61,46.34 2 1
+final-project/deliveries/controllers/user/response.go:52.2,52.18 1 1
+final-project/deliveries/controllers/user/response.go:46.34,51.3 4 1
+final-project/deliveries/controllers/user/response.go:62.60,69.2 1 1
 final-project/repositories/auth/auth.go:15.53,19.2 1 1
 final-project/repositories/auth/auth.go:21.76,27.16 4 1
 final-project/repositories/auth/auth.go:31.2,31.18 1 1

@@ -187,6 +187,8 @@ BE
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 # Unit Test
+![Testing Coverage - 1](images/coverage-1.png)
+![Testing Coverage - 1](images/coverage-2.png)
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 # How to Contribute

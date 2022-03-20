@@ -193,6 +193,6 @@ BE
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 # Contacts
-- Yusuf Nur Wahid | [![GitHub](https://img.shields.io/badge/ynwahid-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/ynwahid/) [![LinkedIn](https://img.shields.io/badge/ynwahid-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/ynwahid/)
-- Frans Ihsan | [![GitHub](https://img.shields.io/badge/fransihsan-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/fransihsan/) [![LinkedIn](https://img.shields.io/badge/fransihsan-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/fransihsan/)
+- [![GitHub](https://img.shields.io/badge/ynwahid-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/ynwahid/) [![LinkedIn](https://img.shields.io/badge/ynwahid-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/ynwahid/)
+- [![GitHub](https://img.shields.io/badge/fransihsan-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/fransihsan/) [![LinkedIn](https://img.shields.io/badge/fransihsan-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/fransihsan/)
 <p align="right">(<a href="#top">back to top</a>)</p>

@@ -1,5 +1,4 @@
 *.env
 ERD/erd.png
-*.jpg
 *.json
 secret.yaml

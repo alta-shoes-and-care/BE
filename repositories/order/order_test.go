@@ -447,7 +447,7 @@ func TestSetRefund(t *testing.T) {
 		assert.NotNil(t, err)
 	})
 
-	t.Run("positive", func(t *testing.T) {
+	t.Run("positive 1", func(t *testing.T) {
 		userRepo.Create(mockUser)
 		serviceRepo.Create(mockService)
 		PMRepo.Create(mockPM)
@@ -457,6 +457,16 @@ func TestSetRefund(t *testing.T) {
 		repo.Create(mockOrder)
 
 		res, err := repo.SetRefund(1)
+		assert.Nil(t, err)
+		assert.Equal(t, true, res.HasRefunded)
+	})
+
+	t.Run("positive 2", func(t *testing.T) {
+		mockOrder.Status = "rejected"
+		mockOrder.IsPaid = true
+		repo.Create(mockOrder)
+
+		res, err := repo.SetRefund(2)
 		assert.Nil(t, err)
 		assert.Equal(t, true, res.HasRefunded)
 	})

@@ -51,6 +51,14 @@ func (ctl *ServiceController) Create() echo.HandlerFunc {
 			return c.JSON(http.StatusBadRequest, common.BadRequest("tidak dapat membaca file gambar"))
 		}
 
+		if status, err := validators.ValidateServiceImage(file); err != nil {
+			if status == http.StatusRequestEntityTooLarge {
+				return c.JSON(status, common.RequestEntityTooLarge(err.Error()))
+			} else if status == http.StatusBadRequest {
+				return c.JSON(status, common.BadRequest(err.Error()))
+			}
+		}
+
 		file.Filename = strings.ReplaceAll(file.Filename, " ", "_")
 		image, err := ctl.awsS3Client.DoUpload(ctl.config.S3_REGION, ctl.config.S3_BUCKET, file)
 		if err != nil {
@@ -109,8 +117,12 @@ func (ctl *ServiceController) Update() echo.HandlerFunc {
 		if err != nil {
 			log.Info(err)
 		} else {
-			if err := validators.ValidateUpdateServiceImage(file); err != nil {
-				return c.JSON(http.StatusBadRequest, common.BadRequest(err.Error()))
+			if status, err := validators.ValidateServiceImage(file); err != nil {
+				if status == http.StatusRequestEntityTooLarge {
+					return c.JSON(status, common.RequestEntityTooLarge(err.Error()))
+				} else if status == http.StatusBadRequest {
+					return c.JSON(status, common.BadRequest(err.Error()))
+				}
 			}
 
 			var err error

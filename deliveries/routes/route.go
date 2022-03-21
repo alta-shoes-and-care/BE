@@ -48,8 +48,8 @@ func RegisterPaths(e *echo.Echo, ac *auth.AuthController, uc *user.UserControlle
 	s.GET("/:id", sc.GetDetails())
 	sj := s.Group("/jwt")
 	sj.Use(middlewares.JWTMiddleware())
-	sj.POST("", sc.Create())
-	sj.PUT("", sc.Update())
+	sj.POST("", sc.Create(), middlewares.BodyLimiter())
+	sj.PUT("", sc.Update(), middlewares.BodyLimiter())
 	sj.DELETE("/:id", sc.Delete())
 
 	// Order route

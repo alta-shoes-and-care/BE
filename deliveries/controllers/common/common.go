@@ -24,6 +24,14 @@ func BadRequest(message string) Response {
 	}
 }
 
+func RequestEntityTooLarge(message string) Response {
+	return Response{
+		Code:    http.StatusRequestEntityTooLarge,
+		Message: message,
+		Data:    nil,
+	}
+}
+
 func UnAuthorized(message string) Response {
 	return Response{
 		Code:    http.StatusUnauthorized,

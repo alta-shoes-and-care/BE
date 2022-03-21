@@ -69,7 +69,7 @@ func ValidateUpdateServiceData(title, description string) error {
 	return nil
 }
 
-func ValidateUpdateServiceImage(file *multipart.FileHeader) error {
+func ValidateServiceImage(file *multipart.FileHeader) error {
 	if strings.HasSuffix(file.Filename, ".jpg") || strings.HasSuffix(file.Filename, ".jpeg") || strings.HasSuffix(file.Filename, ".png") {
 		return nil
 	}

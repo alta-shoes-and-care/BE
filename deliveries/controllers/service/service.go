@@ -51,6 +51,11 @@ func (ctl *ServiceController) Create() echo.HandlerFunc {
 			return c.JSON(http.StatusBadRequest, common.BadRequest("tidak dapat membaca file gambar"))
 		}
 
+		if err := validators.ValidateServiceImage(file); err != nil {
+			log.Info("error validate image file name: ", file.Filename)
+			return c.JSON(http.StatusBadRequest, common.BadRequest(err.Error()))
+		}
+
 		file.Filename = strings.ReplaceAll(file.Filename, " ", "_")
 		image, err := ctl.awsS3Client.DoUpload(ctl.config.S3_REGION, ctl.config.S3_BUCKET, file)
 		if err != nil {
@@ -109,7 +114,7 @@ func (ctl *ServiceController) Update() echo.HandlerFunc {
 		if err != nil {
 			log.Info(err)
 		} else {
-			if err := validators.ValidateUpdateServiceImage(file); err != nil {
+			if err := validators.ValidateServiceImage(file); err != nil {
 				return c.JSON(http.StatusBadRequest, common.BadRequest(err.Error()))
 			}
 

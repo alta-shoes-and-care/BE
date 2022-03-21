@@ -58,7 +58,7 @@ func (ctl *UserController) GetByID() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		isAdmin := middlewares.ExtractTokenIsAdmin(c)
 		if !isAdmin {
-			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))
+			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed jwt"))
 		}
 
 		userID, _ := strconv.Atoi(c.Param("id"))
@@ -75,7 +75,7 @@ func (ctl *UserController) GetAllUsers() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		isAdmin := middlewares.ExtractTokenIsAdmin(c)
 		if !isAdmin {
-			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed JWT"))
+			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed jwt"))
 		}
 
 		res, err := ctl.repo.GetAllUsers()
@@ -109,7 +109,12 @@ func (ctl *UserController) Update() echo.HandlerFunc {
 
 func (ctl *UserController) Delete() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		userID := middlewares.ExtractTokenUserID(c)
+		isAdmin := middlewares.ExtractTokenIsAdmin(c)
+		if !isAdmin {
+			return c.JSON(http.StatusUnauthorized, common.UnAuthorized("missing or malformed jwt"))
+		}
+
+		userID, _ := strconv.Atoi(c.Param("id"))
 
 		err := ctl.repo.Delete(uint(userID))
 		if err != nil {

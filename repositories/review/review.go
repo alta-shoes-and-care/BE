@@ -30,6 +30,7 @@ func (repo *ReviewRepository) Insert(newReview R.Reviews) (FormatReview, error) 
 		log.Warn(err)
 		return FormatReview{}, errors.New("gagal membuat review baru")
 	}
+
 	repo.db.Table("reviews as r").
 		Select("r.id as ID, r.user_id as UserID, r.service_id as ServiceID, r.order_id as OrderID, u.name as Name, r.rating as Rating, r.review as Review").
 		Joins("inner join users as u on r.user_id = u.id").

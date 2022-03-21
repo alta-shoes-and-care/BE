@@ -130,7 +130,7 @@ func TestCreate(t *testing.T) {
 		assert.Equal(t, http.StatusBadRequest, response.Code)
 	})
 
-	t.Run("validation error", func(t *testing.T) {
+	t.Run("request body validation error", func(t *testing.T) {
 		requestBody, _ := json.Marshal(RequestCreate{
 			Title:       "asdhajkdhajsdhjkabsdjabdjkabdkasdbjkabsdjkasbdjkasbdjkasdjabsdjabsdjabsd",
 			Description: "Layanan 1",
@@ -158,7 +158,7 @@ func TestCreate(t *testing.T) {
 		assert.Equal(t, http.StatusBadRequest, response.Code)
 	})
 
-	t.Run("file error", func(t *testing.T) {
+	t.Run("read file error", func(t *testing.T) {
 		requestBody, _ := json.Marshal(RequestCreate{
 			Title:       "Service 1",
 			Description: "Layanan 1",
@@ -174,6 +174,44 @@ func TestCreate(t *testing.T) {
 		context := e.NewContext(req, res)
 		context.SetPath(fmt.Sprintf("%v%v", rootPath, jwtPath))
 		context.FormFile("file")
+
+		serviceController := NewServiceController(&MockService.MockServiceTrueRepository{}, config, &MockService.MockAWSStructTrue{})
+		if err := middlewares.JWTMiddleware()(serviceController.Create())(context); err != nil {
+			log.Fatal(err)
+			return
+		}
+
+		response := common.Response{}
+		json.Unmarshal([]byte(res.Body.Bytes()), &response)
+
+		assert.Equal(t, http.StatusBadRequest, response.Code)
+	})
+
+	t.Run("image extension validation error", func(t *testing.T) {
+		body := new(bytes.Buffer)
+		writer := multipart.NewWriter(body)
+
+		writer.WriteField("title", "Service 1")
+		writer.WriteField("description", "Layanan 1")
+		writer.WriteField("price", "15000")
+
+		part, err := writer.CreateFormFile("file", "/home/cakcup/Pictures/echo.svg")
+		if err != nil {
+			log.Fatal(err)
+			return
+		}
+
+		part.Write([]byte("file"))
+		writer.Close()
+
+		req := httptest.NewRequest(http.MethodPost, "/", body)
+		res := httptest.NewRecorder()
+
+		req.Header.Set("Content-Type", writer.FormDataContentType())
+		req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtTokenAdmin))
+
+		context := e.NewContext(req, res)
+		context.SetPath(fmt.Sprintf("%v%v", rootPath, jwtPath))
 
 		serviceController := NewServiceController(&MockService.MockServiceTrueRepository{}, config, &MockService.MockAWSStructTrue{})
 		if err := middlewares.JWTMiddleware()(serviceController.Create())(context); err != nil {

@@ -658,7 +658,7 @@ func TestDelete(t *testing.T) {
 		assert.Equal(t, http.StatusOK, response.Code)
 	})
 
-	t.Run("fail to delete", func(t *testing.T) {
+	t.Run("admin error", func(t *testing.T) {
 		req := httptest.NewRequest(http.MethodPut, "/", bytes.NewBuffer(nil))
 		res := httptest.NewRecorder()
 
@@ -666,7 +666,28 @@ func TestDelete(t *testing.T) {
 		req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtTokenUser))
 
 		context := e.NewContext(req, res)
-		context.SetPath(fmt.Sprintf("%v%v/me", rootPath, jwtPath))
+		context.SetPath(fmt.Sprintf("%v%v/1", rootPath, jwtPath))
+
+		userController := NewUserController(&MockUser.MockUserRepository{})
+		if err := middlewares.JWTMiddleware()(userController.Delete())(context); err != nil {
+			log.Fatal(err)
+		}
+
+		response := common.Response{}
+		json.Unmarshal([]byte(res.Body.Bytes()), &response)
+
+		assert.Equal(t, http.StatusUnauthorized, response.Code)
+	})
+
+	t.Run("internal server error", func(t *testing.T) {
+		req := httptest.NewRequest(http.MethodPut, "/", bytes.NewBuffer(nil))
+		res := httptest.NewRecorder()
+
+		req.Header.Set("Content-Type", "application/json")
+		req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtTokenAdmin))
+
+		context := e.NewContext(req, res)
+		context.SetPath(fmt.Sprintf("%v%v/1", rootPath, jwtPath))
 
 		userController := NewUserController(&MockUser.MockFalseUserRepository{})
 		if err := middlewares.JWTMiddleware()(userController.Delete())(context); err != nil {
@@ -679,15 +700,15 @@ func TestDelete(t *testing.T) {
 		assert.Equal(t, http.StatusInternalServerError, response.Code)
 	})
 
-	t.Run("succeed to delete", func(t *testing.T) {
+	t.Run("succeed", func(t *testing.T) {
 		req := httptest.NewRequest(http.MethodPut, "/", bytes.NewBuffer(nil))
 		res := httptest.NewRecorder()
 
 		req.Header.Set("Content-Type", "application/json")
-		req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtTokenUser))
+		req.Header.Set("Authorization", fmt.Sprintf("Bearer %v", jwtTokenAdmin))
 
 		context := e.NewContext(req, res)
-		context.SetPath(fmt.Sprintf("%v%v/me", rootPath, jwtPath))
+		context.SetPath(fmt.Sprintf("%v%v/1", rootPath, jwtPath))
 
 		userController := NewUserController(&MockUser.MockUserRepository{})
 		if err := middlewares.JWTMiddleware()(userController.Delete())(context); err != nil {

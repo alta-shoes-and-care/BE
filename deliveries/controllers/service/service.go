@@ -51,12 +51,9 @@ func (ctl *ServiceController) Create() echo.HandlerFunc {
 			return c.JSON(http.StatusBadRequest, common.BadRequest("tidak dapat membaca file gambar"))
 		}
 
-		if status, err := validators.ValidateServiceImage(file); err != nil {
-			if status == http.StatusRequestEntityTooLarge {
-				return c.JSON(status, common.RequestEntityTooLarge(err.Error()))
-			} else if status == http.StatusBadRequest {
-				return c.JSON(status, common.BadRequest(err.Error()))
-			}
+		if err := validators.ValidateServiceImage(file); err != nil {
+			log.Info("error validate image file name: ", file.Filename)
+			return c.JSON(http.StatusBadRequest, common.BadRequest(err.Error()))
 		}
 
 		file.Filename = strings.ReplaceAll(file.Filename, " ", "_")
@@ -117,12 +114,8 @@ func (ctl *ServiceController) Update() echo.HandlerFunc {
 		if err != nil {
 			log.Info(err)
 		} else {
-			if status, err := validators.ValidateServiceImage(file); err != nil {
-				if status == http.StatusRequestEntityTooLarge {
-					return c.JSON(status, common.RequestEntityTooLarge(err.Error()))
-				} else if status == http.StatusBadRequest {
-					return c.JSON(status, common.BadRequest(err.Error()))
-				}
+			if err := validators.ValidateServiceImage(file); err != nil {
+				return c.JSON(http.StatusBadRequest, common.BadRequest(err.Error()))
 			}
 
 			var err error

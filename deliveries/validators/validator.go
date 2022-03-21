@@ -3,7 +3,6 @@ package validators
 import (
 	"errors"
 	"mime/multipart"
-	"net/http"
 	"regexp"
 	"strings"
 )
@@ -70,13 +69,9 @@ func ValidateUpdateServiceData(title, description string) error {
 	return nil
 }
 
-func ValidateServiceImage(file *multipart.FileHeader) (int, error) {
-	if file.Size > 512000 {
-		return http.StatusRequestEntityTooLarge, errors.New("ukuran gambar melebihi 500kB")
+func ValidateServiceImage(file *multipart.FileHeader) error {
+	if strings.HasSuffix(file.Filename, ".jpg") || strings.HasSuffix(file.Filename, ".jpeg") || strings.HasSuffix(file.Filename, ".png") {
+		return nil
 	}
-
-	if !strings.HasSuffix(file.Filename, ".jpg") || !strings.HasSuffix(file.Filename, ".jpeg") || !strings.HasSuffix(file.Filename, ".png") {
-		return http.StatusBadRequest, errors.New("hanya menerima file dengan ekstensi jpg, jpeg, dan png")
-	}
-	return http.StatusOK, nil
+	return errors.New("hanya menerima file dengan ekstensi jpg, jpeg, dan png")
 }

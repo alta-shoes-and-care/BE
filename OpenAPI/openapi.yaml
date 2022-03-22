@@ -44,63 +44,11 @@ paths:
                 password: ucup123
       responses:
         '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  code:
-                    type: integer
-                  message:
-                    type: string
-                  data:
-                    type: object
-                    properties:
-                      email:
-                        type: string
-                      token:
-                        type: string
-              example:
-                code: 200
-                message: berhasil masuk, mendapatkan token baru
-                data:
-                  email: ucup@ucup.com
-                  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+          $ref: '#/components/responses/200AuthLogin'
         '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  code:
-                    type: integer
-                  message:
-                    type: string
-                  data:
-                    type: object
-              example:
-                code: 400
-                message: input dari user tidak sesuai, email atau password tidak boleh kosong
-                data: null
+          $ref: '#/components/responses/400BadRequestLogin'
         '500':
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  code:
-                    type: integer
-                  message:
-                    type: string
-                  data:
-                    type: object
-              example:
-                code: 500
-                message: email atau password tidak cocok
-                data: null
+          $ref: '#/components/responses/500InternalServerErrorLogin'
   /users:
     post:
       summary: Tambahkan user baru
@@ -2416,7 +2364,82 @@ components:
               message:
                 type: string
           example:
-            missing or malformed JWT
+            missing or malformed jwt
+    ExpiredToken:
+      description: Access token is invalid or expired
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+          example:
+            invalid or expired jwt
+    '200AuthLogin':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                      token:
+                        type: string
+                      is_admin:
+                        type: boolean
+              example:
+                code: 200
+                message: berhasil masuk, mendapatkan token baru
+                data:
+                  id: 1
+                  name: ucup
+                  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+                  is_admin: true
+    '400BadRequestLogin':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                code: 400
+                message: input dari user tidak sesuai, email atau password tidak boleh kosong
+                data: null
+    '500InternalServerErrorLogin':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                code: 500
+                message: email dan password tidak cocok
+                data: null
   securitySchemes:
     bearerAuth:
       type: http

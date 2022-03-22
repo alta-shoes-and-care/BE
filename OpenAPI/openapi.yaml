@@ -256,55 +256,20 @@ paths:
       - bearerAuth: []
       responses:
         201:
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  code:
-                    type: integer
-                  message:
-                    type: string
-                  data:
-                    type: object
-                    properties:
-                      user_id:
-                        type: integer
-                      title:
-                        type: string
-                      description:
-                        type: string
-                      price:
-                        type: integer
-                      image:
-                        type: string
-                example:
-                  code: 201
-                  message: sukses menambahkan service baru
-                  data:
-                    user_id: 1
-                    title: Regular Cleaning
-                    description: Layanan cuci sepatu reguler
-                    price: 20000
-                    image: https://awsucup.s3.ap-southeast-1.amazonaws.com/sneakers.jpg
+          $ref: '#/components/responses/201CreateNewServiceSuccessful'
         400:
           description: Bad Request
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  code:
-                    type: integer
-                  message:
-                    type: string
-                  data:
-                    type: object
-              example:
-                code: 400
-                message: input dari user tidak sesuai, title, description, atau price tidak boleh kosong
-                data: null
+                oneOf:
+                  - $ref: '#/components/schemas/400CreateNewServiceBindError'
+                  - $ref: '#/components/schemas/400CreateNewServiceValidationError1'
+                  - $ref: '#/components/schemas/400CreateNewServiceValidationError2'
+                  - $ref: '#/components/schemas/400ServiceImageReadFileError'
+                  - $ref: '#/components/schemas/400ServiceImageValidationError'
+                  - $ref: '#/components/schemas/400ServiceImageUploadAWSError1'
+                  - $ref: '#/components/schemas/400ServiceImageUploadAWSError2'
         401:
           description: Access token is missing, invalid or expired
           content:
@@ -313,23 +278,10 @@ paths:
                 oneOf:
                   - $ref: '#/components/schemas/401UnauthorizedError'
                   - $ref: '#/components/schemas/401ExpiredToken'
+        413:
+          $ref: '#/components/responses/413CreateNewServiceRequestEntityTooLarge'
         500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  code:
-                    type: integer
-                  message:
-                    type: string
-                  data:
-                    type: object
-              example:
-                code: 500
-                message: gagal membuat service baru
-                data: null
+          $ref: '#/components/responses/500CreateNewServiceInternalServerError'
     get:
       summary: Dapatkan semua service
       tags:
@@ -2342,6 +2294,73 @@ components:
             code: 500
             message: tidak ada perubahan pada data user
             data: null
+    201CreateNewServiceSuccessful:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+              data:
+                type: object
+                properties:
+                  user_id:
+                    type: integer
+                  title:
+                    type: string
+                  description:
+                    type: string
+                  price:
+                    type: integer
+                  image:
+                    type: string
+            example:
+              code: 201
+              message: sukses menambahkan service baru
+              data:
+                user_id: 1
+                title: Regular Cleaning
+                description: Layanan cuci sepatu reguler
+                price: 20000
+                image: https://foo.com/sneakers.jpg
+    413CreateNewServiceRequestEntityTooLarge:
+      description: Request Entity Too Large
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+              data:
+                type: object
+          example:
+            code: 413
+            message: Request Entity Too Large
+            data: null
+    500CreateNewServiceInternalServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+              data:
+                type: object
+          example:
+            code: 500
+            message: gagal membuat service baru
+            data: null
     201CreateNewPaymentMethodSuccessful:
       description: OK
       content:
@@ -2732,6 +2751,97 @@ components:
       example:
         code: 400
         message: 'input password tidak sesuai (alfanumerik; boleh menggunakan simbol; total karakter: minimal 5, maksimal 8;)'
+        data: null
+    400CreateNewServiceBindError:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        data:
+          type: object
+      example:
+        code: 400
+        message: input dari user tidak sesuai, title, description, atau price tidak boleh kosong
+        data: null
+    400CreateNewServiceValidationError1:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        data:
+          type: object
+      example:
+        code: 400
+        message: 'input title tidak sesuai (alfanumerik; tanpa simbol; boleh ada spasi di antara kata; total karakter: maksimal 30;)\ncontoh: \"Service 1\"'
+        data: null
+    400CreateNewServiceValidationError2:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        data:
+          type: object
+      example:
+        code: 400
+        message: 'input description tidak sesuai (alfanumerik; boleh simbol; boleh ada spasi di antara kata; total karakter: maksimal 320;)\ncontoh: \"Layanan regular yang disukai orang.\"'
+        data: null
+    400ServiceImageReadFileError:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        data:
+          type: object
+      example:
+        code: 400
+        message: 'tidak dapat membaca file gambar'
+        data: null
+    400ServiceImageValidationError:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        data:
+          type: object
+      example:
+        code: 400
+        message: 'hanya menerima file dengan ekstensi jpg, jpeg, dan png'
+        data: null
+    400ServiceImageUploadAWSError1:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        data:
+          type: object
+      example:
+        code: 400
+        message: 'error ketika membuka file upload'
+        data: null
+    400ServiceImageUploadAWSError2:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        data:
+          type: object
+      example:
+        code: 400
+        message: 'error upload gambar ke AWS S3'
         data: null
   securitySchemes:
     bearerAuth:

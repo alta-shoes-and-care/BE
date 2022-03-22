@@ -1851,7 +1851,7 @@ paths:
                 code: 500
                 message: gagal mengubah status order menjadi done
                 data: null
-  /payment-methods:
+  /payments:
     post:
       summary: Tambahkan payment method baru
       tags:
@@ -1872,43 +1872,9 @@ paths:
       - bearerAuth: []
       responses:
         201:
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  code:
-                    type: integer
-                  message:
-                    type: string
-                  data:
-                    type: object
-                    properties:
-                      name:
-                        type: string
-                example:
-                  code: 201
-                  message: sukses menambahkan payment method baru
-                  data:
-                    name: BCA Klikpay
+          $ref: '#/components/responses/201CreateNewPaymentMethodSuccessful'
         400:
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  code:
-                    type: integer
-                  message:
-                    type: string
-                  data:
-                    type: object
-              example:
-                code: 400
-                message: input dari user tidak sesuai, nama payment method tidak boleh kosong
-                data: null
+          $ref: '#/components/responses/400CreateNewPaymentMethodBadRequest'
         401:
           description: Access token is missing, invalid or expired
           content:
@@ -1918,22 +1884,7 @@ paths:
                   - $ref: '#/components/schemas/401UnauthorizedError'
                   - $ref: '#/components/schemas/401ExpiredToken'
         500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  code:
-                    type: integer
-                  message:
-                    type: string
-                  data:
-                    type: object
-              example:
-                code: 500
-                message: gagal membuat payment method baru
-                data: null
+          $ref: '#/components/responses/500CreateNewPaymentMethodInternalServerError'
     get:
       summary: Dapatkan semua payment method
       tags:
@@ -2461,6 +2412,61 @@ components:
           example:
             code: 500
             message: tidak ada perubahan pada data user
+            data: null
+    201CreateNewPaymentMethodSuccessful:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+              data:
+                type: object
+                properties:
+                  name:
+                    type: string
+            example:
+              code: 201
+              message: sukses menambahkan payment method baru
+              data:
+                name: BCA Klikpay
+    400CreateNewPaymentMethodBadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+              data:
+                type: object
+          example:
+            code: 400
+            message: input dari user tidak sesuai, nama payment method tidak boleh kosong
+            data: null
+    500CreateNewPaymentMethodInternalServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+              data:
+                type: object
+          example:
+            code: 500
+            message: gagal membuat payment method baru
             data: null
     200GetAllReviewsSuccessful:
       description: OK

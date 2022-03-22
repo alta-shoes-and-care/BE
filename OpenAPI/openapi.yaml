@@ -176,6 +176,8 @@ paths:
       summary: Memperbarui data user
       tags:
         - Users
+      security:
+        - bearerAuth: []
       requestBody:
         required: true
         description: Memperbarui data user dengan input yang sesuai
@@ -195,56 +197,19 @@ paths:
                 name: Ucup_Updated
                 email: ucup_Updated@ucup.com
                 password: ucup1234
-      security:
-        - bearerAuth: []
       responses:
         200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  code:
-                    type: integer
-                  message:
-                    type: string
-                  data:
-                    type: object
-                    properties:
-                      id:
-                        type: integer
-                      name:
-                        type: string
-                      email:
-                        type: string
-                      is_admin:
-                        type: boolean
-                example:
-                  code: 200
-                  message: sukses memperbarui data user
-                  data:
-                    id: 1
-                    name: Ucup_Updated
-                    email: ucup_Updated@ucup.com
-                    is_admin: false
+          $ref: '#/components/responses/200UpdateUserSuccessful'
         400:
           description: Bad Request
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  code:
-                    type: integer
-                  message:
-                    type: string
-                  data:
-                    type: object
-              example:
-                code: 400
-                message: terdapat kesalahan input dari client
-                data: null
+                oneOf:
+                  - $ref: '#/components/schemas/400UpdateUserBindError'
+                  - $ref: '#/components/schemas/400UpdateUserNameValidationError'
+                  - $ref: '#/components/schemas/400UpdateUserEmailValidationError'
+                  - $ref: '#/components/schemas/400UpdateUserPasswordValidationError'
         401:
           description: Access token is missing or invalid or expired
           content:
@@ -254,22 +219,7 @@ paths:
                   - $ref: '#/components/schemas/UnauthorizedError'
                   - $ref: '#/components/schemas/ExpiredToken'
         500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  code:
-                    type: integer
-                  message:
-                    type: string
-                  data:
-                    type: object
-              example:
-                code: 500
-                message: tidak ada perubahan pada data user
-                data: null
+          $ref: '#/components/responses/500UpdateUserInternalServerError'
   /payment-methods:
     post:
       summary: Tambahkan payment method baru
@@ -2742,6 +2692,53 @@ components:
             code: 500
             message: data user tidak ditemukan
             data: null
+    200UpdateUserSuccessful:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+              data:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  email:
+                    type: string
+                  is_admin:
+                    type: boolean
+            example:
+              code: 200
+              message: sukses memperbarui data user
+              data:
+                id: 1
+                name: Ucup_Updated
+                email: ucup_Updated@ucup.com
+                is_admin: false
+    500UpdateUserInternalServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+              data:
+                type: object
+          example:
+            code: 500
+            message: tidak ada perubahan pada data user
+            data: null
   schemas:
     UnauthorizedError:
       type: object
@@ -2784,31 +2781,83 @@ components:
         message: 'input nama tidak sesuai (alfabet; tanpa simbol; boleh ada spasi di antara kata; total karakter: minimal 4, maksimal 30;)\ncontoh: \"Yusuf Nur Wahid\"'
         data: null
     400CreateNewUserRequestValidationError2:
-        type: object
-        properties:
-          code:
-            type: integer
-          message:
-            type: string
-          data:
-            type: object
-        example:
-          code: 400
-          message: 'input email tidak sesuai (username: lowercase alfanumerik, simbol yang diperbolehkan hanya ''_'' dan ''-''; pemisah: simbol ''@''; domain name: lowercase alfanumerik, simbol yang diperbolehkan hanya ''-''; pemisah: simbol ''.''; domain: lowercase alfabet, minimal 2 karakter, maksimal 4 karakter;)\ncontoh: \"yusuf@mail.com\"'
-          data: null
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        data:
+          type: object
+      example:
+        code: 400
+        message: 'input email tidak sesuai (username: lowercase alfanumerik, simbol yang diperbolehkan hanya ''_'' dan ''-''; pemisah: simbol ''@''; domain name: lowercase alfanumerik, simbol yang diperbolehkan hanya ''-''; pemisah: simbol ''.''; domain: lowercase alfabet, minimal 2 karakter, maksimal 4 karakter;)\ncontoh: \"yusuf@mail.com\"'
+        data: null
     400CreateNewUserRequestValidationError3:
-        type: object
-        properties:
-          code:
-            type: integer
-          message:
-            type: string
-          data:
-            type: object
-        example:
-          code: 400
-          message: 'input password tidak sesuai (alfanumerik; boleh menggunakan simbol; total karakter: minimal 5, maksimal 8;)'
-          data: null
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        data:
+          type: object
+      example:
+        code: 400
+        message: 'input password tidak sesuai (alfanumerik; boleh menggunakan simbol; total karakter: minimal 5, maksimal 8;)'
+        data: null  
+    400UpdateUserBindError:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        data:
+          type: object
+      example:
+        code: 400
+        message: terdapat kesalahan input dari client
+        data: null
+    400UpdateUserNameValidationError:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        data:
+          type: object
+      example:
+        code: 400
+        message: 'input nama tidak sesuai (alfabet; tanpa simbol; boleh ada spasi di antara kata; total karakter: minimal 4, maksimal 30;)\ncontoh: \"Yusuf Nur Wahid\"'
+        data: null
+    400UpdateUserEmailValidationError:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        data:
+          type: object
+      example:
+        code: 400
+        message: 'input email tidak sesuai (username: lowercase alfanumerik, simbol yang diperbolehkan hanya ''_'' dan ''-''; pemisah: simbol ''@''; domain name: lowercase alfanumerik, simbol yang diperbolehkan hanya ''-''; pemisah: simbol ''.''; domain: lowercase alfabet, minimal 2 karakter, maksimal 4 karakter;)\ncontoh: \"yusuf@mail.com\"'
+        data: null
+    400UpdateUserPasswordValidationError:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        data:
+          type: object
+      example:
+        code: 400
+        message: 'input password tidak sesuai (alfanumerik; boleh menggunakan simbol; total karakter: minimal 5, maksimal 8;)'
+        data: null
   securitySchemes:
     bearerAuth:
       type: http

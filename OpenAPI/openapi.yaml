@@ -44,13 +44,13 @@ paths:
                 password: ucup123
       responses:
         '200':
-          $ref: '#/components/responses/200Login'
+          $ref: '#/components/responses/200LoginSucceed'
         '400':
-          $ref: '#/components/responses/400BadRequestLogin'
+          $ref: '#/components/responses/400LoginBadRequest'
         '406':
           $ref: '#/components/responses/406NotAcceptableGenerateToken'
         '500':
-          $ref: '#/components/responses/500InternalServerErrorLogin'
+          $ref: '#/components/responses/500LoginInternalServerError'
   /users:
     post:
       summary: Tambahkan user baru
@@ -80,66 +80,19 @@ paths:
                 is_admin: false
       responses:
         '201':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  code:
-                    type: integer
-                  message:
-                    type: string
-                  data:
-                    type: object
-                    properties:
-                      name:
-                        type: string
-                      email:
-                        type: string
-                      is_admin:
-                        type: boolean
-                example:
-                  code: 201
-                  message: sukses menambahkan user baru
-                  data:
-                    name: ucup
-                    email: ucup@ucup.com
-                    is_admin: false
+          $ref: '#/components/responses/201CreatedNewUser'
         '400':
           description: Bad Request
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  code:
-                    type: integer
-                  message:
-                    type: string
-                  data:
-                    type: object
-              example:
-                code: 400
-                message: input dari user tidak sesuai, nama, email atau password tidak boleh kosong
-                data: null
+                oneOf:
+                  - $ref: '#/components/schemas/400CreateNewUserBindErrorOrEmptyFields'
+                  - $ref: '#/components/schemas/400CreateNewUserRequestValidationError2'
+                  - $ref: '#/components/schemas/400CreateNewUserRequestValidationError3'
+                  - $ref: '#/components/schemas/400CreateNewUserRequestValidationError1'
         '500':
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  code:
-                    type: integer
-                  message:
-                    type: string
-                  data:
-                    type: object
-              example:
-                code: 500
-                message: gagal membuat user baru
-                data: null
+          $ref: '#/components/responses/500CreateNewUserInternalServerError'
     get:
       summary: Dapatkan data user
       tags:
@@ -2378,7 +2331,7 @@ components:
                 type: string
           example:
             invalid or expired jwt
-    '200Login':
+    '200LoginSucceed':
           description: OK
           content:
             application/json:
@@ -2408,7 +2361,7 @@ components:
                   name: ucup
                   token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
                   is_admin: true
-    '400BadRequestLogin':
+    '400LoginBadRequest':
           description: Bad Request
           content:
             application/json:
@@ -2425,7 +2378,7 @@ components:
                 code: 400
                 message: input dari user tidak sesuai, email atau password tidak boleh kosong
                 data: null
-    '500InternalServerErrorLogin':
+    '500LoginInternalServerError':
           description: Internal Server Error
           content:
             application/json:
@@ -2459,6 +2412,106 @@ components:
                 code: 406
                 message: user_id tidak valid
                 data: null
+    '201CreatedNewUser':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                      email:
+                        type: string
+                      is_admin:
+                        type: boolean
+                example:
+                  code: 201
+                  message: sukses menambahkan user baru
+                  data:
+                    id: 1
+                    name: ucup
+                    email: ucup@ucup.com
+                    is_admin: false
+    '500CreateNewUserInternalServerError':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                code: 500
+                message: gagal membuat user baru
+                data: null
+  schemas:
+    400CreateNewUserBindErrorOrEmptyFields:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        data:
+          type: object
+      example:
+        code: 400
+        message: input dari user tidak sesuai, nama, email atau password tidak boleh kosong
+        data: null
+    400CreateNewUserRequestValidationError1:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        data:
+          type: object
+      example:
+        code: 400
+        message: 'input nama tidak sesuai (alfabet; tanpa simbol; boleh ada spasi di antara kata; total karakter: minimal 4, maksimal 30;)\ncontoh: \"Yusuf Nur Wahid\"'
+        data: null
+    400CreateNewUserRequestValidationError2:
+        type: object
+        properties:
+          code:
+            type: integer
+          message:
+            type: string
+          data:
+            type: object
+        example:
+          code: 400
+          message: 'input email tidak sesuai (username: lowercase alfanumerik, simbol yang diperbolehkan hanya ''_'' dan ''-''; pemisah: simbol ''@''; domain name: lowercase alfanumerik, simbol yang diperbolehkan hanya ''-''; pemisah: simbol ''.''; domain: lowercase alfabet, minimal 2 karakter, maksimal 4 karakter;)\ncontoh: \"yusuf@mail.com\"'
+          data: null
+    400CreateNewUserRequestValidationError3:
+        type: object
+        properties:
+          code:
+            type: integer
+          message:
+            type: string
+          data:
+            type: object
+        example:
+          code: 400
+          message: 'input password tidak sesuai (alfanumerik; boleh menggunakan simbol; total karakter: minimal 5, maksimal 8;)'
+          data: null
   securitySchemes:
     bearerAuth:
       type: http

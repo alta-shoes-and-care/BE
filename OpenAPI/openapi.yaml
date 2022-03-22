@@ -1912,22 +1912,7 @@ paths:
         - bearerAuth: []
       responses:
         200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  code:
-                    type: integer
-                  message:
-                    type: string
-                  data:
-                    type: object
-                example:
-                  code: 200
-                  message: sukses menghapus payment method
-                  data: null
+          $ref: '#/components/responses/200DeletePaymentMethodSuccessful'
         401:
           description: Access token is missing, invalid or expired
           content:
@@ -1937,22 +1922,7 @@ paths:
                   - $ref: '#/components/schemas/401UnauthorizedError'
                   - $ref: '#/components/schemas/401ExpiredToken'
         500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  code:
-                    type: integer
-                  message:
-                    type: string
-                  data:
-                    type: object
-              example:
-                code: 500
-                message: tidak ada payment method yang dihapus
-                data: null
+          $ref: '#/components/responses/500DeletePaymentMethodInternalServerError'
   /reviews:
     get:
       summary: Dapatkan semua review
@@ -2471,6 +2441,40 @@ components:
           example:
             code: 500
             message: tidak terdapat payment method sama sekali
+            data: null
+    200DeletePaymentMethodSuccessful:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+              data:
+                type: object
+            example:
+              code: 200
+              message: sukses menghapus payment method
+              data: null
+    500DeletePaymentMethodInternalServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+              data:
+                type: object
+          example:
+            code: 500
+            message: tidak ada payment method yang dihapus
             data: null
     200GetAllReviewsSuccessful:
       description: OK

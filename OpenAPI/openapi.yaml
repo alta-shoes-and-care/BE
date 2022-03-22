@@ -93,8 +93,29 @@ paths:
                   - $ref: '#/components/schemas/400CreateNewUserRequestValidationError1'
         '500':
           $ref: '#/components/responses/500CreateNewUserInternalServerError'
+  /users/jwt:
     get:
-      summary: Dapatkan data user
+      summary: Dapatkan data semua user
+      tags:
+        - Users
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          $ref: '#/components/responses/200GetAllUsersSucceed'
+        '401':
+          description: Access token is missing or invalid or expired
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/UnauthorizedError'
+                  - $ref: '#/components/schemas/ExpiredToken'
+        '500':
+          $ref: '#/components/responses/500GetAllUsersInternalServerError'
+  /users/jwt/{id}:
+    get:
+      summary: Dapatkan detail user
       tags:
         - Users
       security:
@@ -131,7 +152,13 @@ paths:
                     email: ucup@ucup.com
                     is_admin: false
         '401':
-          $ref: '#/components/responses/UnauthorizedError'
+          description: Access token is missing or invalid or expired
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/UnauthorizedError'
+                  - $ref: '#/components/schemas/ExpiredToken'
         '500':
           description: Internal Server Error
           content:
@@ -223,7 +250,13 @@ paths:
                 message: terdapat kesalahan input dari client
                 data: null
         '401':
-          $ref: '#/components/responses/UnauthorizedError'
+          description: Access token is missing or invalid or expired
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/UnauthorizedError'
+                  - $ref: '#/components/schemas/ExpiredToken'
         '500':
           description: Internal Server Error
           content:
@@ -266,7 +299,13 @@ paths:
                   message: sukses menghapus user
                   data: null
         '401':
-          $ref: '#/components/responses/UnauthorizedError'
+          description: Access token is missing or invalid or expired
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/UnauthorizedError'
+                  - $ref: '#/components/schemas/ExpiredToken'
         '500':
           description: Internal Server Error
           content:
@@ -343,7 +382,13 @@ paths:
                 message: input dari user tidak sesuai, nama payment method tidak boleh kosong
                 data: null
         '401':
-          $ref: '#/components/responses/UnauthorizedError'
+          description: Access token is missing or invalid or expired
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/UnauthorizedError'
+                  - $ref: '#/components/schemas/ExpiredToken'
         '500':
           description: Internal Server Error
           content:
@@ -397,7 +442,13 @@ paths:
                     - id: 2
                       name: Gopay
         '401':
-          $ref: '#/components/responses/UnauthorizedError'
+          description: Access token is missing or invalid or expired
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/UnauthorizedError'
+                  - $ref: '#/components/schemas/ExpiredToken'
         '500':
           description: Internal Server Error
           content:
@@ -440,7 +491,13 @@ paths:
                   message: sukses menghapus payment method
                   data: null
         '401':
-          $ref: '#/components/responses/UnauthorizedError'
+          description: Access token is missing or invalid or expired
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/UnauthorizedError'
+                  - $ref: '#/components/schemas/ExpiredToken'
         '500':
           description: Internal Server Error
           content:
@@ -544,7 +601,13 @@ paths:
                 message: input dari user tidak sesuai, title, description, atau price tidak boleh kosong
                 data: null
         '401':
-          $ref: '#/components/responses/UnauthorizedError'
+          description: Access token is missing or invalid or expired
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/UnauthorizedError'
+                  - $ref: '#/components/schemas/ExpiredToken'
         '500':
           description: Internal Server Error
           content:
@@ -612,7 +675,13 @@ paths:
                       price: 30000
                       image: https://awsucup.s3.ap-southeast-1.amazonaws.com/sneakers2.jpg
         '401':
-          $ref: '#/components/responses/UnauthorizedError'
+          description: Access token is missing or invalid or expired
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/UnauthorizedError'
+                  - $ref: '#/components/schemas/ExpiredToken'
         '500':
           description: Internal Server Error
           content:
@@ -680,7 +749,13 @@ paths:
                     price: 20000
                     image: https://awsucup.s3.ap-southeast-1.amazonaws.com/sneakers.jpg
         '401':
-          $ref: '#/components/responses/UnauthorizedError'
+          description: Access token is missing or invalid or expired
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/UnauthorizedError'
+                  - $ref: '#/components/schemas/ExpiredToken'
         '500':
           description: Internal Server Error
           content:
@@ -776,7 +851,13 @@ paths:
                     price: 20000
                     image: https://awsucup.s3.ap-southeast-1.amazonaws.com/sneakers.jpg
         '401':
-          $ref: '#/components/responses/UnauthorizedError'
+          description: Access token is missing or invalid or expired
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/UnauthorizedError'
+                  - $ref: '#/components/schemas/ExpiredToken'
         '500':
           description: Internal Server Error
           content:
@@ -826,7 +907,13 @@ paths:
                   message: sukses menghapus service
                   data: null
         '401':
-          $ref: '#/components/responses/UnauthorizedError'
+          description: Access token is missing or invalid or expired
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/UnauthorizedError'
+                  - $ref: '#/components/schemas/ExpiredToken'
         '500':
           description: Internal Server Error
           content:
@@ -930,7 +1017,13 @@ paths:
                 message: input dari user tidak sesuai, service_id, order_id, rating, atau review tidak boleh kosong
                 data: null
         '401':
-          $ref: '#/components/responses/UnauthorizedError'
+          description: Access token is missing or invalid or expired
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/UnauthorizedError'
+                  - $ref: '#/components/schemas/ExpiredToken'
         '500':
           description: Internal Server Error
           content:
@@ -1002,7 +1095,13 @@ paths:
                       rating: 5
                       review: Bagus bro!
         '401':
-          $ref: '#/components/responses/UnauthorizedError'
+          description: Access token is missing or invalid or expired
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/UnauthorizedError'
+                  - $ref: '#/components/schemas/ExpiredToken'
         '500':
           description: Internal Server Error
           content:
@@ -1090,7 +1189,13 @@ paths:
                     rating: 5
                     review: Bagus banget bro!
         '401':
-          $ref: '#/components/responses/UnauthorizedError'
+          description: Access token is missing or invalid or expired
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/UnauthorizedError'
+                  - $ref: '#/components/schemas/ExpiredToken'
         '500':
           description: Internal Server Error
           content:
@@ -1140,7 +1245,13 @@ paths:
                   message: sukses menghapus review
                   data: null
         '401':
-          $ref: '#/components/responses/UnauthorizedError'
+          description: Access token is missing or invalid or expired
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/UnauthorizedError'
+                  - $ref: '#/components/schemas/ExpiredToken'
         '500':
           description: Internal Server Error
           content:
@@ -1280,7 +1391,13 @@ paths:
                 message: input dari user tidak sesuai, service_id, payment_method_id, time, address, city, atau phone tidak boleh kosong
                 data: null
         '401':
-          $ref: '#/components/responses/UnauthorizedError'
+          description: Access token is missing or invalid or expired
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/UnauthorizedError'
+                  - $ref: '#/components/schemas/ExpiredToken'
         '500':
           description: Internal Server Error
           content:
@@ -1388,7 +1505,13 @@ paths:
                       is_paid: true
                       url: http://www.midtrans.com/blabla2
         '401':
-          $ref: '#/components/responses/UnauthorizedError'
+          description: Access token is missing or invalid or expired
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/UnauthorizedError'
+                  - $ref: '#/components/schemas/ExpiredToken'
         '500':
           description: Internal Server Error
           content:
@@ -1497,7 +1620,13 @@ paths:
                       is_paid: true
                       url: http://www.midtrans.com/blabla2
         '401':
-          $ref: '#/components/responses/UnauthorizedError'
+          description: Access token is missing or invalid or expired
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/UnauthorizedError'
+                  - $ref: '#/components/schemas/ExpiredToken'
         '500':
           description: Internal Server Error
           content:
@@ -1596,7 +1725,13 @@ paths:
                     is_paid: true
                     url: http://www.midtrans.com/blabla
         '401':
-          $ref: '#/components/responses/UnauthorizedError'
+          description: Access token is missing or invalid or expired
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/UnauthorizedError'
+                  - $ref: '#/components/schemas/ExpiredToken'
         '500':
           description: Internal Server Error
           content:
@@ -1695,7 +1830,13 @@ paths:
                     is_paid: true
                     url: http://www.midtrans.com/blabla
         '401':
-          $ref: '#/components/responses/UnauthorizedError'
+          description: Access token is missing or invalid or expired
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/UnauthorizedError'
+                  - $ref: '#/components/schemas/ExpiredToken'
         '500':
           description: Internal Server Error
           content:
@@ -1794,7 +1935,13 @@ paths:
                     is_paid: true
                     url: http://www.midtrans.com/blabla
         '401':
-          $ref: '#/components/responses/UnauthorizedError'
+          description: Access token is missing or invalid or expired
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/UnauthorizedError'
+                  - $ref: '#/components/schemas/ExpiredToken'
         '500':
           description: Internal Server Error
           content:
@@ -1893,7 +2040,13 @@ paths:
                     is_paid: true
                     url: http://www.midtrans.com/blabla
         '401':
-          $ref: '#/components/responses/UnauthorizedError'
+          description: Access token is missing or invalid or expired
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/UnauthorizedError'
+                  - $ref: '#/components/schemas/ExpiredToken'
         '500':
           description: Internal Server Error
           content:
@@ -1992,7 +2145,13 @@ paths:
                     is_paid: false
                     url: http://www.midtrans.com/blabla
         '401':
-          $ref: '#/components/responses/UnauthorizedError'
+          description: Access token is missing or invalid or expired
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/UnauthorizedError'
+                  - $ref: '#/components/schemas/ExpiredToken'
         '500':
           description: Internal Server Error
           content:
@@ -2091,7 +2250,13 @@ paths:
                     is_paid: true
                     url: http://www.midtrans.com/blabla
         '401':
-          $ref: '#/components/responses/UnauthorizedError'
+          description: Access token is missing or invalid or expired
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/UnauthorizedError'
+                  - $ref: '#/components/schemas/ExpiredToken'
         '500':
           description: Internal Server Error
           content:
@@ -2190,7 +2355,13 @@ paths:
                     is_paid: true
                     url: http://www.midtrans.com/blabla
         '401':
-          $ref: '#/components/responses/UnauthorizedError'
+          description: Access token is missing or invalid or expired
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/UnauthorizedError'
+                  - $ref: '#/components/schemas/ExpiredToken'
         '500':
           description: Internal Server Error
           content:
@@ -2289,7 +2460,13 @@ paths:
                     is_paid: true
                     url: http://www.midtrans.com/blabla
         '401':
-          $ref: '#/components/responses/UnauthorizedError'
+          description: Access token is missing or invalid or expired
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/UnauthorizedError'
+                  - $ref: '#/components/schemas/ExpiredToken'
         '500':
           description: Internal Server Error
           content:
@@ -2309,29 +2486,7 @@ paths:
                 data: null
 components:
   responses:
-    UnauthorizedError:
-      description: Access token is missing or invalid
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
-          example:
-            missing or malformed jwt
-    ExpiredToken:
-      description: Access token is invalid or expired
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
-          example:
-            invalid or expired jwt
-    '200LoginSucceed':
+    200LoginSucceed:
           description: OK
           content:
             application/json:
@@ -2361,7 +2516,7 @@ components:
                   name: ucup
                   token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
                   is_admin: true
-    '400LoginBadRequest':
+    400LoginBadRequest:
           description: Bad Request
           content:
             application/json:
@@ -2378,7 +2533,7 @@ components:
                 code: 400
                 message: input dari user tidak sesuai, email atau password tidak boleh kosong
                 data: null
-    '500LoginInternalServerError':
+    500LoginInternalServerError:
           description: Internal Server Error
           content:
             application/json:
@@ -2395,7 +2550,7 @@ components:
                 code: 500
                 message: email dan password tidak cocok
                 data: null
-    '406NotAcceptableGenerateToken':
+    406NotAcceptableGenerateToken:
           description: Not Acceptable
           content:
             application/json:
@@ -2412,7 +2567,7 @@ components:
                 code: 406
                 message: user_id tidak valid
                 data: null
-    '201CreatedNewUser':
+    201CreatedNewUser:
           description: OK
           content:
             application/json:
@@ -2442,7 +2597,7 @@ components:
                     name: ucup
                     email: ucup@ucup.com
                     is_admin: false
-    '500CreateNewUserInternalServerError':
+    500CreateNewUserInternalServerError:
           description: Internal Server Error
           content:
             application/json:
@@ -2459,7 +2614,74 @@ components:
                 code: 500
                 message: gagal membuat user baru
                 data: null
+    200GetAllUsersSucceed:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        name:
+                          type: string
+                        email:
+                          type: string
+                        is_admin:
+                          type: boolean
+                example:
+                  code: 200
+                  message: sukses mendapatkan semua user
+                  data:
+                    - id: 1
+                      name: ucup
+                      email: ucup@ucup.com
+                      is_admin: false
+                    - id: 2
+                      name: ucup2
+                      email: ucup2@ucup.com
+                      is_admin: false
+    500GetAllUsersInternalServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+              data:
+                type: object
+          example:
+            code: 500
+            message: tidak terdapat data user sama sekali
+            data: null
   schemas:
+    UnauthorizedError:
+      type: object
+      properties:
+        message:
+          type: string
+      example:
+        missing or malformed jwt
+    ExpiredToken:
+      type: object
+      properties:
+        message:
+          type: string
+      example:
+        invalid or expired jwt
     400CreateNewUserBindErrorOrEmptyFields:
       type: object
       properties:

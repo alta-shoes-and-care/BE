@@ -44,7 +44,7 @@ paths:
                 password: ucup123
       responses:
         '200':
-          $ref: '#/components/responses/200LoginSucceed'
+          $ref: '#/components/responses/200LoginSuccessful'
         '400':
           $ref: '#/components/responses/400LoginBadRequest'
         '406':
@@ -102,7 +102,7 @@ paths:
         - bearerAuth: []
       responses:
         '200':
-          $ref: '#/components/responses/200GetAllUsersSucceed'
+          $ref: '#/components/responses/200GetAllUsersSuccessful'
         '401':
           description: Access token is missing or invalid or expired
           content:
@@ -121,37 +121,9 @@ paths:
       security:
         - bearerAuth: []
       responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  code:
-                    type: integer
-                  message:
-                    type: string
-                  data:
-                    type: object
-                    properties:
-                      id:
-                        type: integer
-                      name:
-                        type: string
-                      email:
-                        type: string
-                      is_admin:
-                        type: boolean
-                example:
-                  code: 200
-                  message: sukses mendapatkan data user
-                  data:
-                    id: 1
-                    name: ucup
-                    email: ucup@ucup.com
-                    is_admin: false
-        '401':
+        200:
+          $ref: '#/components/responses/200GetUserByIDSuccessful'
+        401:
           description: Access token is missing or invalid or expired
           content:
             application/json:
@@ -159,23 +131,8 @@ paths:
                 oneOf:
                   - $ref: '#/components/schemas/UnauthorizedError'
                   - $ref: '#/components/schemas/ExpiredToken'
-        '500':
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  code:
-                    type: integer
-                  message:
-                    type: string
-                  data:
-                    type: object
-              example:
-                code: 500
-                message: data user tidak ditemukan
-                data: null
+        500:
+          $ref: '#/components/responses/500GetUserByIDInternalServerError'
     put:
       summary: Memperbarui data user
       tags:
@@ -2486,170 +2443,170 @@ paths:
                 data: null
 components:
   responses:
-    200LoginSucceed:
-          description: OK
-          content:
-            application/json:
-              schema:
+    200LoginSuccessful:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+              data:
                 type: object
                 properties:
-                  code:
+                  id:
                     type: integer
-                  message:
+                  name:
                     type: string
-                  data:
-                    type: object
-                    properties:
-                      id:
-                        type: integer
-                      name:
-                        type: string
-                      token:
-                        type: string
-                      is_admin:
-                        type: boolean
-              example:
-                code: 200
-                message: berhasil masuk, mendapatkan token baru
-                data:
-                  id: 1
-                  name: ucup
-                  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
-                  is_admin: true
+                  token:
+                    type: string
+                  is_admin:
+                    type: boolean
+          example:
+            code: 200
+            message: berhasil masuk, mendapatkan token baru
+            data:
+              id: 1
+              name: ucup
+              token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+              is_admin: true
     400LoginBadRequest:
-          description: Bad Request
-          content:
-            application/json:
-              schema:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+              data:
                 type: object
-                properties:
-                  code:
-                    type: integer
-                  message:
-                    type: string
-                  data:
-                    type: object
-              example:
-                code: 400
-                message: input dari user tidak sesuai, email atau password tidak boleh kosong
-                data: null
+          example:
+            code: 400
+            message: input dari user tidak sesuai, email atau password tidak boleh kosong
+            data: null
     500LoginInternalServerError:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+              data:
                 type: object
-                properties:
-                  code:
-                    type: integer
-                  message:
-                    type: string
-                  data:
-                    type: object
-              example:
-                code: 500
-                message: email dan password tidak cocok
-                data: null
+          example:
+            code: 500
+            message: email dan password tidak cocok
+            data: null
     406NotAcceptableGenerateToken:
-          description: Not Acceptable
-          content:
-            application/json:
-              schema:
+      description: Not Acceptable
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+              data:
                 type: object
-                properties:
-                  code:
-                    type: integer
-                  message:
-                    type: string
-                  data:
-                    type: object
-              example:
-                code: 406
-                message: user_id tidak valid
-                data: null
+          example:
+            code: 406
+            message: user_id tidak valid
+            data: null
     201CreatedNewUser:
-          description: OK
-          content:
-            application/json:
-              schema:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+              data:
                 type: object
                 properties:
-                  code:
+                  id:
                     type: integer
-                  message:
+                  name:
                     type: string
-                  data:
-                    type: object
-                    properties:
-                      id:
-                        type: integer
-                      name:
-                        type: string
-                      email:
-                        type: string
-                      is_admin:
-                        type: boolean
-                example:
-                  code: 201
-                  message: sukses menambahkan user baru
-                  data:
-                    id: 1
-                    name: ucup
-                    email: ucup@ucup.com
-                    is_admin: false
+                  email:
+                    type: string
+                  is_admin:
+                    type: boolean
+            example:
+              code: 201
+              message: sukses menambahkan user baru
+              data:
+                id: 1
+                name: ucup
+                email: ucup@ucup.com
+                is_admin: false
     500CreateNewUserInternalServerError:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+              data:
                 type: object
-                properties:
-                  code:
-                    type: integer
-                  message:
-                    type: string
-                  data:
-                    type: object
-              example:
-                code: 500
-                message: gagal membuat user baru
-                data: null
-    200GetAllUsersSucceed:
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  code:
-                    type: integer
-                  message:
-                    type: string
-                  data:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        id:
-                          type: integer
-                        name:
-                          type: string
-                        email:
-                          type: string
-                        is_admin:
-                          type: boolean
-                example:
-                  code: 200
-                  message: sukses mendapatkan semua user
-                  data:
-                    - id: 1
-                      name: ucup
-                      email: ucup@ucup.com
-                      is_admin: false
-                    - id: 2
-                      name: ucup2
-                      email: ucup2@ucup.com
-                      is_admin: false
+          example:
+            code: 500
+            message: gagal membuat user baru
+            data: null
+    200GetAllUsersSuccessful:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+              data:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    email:
+                      type: string
+                    is_admin:
+                      type: boolean
+            example:
+              code: 200
+              message: sukses mendapatkan semua user
+              data:
+                - id: 1
+                  name: ucup
+                  email: ucup@ucup.com
+                  is_admin: false
+                - id: 2
+                  name: ucup2
+                  email: ucup2@ucup.com
+                  is_admin: false
     500GetAllUsersInternalServerError:
       description: Internal Server Error
       content:
@@ -2666,6 +2623,53 @@ components:
           example:
             code: 500
             message: tidak terdapat data user sama sekali
+            data: null
+    200GetUserByIDSuccessful:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+              data:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  email:
+                    type: string
+                  is_admin:
+                    type: boolean
+            example:
+              code: 200
+              message: sukses mendapatkan data user
+              data:
+                id: 1
+                name: ucup
+                email: ucup@ucup.com
+                is_admin: false
+    500GetUserByIDInternalServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+              data:
+                type: object
+          example:
+            code: 500
+            message: data user tidak ditemukan
             data: null
   schemas:
     UnauthorizedError:

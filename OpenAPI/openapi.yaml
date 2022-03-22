@@ -2044,6 +2044,24 @@ paths:
                 message: tidak ada payment method yang dihapus
                 data: null
   /reviews:
+    get:
+      summary: Dapatkan semua review
+      tags:
+        - Reviews
+      responses:
+        200:
+          $ref: '#/components/responses/200GetAllReviewsSuccessful'
+        401:
+          description: Access token is missing, invalid or expired
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/401UnauthorizedError'
+                  - $ref: '#/components/schemas/401ExpiredToken'
+        500:
+          $ref: '#/components/responses/500GetAllReviewsInternalServerError'
+  /reviews/jwt:
     post:
       summary: Tambahkan review baru
       tags:
@@ -2073,61 +2091,9 @@ paths:
       - bearerAuth: []
       responses:
         201:
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  code:
-                    type: integer
-                  message:
-                    type: string
-                  data:
-                    type: object
-                    properties:
-                      id:
-                        type: integer
-                      service_id:
-                        type: integer
-                      user_id:
-                        type: integer
-                      user_name:
-                        type: string
-                      order_id:
-                        type: integer
-                      rating:
-                        type: integer
-                      review:
-                        type: string
-                example:
-                  code: 201
-                  message: sukses menambahkan review baru
-                  data:
-                    id: 1
-                    service_id: 1
-                    user_id: 1
-                    user_name: Frans Ihsan
-                    order_id: 1
-                    rating: 5
-                    review: Mantap
+          $ref: '#/components/responses/201CreateNewReviewSuccessful'
         400:
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  code:
-                    type: integer
-                  message:
-                    type: string
-                  data:
-                    type: object
-              example:
-                code: 400
-                message: input dari user tidak sesuai, service_id, order_id, rating, atau review tidak boleh kosong
-                data: null
+          $ref: '#/components/responses/400CreateNewReviewBadRequest'
         401:
           description: Access token is missing, invalid or expired
           content:
@@ -2137,250 +2103,7 @@ paths:
                   - $ref: '#/components/schemas/401UnauthorizedError'
                   - $ref: '#/components/schemas/401ExpiredToken'
         500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  code:
-                    type: integer
-                  message:
-                    type: string
-                  data:
-                    type: object
-              example:
-                code: 500
-                message: gagal membuat review baru
-                data: null
-    get:
-      summary: Dapatkan semua review
-      tags:
-        - Reviews
-      responses:
-        200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  code:
-                    type: integer
-                  message:
-                    type: string
-                  data:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        id:
-                          type: integer
-                        service_id:
-                          type: integer
-                        user_id:
-                          type: integer
-                        user_name:
-                          type: string
-                        order_id:
-                          type: integer
-                        rating:
-                          type: integer
-                        review:
-                          type: string
-                example:
-                  code: 200
-                  message: sukses mendapatkan semua review
-                  data:
-                    - id: 1
-                      service_id: 1
-                      user_id: 1
-                      user_name: Frans Ihsan
-                      order_id: 1
-                      rating: 5
-                      review: Mantap
-                    - id: 2
-                      service_id: 2
-                      user_id: 2
-                      user_name: Ucup Nur
-                      order_id: 2
-                      rating: 5
-                      review: Bagus bro!
-        401:
-          description: Access token is missing, invalid or expired
-          content:
-            application/json:
-              schema:
-                oneOf:
-                  - $ref: '#/components/schemas/401UnauthorizedError'
-                  - $ref: '#/components/schemas/401ExpiredToken'
-        500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  code:
-                    type: integer
-                  message:
-                    type: string
-                  data:
-                    type: object
-              example:
-                code: 500
-                message: tidak terdapat review sama sekali
-                data: null
-  /reviews/{id}:
-    put:
-      summary: Memperbarui review berdasarkan id
-      tags:
-        - Reviews
-      parameters:
-        - name: id
-          in: path
-          description: ID review hasil generate dari sistem
-          required: true
-          schema:
-            type: integer
-      security:
-        - bearerAuth: []
-      requestBody:
-        required: true
-        description: Memperbarui review dengan input yang sesuai
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                rating:
-                  type: integer
-                review:
-                  type: string
-            example:
-                rating: 5
-                review: Bagus banget bro!
-      responses:
-        200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  code:
-                    type: integer
-                  message:
-                    type: string
-                  data:
-                    type: object
-                    properties:
-                      id:
-                        type: integer
-                      service_id:
-                        type: integer
-                      user_id:
-                        type: integer
-                      user_name:
-                        type: string
-                      order_id:
-                        type: integer
-                      rating:
-                        type: integer
-                      review:
-                        type: string
-                example:
-                  code: 200
-                  message: sukses memperbarui data review
-                  data:
-                    id: 2
-                    service_id: 2
-                    user_id: 2
-                    user_name: Ucup
-                    order_id: 2
-                    rating: 5
-                    review: Bagus banget bro!
-        401:
-          description: Access token is missing, invalid or expired
-          content:
-            application/json:
-              schema:
-                oneOf:
-                  - $ref: '#/components/schemas/401UnauthorizedError'
-                  - $ref: '#/components/schemas/401ExpiredToken'
-        500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  code:
-                    type: integer
-                  message:
-                    type: string
-                  data:
-                    type: object
-              example:
-                code: 500
-                message: tidak ada data review yang diperbarui
-                data: null
-    delete:
-      summary: Menghapus review berdasarkan id
-      tags:
-        - Reviews
-      parameters:
-        - name: id
-          in: path
-          description: ID review hasil generate dari sistem
-          required: true
-          schema:
-            type: integer
-      security:
-        - bearerAuth: []
-      responses:
-        200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  code:
-                    type: integer
-                  message:
-                    type: string
-                  data:
-                    type: object
-                example:
-                  code: 200
-                  message: sukses menghapus review
-                  data: null
-        401:
-          description: Access token is missing, invalid or expired
-          content:
-            application/json:
-              schema:
-                oneOf:
-                  - $ref: '#/components/schemas/401UnauthorizedError'
-                  - $ref: '#/components/schemas/401ExpiredToken'
-        500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  code:
-                    type: integer
-                  message:
-                    type: string
-                  data:
-                    type: object
-              example:
-                code: 500
-                message: tidak ada review yang dihapus
-                data: null
+          $ref: '#/components/responses/500CreateNewReviewInternalServerError'
 components:
   responses:
     200LoginSuccessful:
@@ -2738,6 +2461,144 @@ components:
           example:
             code: 500
             message: tidak ada perubahan pada data user
+            data: null
+    200GetAllReviewsSuccessful:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+              data:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    service_id:
+                      type: integer
+                    user_id:
+                      type: integer
+                    order_id:
+                      type: integer
+                    name:
+                      type: string
+                    rating:
+                      type: integer
+                    review:
+                      type: string
+            example:
+              code: 200
+              message: sukses mendapatkan semua review
+              data:
+                - id: 1
+                  service_id: 1
+                  user_id: 1
+                  order_id: 1
+                  name: Frans Ihsan
+                  rating: 5
+                  review: Mantap
+                - id: 2
+                  service_id: 2
+                  user_id: 2
+                  order_id: 2
+                  name: Ucup Nur
+                  rating: 5
+                  review: Bagus bro!
+    500GetAllReviewsInternalServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+              data:
+                type: object
+          example:
+            code: 500
+            message: tidak terdapat review sama sekali
+            data: null
+    201CreateNewReviewSuccessful:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+              data:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  service_id:
+                    type: integer
+                  user_id:
+                    type: integer
+                  user_name:
+                    type: string
+                  order_id:
+                    type: integer
+                  rating:
+                    type: integer
+                  review:
+                    type: string
+            example:
+              code: 201
+              message: sukses menambahkan review baru
+              data:
+                id: 1
+                service_id: 1
+                user_id: 1
+                user_name: Frans Ihsan
+                order_id: 1
+                rating: 5
+                review: Mantap
+    400CreateNewReviewBadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+              data:
+                type: object
+          example:
+            code: 400
+            message: input dari user tidak sesuai, service_id, order_id, rating, atau review tidak boleh kosong
+            data: null
+    500CreateNewReviewInternalServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+              data:
+                type: object
+          example:
+            code: 500
+            message: gagal membuat review baru
             data: null
   schemas:
     401UnauthorizedError:

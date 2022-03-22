@@ -109,8 +109,8 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/UnauthorizedError'
-                  - $ref: '#/components/schemas/ExpiredToken'
+                  - $ref: '#/components/schemas/401UnauthorizedError'
+                  - $ref: '#/components/schemas/401ExpiredToken'
         500:
           $ref: '#/components/responses/500GetAllUsersInternalServerError'
   /users/jwt/{id}:
@@ -129,8 +129,8 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/UnauthorizedError'
-                  - $ref: '#/components/schemas/ExpiredToken'
+                  - $ref: '#/components/schemas/401UnauthorizedError'
+                  - $ref: '#/components/schemas/401ExpiredToken'
         500:
           $ref: '#/components/responses/500GetUserByIDInternalServerError'
     delete:
@@ -148,8 +148,8 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/UnauthorizedError'
-                  - $ref: '#/components/schemas/ExpiredToken'
+                  - $ref: '#/components/schemas/401UnauthorizedError'
+                  - $ref: '#/components/schemas/401ExpiredToken'
         500:
           $ref: '#/components/responses/500DeleteUserInternalServerError'
   /users/jwt/me:
@@ -168,8 +168,8 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/UnauthorizedError'
-                  - $ref: '#/components/schemas/ExpiredToken'
+                  - $ref: '#/components/schemas/401UnauthorizedError'
+                  - $ref: '#/components/schemas/401ExpiredToken'
         500:
           $ref: '#/components/responses/500GetUserThemselvesInternalServerError'
     put:
@@ -216,8 +216,8 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/UnauthorizedError'
-                  - $ref: '#/components/schemas/ExpiredToken'
+                  - $ref: '#/components/schemas/401UnauthorizedError'
+                  - $ref: '#/components/schemas/401ExpiredToken'
         500:
           $ref: '#/components/responses/500UpdateUserInternalServerError'
   /payment-methods:
@@ -284,8 +284,8 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/UnauthorizedError'
-                  - $ref: '#/components/schemas/ExpiredToken'
+                  - $ref: '#/components/schemas/401UnauthorizedError'
+                  - $ref: '#/components/schemas/401ExpiredToken'
         500:
           description: Internal Server Error
           content:
@@ -344,8 +344,8 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/UnauthorizedError'
-                  - $ref: '#/components/schemas/ExpiredToken'
+                  - $ref: '#/components/schemas/401UnauthorizedError'
+                  - $ref: '#/components/schemas/401ExpiredToken'
         500:
           description: Internal Server Error
           content:
@@ -393,8 +393,8 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/UnauthorizedError'
-                  - $ref: '#/components/schemas/ExpiredToken'
+                  - $ref: '#/components/schemas/401UnauthorizedError'
+                  - $ref: '#/components/schemas/401ExpiredToken'
         500:
           description: Internal Server Error
           content:
@@ -503,8 +503,8 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/UnauthorizedError'
-                  - $ref: '#/components/schemas/ExpiredToken'
+                  - $ref: '#/components/schemas/401UnauthorizedError'
+                  - $ref: '#/components/schemas/401ExpiredToken'
         500:
           description: Internal Server Error
           content:
@@ -577,8 +577,8 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/UnauthorizedError'
-                  - $ref: '#/components/schemas/ExpiredToken'
+                  - $ref: '#/components/schemas/401UnauthorizedError'
+                  - $ref: '#/components/schemas/401ExpiredToken'
         500:
           description: Internal Server Error
           content:
@@ -651,8 +651,8 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/UnauthorizedError'
-                  - $ref: '#/components/schemas/ExpiredToken'
+                  - $ref: '#/components/schemas/401UnauthorizedError'
+                  - $ref: '#/components/schemas/401ExpiredToken'
         500:
           description: Internal Server Error
           content:
@@ -753,8 +753,8 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/UnauthorizedError'
-                  - $ref: '#/components/schemas/ExpiredToken'
+                  - $ref: '#/components/schemas/401UnauthorizedError'
+                  - $ref: '#/components/schemas/401ExpiredToken'
         500:
           description: Internal Server Error
           content:
@@ -809,8 +809,8 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/UnauthorizedError'
-                  - $ref: '#/components/schemas/ExpiredToken'
+                  - $ref: '#/components/schemas/401UnauthorizedError'
+                  - $ref: '#/components/schemas/401ExpiredToken'
         500:
           description: Internal Server Error
           content:
@@ -919,8 +919,8 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/UnauthorizedError'
-                  - $ref: '#/components/schemas/ExpiredToken'
+                  - $ref: '#/components/schemas/401UnauthorizedError'
+                  - $ref: '#/components/schemas/401ExpiredToken'
         500:
           description: Internal Server Error
           content:
@@ -997,8 +997,8 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/UnauthorizedError'
-                  - $ref: '#/components/schemas/ExpiredToken'
+                  - $ref: '#/components/schemas/401UnauthorizedError'
+                  - $ref: '#/components/schemas/401ExpiredToken'
         500:
           description: Internal Server Error
           content:
@@ -1091,8 +1091,8 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/UnauthorizedError'
-                  - $ref: '#/components/schemas/ExpiredToken'
+                  - $ref: '#/components/schemas/401UnauthorizedError'
+                  - $ref: '#/components/schemas/401ExpiredToken'
         500:
           description: Internal Server Error
           content:
@@ -1147,8 +1147,8 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/UnauthorizedError'
-                  - $ref: '#/components/schemas/ExpiredToken'
+                  - $ref: '#/components/schemas/401UnauthorizedError'
+                  - $ref: '#/components/schemas/401ExpiredToken'
         500:
           description: Internal Server Error
           content:
@@ -1293,8 +1293,8 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/UnauthorizedError'
-                  - $ref: '#/components/schemas/ExpiredToken'
+                  - $ref: '#/components/schemas/401UnauthorizedError'
+                  - $ref: '#/components/schemas/401ExpiredToken'
         500:
           description: Internal Server Error
           content:
@@ -1407,8 +1407,8 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/UnauthorizedError'
-                  - $ref: '#/components/schemas/ExpiredToken'
+                  - $ref: '#/components/schemas/401UnauthorizedError'
+                  - $ref: '#/components/schemas/401ExpiredToken'
         500:
           description: Internal Server Error
           content:
@@ -1522,8 +1522,8 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/UnauthorizedError'
-                  - $ref: '#/components/schemas/ExpiredToken'
+                  - $ref: '#/components/schemas/401UnauthorizedError'
+                  - $ref: '#/components/schemas/401ExpiredToken'
         500:
           description: Internal Server Error
           content:
@@ -1627,8 +1627,8 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/UnauthorizedError'
-                  - $ref: '#/components/schemas/ExpiredToken'
+                  - $ref: '#/components/schemas/401UnauthorizedError'
+                  - $ref: '#/components/schemas/401ExpiredToken'
         500:
           description: Internal Server Error
           content:
@@ -1732,8 +1732,8 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/UnauthorizedError'
-                  - $ref: '#/components/schemas/ExpiredToken'
+                  - $ref: '#/components/schemas/401UnauthorizedError'
+                  - $ref: '#/components/schemas/401ExpiredToken'
         500:
           description: Internal Server Error
           content:
@@ -1837,8 +1837,8 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/UnauthorizedError'
-                  - $ref: '#/components/schemas/ExpiredToken'
+                  - $ref: '#/components/schemas/401UnauthorizedError'
+                  - $ref: '#/components/schemas/401ExpiredToken'
         500:
           description: Internal Server Error
           content:
@@ -1942,8 +1942,8 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/UnauthorizedError'
-                  - $ref: '#/components/schemas/ExpiredToken'
+                  - $ref: '#/components/schemas/401UnauthorizedError'
+                  - $ref: '#/components/schemas/401ExpiredToken'
         500:
           description: Internal Server Error
           content:
@@ -2047,8 +2047,8 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/UnauthorizedError'
-                  - $ref: '#/components/schemas/ExpiredToken'
+                  - $ref: '#/components/schemas/401UnauthorizedError'
+                  - $ref: '#/components/schemas/401ExpiredToken'
         500:
           description: Internal Server Error
           content:
@@ -2152,8 +2152,8 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/UnauthorizedError'
-                  - $ref: '#/components/schemas/ExpiredToken'
+                  - $ref: '#/components/schemas/401UnauthorizedError'
+                  - $ref: '#/components/schemas/401ExpiredToken'
         500:
           description: Internal Server Error
           content:
@@ -2257,8 +2257,8 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/UnauthorizedError'
-                  - $ref: '#/components/schemas/ExpiredToken'
+                  - $ref: '#/components/schemas/401UnauthorizedError'
+                  - $ref: '#/components/schemas/401ExpiredToken'
         500:
           description: Internal Server Error
           content:
@@ -2362,8 +2362,8 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/UnauthorizedError'
-                  - $ref: '#/components/schemas/ExpiredToken'
+                  - $ref: '#/components/schemas/401UnauthorizedError'
+                  - $ref: '#/components/schemas/401ExpiredToken'
         500:
           description: Internal Server Error
           content:
@@ -2740,14 +2740,14 @@ components:
             message: tidak ada perubahan pada data user
             data: null
   schemas:
-    UnauthorizedError:
+    401UnauthorizedError:
       type: object
       properties:
         message:
           type: string
       example:
         missing or malformed jwt
-    ExpiredToken:
+    401ExpiredToken:
       type: object
       properties:
         message:

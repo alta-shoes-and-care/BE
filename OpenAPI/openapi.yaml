@@ -104,7 +104,7 @@ paths:
         200:
           $ref: '#/components/responses/200GetAllUsersSuccessful'
         401:
-          description: Access token is missing or invalid or expired
+          description: Access token is missing, invalid or expired
           content:
             application/json:
               schema:
@@ -124,7 +124,7 @@ paths:
         200:
           $ref: '#/components/responses/200GetUserByIDSuccessful'
         401:
-          description: Access token is missing or invalid or expired
+          description: Access token is missing, invalid or expired
           content:
             application/json:
               schema:
@@ -143,7 +143,7 @@ paths:
         200:
           $ref: '#/components/responses/200DeleteUserSuccessful'
         401:
-          description: Access token is missing or invalid or expired
+          description: Access token is missing, invalid or expired
           content:
             application/json:
               schema:
@@ -163,7 +163,7 @@ paths:
         200:
           $ref: '#/components/responses/200GetUserThemselvesSuccessful'
         401:
-          description: Access token is missing or invalid or expired
+          description: Access token is missing, invalid or expired
           content:
             application/json:
               schema:
@@ -211,7 +211,7 @@ paths:
                   - $ref: '#/components/schemas/400UpdateUserEmailValidationError'
                   - $ref: '#/components/schemas/400UpdateUserPasswordValidationError'
         401:
-          description: Access token is missing or invalid or expired
+          description: Access token is missing, invalid or expired
           content:
             application/json:
               schema:
@@ -279,7 +279,7 @@ paths:
                 message: input dari user tidak sesuai, nama payment method tidak boleh kosong
                 data: null
         401:
-          description: Access token is missing or invalid or expired
+          description: Access token is missing, invalid or expired
           content:
             application/json:
               schema:
@@ -339,7 +339,7 @@ paths:
                     - id: 2
                       name: Gopay
         401:
-          description: Access token is missing or invalid or expired
+          description: Access token is missing, invalid or expired
           content:
             application/json:
               schema:
@@ -388,7 +388,7 @@ paths:
                   message: sukses menghapus payment method
                   data: null
         401:
-          description: Access token is missing or invalid or expired
+          description: Access token is missing, invalid or expired
           content:
             application/json:
               schema:
@@ -498,7 +498,7 @@ paths:
                 message: input dari user tidak sesuai, title, description, atau price tidak boleh kosong
                 data: null
         401:
-          description: Access token is missing or invalid or expired
+          description: Access token is missing, invalid or expired
           content:
             application/json:
               schema:
@@ -572,7 +572,7 @@ paths:
                       price: 30000
                       image: https://awsucup.s3.ap-southeast-1.amazonaws.com/sneakers2.jpg
         401:
-          description: Access token is missing or invalid or expired
+          description: Access token is missing, invalid or expired
           content:
             application/json:
               schema:
@@ -646,7 +646,7 @@ paths:
                     price: 20000
                     image: https://awsucup.s3.ap-southeast-1.amazonaws.com/sneakers.jpg
         401:
-          description: Access token is missing or invalid or expired
+          description: Access token is missing, invalid or expired
           content:
             application/json:
               schema:
@@ -748,7 +748,7 @@ paths:
                     price: 20000
                     image: https://awsucup.s3.ap-southeast-1.amazonaws.com/sneakers.jpg
         401:
-          description: Access token is missing or invalid or expired
+          description: Access token is missing, invalid or expired
           content:
             application/json:
               schema:
@@ -804,7 +804,7 @@ paths:
                   message: sukses menghapus service
                   data: null
         401:
-          description: Access token is missing or invalid or expired
+          description: Access token is missing, invalid or expired
           content:
             application/json:
               schema:
@@ -914,7 +914,7 @@ paths:
                 message: input dari user tidak sesuai, service_id, order_id, rating, atau review tidak boleh kosong
                 data: null
         401:
-          description: Access token is missing or invalid or expired
+          description: Access token is missing, invalid or expired
           content:
             application/json:
               schema:
@@ -992,7 +992,7 @@ paths:
                       rating: 5
                       review: Bagus bro!
         401:
-          description: Access token is missing or invalid or expired
+          description: Access token is missing, invalid or expired
           content:
             application/json:
               schema:
@@ -1086,7 +1086,7 @@ paths:
                     rating: 5
                     review: Bagus banget bro!
         401:
-          description: Access token is missing or invalid or expired
+          description: Access token is missing, invalid or expired
           content:
             application/json:
               schema:
@@ -1142,7 +1142,7 @@ paths:
                   message: sukses menghapus review
                   data: null
         401:
-          description: Access token is missing or invalid or expired
+          description: Access token is missing, invalid or expired
           content:
             application/json:
               schema:
@@ -1288,7 +1288,7 @@ paths:
                 message: input dari user tidak sesuai, service_id, payment_method_id, time, address, city, atau phone tidak boleh kosong
                 data: null
         401:
-          description: Access token is missing or invalid or expired
+          description: Access token is missing, invalid or expired
           content:
             application/json:
               schema:
@@ -1402,7 +1402,7 @@ paths:
                       is_paid: true
                       url: http://www.midtrans.com/blabla2
         401:
-          description: Access token is missing or invalid or expired
+          description: Access token is missing, invalid or expired
           content:
             application/json:
               schema:
@@ -1517,7 +1517,7 @@ paths:
                       is_paid: true
                       url: http://www.midtrans.com/blabla2
         401:
-          description: Access token is missing or invalid or expired
+          description: Access token is missing, invalid or expired
           content:
             application/json:
               schema:
@@ -1622,7 +1622,7 @@ paths:
                     is_paid: true
                     url: http://www.midtrans.com/blabla
         401:
-          description: Access token is missing or invalid or expired
+          description: Access token is missing, invalid or expired
           content:
             application/json:
               schema:
@@ -1727,7 +1727,7 @@ paths:
                     is_paid: true
                     url: http://www.midtrans.com/blabla
         401:
-          description: Access token is missing or invalid or expired
+          description: Access token is missing, invalid or expired
           content:
             application/json:
               schema:
@@ -1832,7 +1832,7 @@ paths:
                     is_paid: true
                     url: http://www.midtrans.com/blabla
         401:
-          description: Access token is missing or invalid or expired
+          description: Access token is missing, invalid or expired
           content:
             application/json:
               schema:
@@ -1937,7 +1937,7 @@ paths:
                     is_paid: true
                     url: http://www.midtrans.com/blabla
         401:
-          description: Access token is missing or invalid or expired
+          description: Access token is missing, invalid or expired
           content:
             application/json:
               schema:
@@ -2042,7 +2042,7 @@ paths:
                     is_paid: false
                     url: http://www.midtrans.com/blabla
         401:
-          description: Access token is missing or invalid or expired
+          description: Access token is missing, invalid or expired
           content:
             application/json:
               schema:
@@ -2147,7 +2147,7 @@ paths:
                     is_paid: true
                     url: http://www.midtrans.com/blabla
         401:
-          description: Access token is missing or invalid or expired
+          description: Access token is missing, invalid or expired
           content:
             application/json:
               schema:
@@ -2252,7 +2252,7 @@ paths:
                     is_paid: true
                     url: http://www.midtrans.com/blabla
         401:
-          description: Access token is missing or invalid or expired
+          description: Access token is missing, invalid or expired
           content:
             application/json:
               schema:
@@ -2357,7 +2357,7 @@ paths:
                     is_paid: true
                     url: http://www.midtrans.com/blabla
         401:
-          description: Access token is missing or invalid or expired
+          description: Access token is missing, invalid or expired
           content:
             application/json:
               schema:

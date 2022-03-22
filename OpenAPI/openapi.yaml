@@ -152,6 +152,26 @@ paths:
                   - $ref: '#/components/schemas/ExpiredToken'
         500:
           $ref: '#/components/responses/500DeleteUserInternalServerError'
+  /users/jwt/me:
+    get:
+      summary: Dapatkan detail user
+      tags:
+        - Users
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          $ref: '#/components/responses/200GetUserThemselvesSuccessful'
+        401:
+          description: Access token is missing or invalid or expired
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/UnauthorizedError'
+                  - $ref: '#/components/schemas/ExpiredToken'
+        500:
+          $ref: '#/components/responses/500GetUserThemselvesInternalServerError'
     put:
       summary: Memperbarui data user
       tags:
@@ -2674,6 +2694,53 @@ components:
           example:
             code: 500
             message: tidak ada user yang dihapus
+            data: null
+    200GetUserThemselvesSuccessful:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+              data:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  email:
+                    type: string
+                  is_admin:
+                    type: boolean
+            example:
+              code: 200
+              message: sukses mendapatkan data user
+              data:
+                id: 1
+                name: ucup
+                email: ucup@ucup.com
+                is_admin: false
+    500GetUserThemselvesInternalServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+              data:
+                type: object
+          example:
+            code: 500
+            message: data user tidak ditemukan
             data: null
   schemas:
     UnauthorizedError:

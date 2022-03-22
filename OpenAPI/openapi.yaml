@@ -44,9 +44,11 @@ paths:
                 password: ucup123
       responses:
         '200':
-          $ref: '#/components/responses/200AuthLogin'
+          $ref: '#/components/responses/200Login'
         '400':
           $ref: '#/components/responses/400BadRequestLogin'
+        '406':
+          $ref: '#/components/responses/406NotAcceptableGenerateToken'
         '500':
           $ref: '#/components/responses/500InternalServerErrorLogin'
   /users:
@@ -2376,7 +2378,7 @@ components:
                 type: string
           example:
             invalid or expired jwt
-    '200AuthLogin':
+    '200Login':
           description: OK
           content:
             application/json:
@@ -2439,6 +2441,23 @@ components:
               example:
                 code: 500
                 message: email dan password tidak cocok
+                data: null
+    '406NotAcceptableGenerateToken':
+          description: Not Acceptable
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+                  data:
+                    type: object
+              example:
+                code: 406
+                message: user_id tidak valid
                 data: null
   securitySchemes:
     bearerAuth:

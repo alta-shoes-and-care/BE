@@ -5,7 +5,7 @@ info:
   contact:
     name: BE Team
     email: yusufnurwahid.contact@gmail.com
-  version: "1.0.0"
+  version: "1.1.0"
 servers:
   - url: https://ynwahid.cloud.okteto.net
 tags:

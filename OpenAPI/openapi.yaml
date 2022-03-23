@@ -291,8 +291,8 @@ paths:
               schema:
                 oneOf:
                   - $ref: '#/components/schemas/400CreateNewServiceBindError'
-                  - $ref: '#/components/schemas/400CreateNewServiceValidationError1'
-                  - $ref: '#/components/schemas/400CreateNewServiceValidationError2'
+                  - $ref: '#/components/schemas/400ServiceValidationError1'
+                  - $ref: '#/components/schemas/400ServiceValidationError2'
                   - $ref: '#/components/schemas/400ServiceImageReadFileError'
                   - $ref: '#/components/schemas/400ServiceImageValidationError'
                   - $ref: '#/components/schemas/400ServiceImageUploadAWSError1'
@@ -306,11 +306,11 @@ paths:
                   - $ref: '#/components/schemas/401UnauthorizedError'
                   - $ref: '#/components/schemas/401ExpiredToken'
         413:
-          $ref: '#/components/responses/413CreateNewServiceRequestEntityTooLarge'
+          $ref: '#/components/responses/413ServiceRequestBodyEntityTooLarge'
         500:
           $ref: '#/components/responses/500CreateNewServiceInternalServerError'
     put:
-      summary: Memperbarui service berdasarkan id
+      summary: Memperbarui data service berdasarkan id
       tags:
         - Services
       parameters:
@@ -351,41 +351,19 @@ paths:
                 file: sneakers.jpg
       responses:
         200:
-          description: OK
+          $ref: '#/components/responses/200UpdateServiceSuccessful'
+        400:
+          description: Bad Request
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  code:
-                    type: integer
-                  message:
-                    type: string
-                  data:
-                    type: object
-                    properties:
-                      id:
-                        type: integer
-                      user_id:
-                        type: integer
-                      title:
-                        type: string
-                      description:
-                        type: string
-                      price:
-                        type: integer
-                      image:
-                        type: string
-                example:
-                  code: 200
-                  message: sukses memperbarui data service
-                  data:
-                    id: 1
-                    user_id: 1
-                    title: Regular Cleaning Plus
-                    description: Layanan cuci sepatu reguler plus
-                    price: 20000
-                    image: https://awsucup.s3.ap-southeast-1.amazonaws.com/sneakers.jpg
+                oneOf:
+                  - $ref: '#/components/schemas/400UpdateServiceBindError'
+                  - $ref: '#/components/schemas/400ServiceValidationError1'
+                  - $ref: '#/components/schemas/400ServiceValidationError2'
+                  - $ref: '#/components/schemas/400ServiceImageValidationError'
+                  - $ref: '#/components/schemas/400ServiceImageUploadAWSError1'
+                  - $ref: '#/components/schemas/400ServiceImageUploadAWSError2'
         401:
           description: Access token is missing, invalid or expired
           content:
@@ -394,23 +372,10 @@ paths:
                 oneOf:
                   - $ref: '#/components/schemas/401UnauthorizedError'
                   - $ref: '#/components/schemas/401ExpiredToken'
+        413:
+          $ref: '#/components/responses/413ServiceRequestBodyEntityTooLarge'
         500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  code:
-                    type: integer
-                  message:
-                    type: string
-                  data:
-                    type: object
-              example:
-                code: 500
-                message: tidak ada data service yang diperbarui
-                data: null
+          $ref: '#/components/responses/500UpdateServiceInternalServerError'
     delete:
       summary: Menghapus service berdasarkan id
       tags:
@@ -2173,6 +2138,23 @@ components:
             code: 500
             message: tidak ada perubahan pada data user
             data: null
+    413ServiceRequestBodyEntityTooLarge:
+      description: Request Entity Too Large
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+              data:
+                type: object
+          example:
+            code: 413
+            message: Request Entity Too Large
+            data: null
     200GetAllServicesSuccessful:
       description: OK
       content:
@@ -2320,23 +2302,6 @@ components:
                 description: Layanan cuci sepatu reguler
                 price: 20000
                 image: https://foo.com/sneakers.jpg
-    413CreateNewServiceRequestEntityTooLarge:
-      description: Request Entity Too Large
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-              message:
-                type: string
-              data:
-                type: object
-          example:
-            code: 413
-            message: Request Entity Too Large
-            data: null
     500CreateNewServiceInternalServerError:
       description: Internal Server Error
       content:
@@ -2353,6 +2318,59 @@ components:
           example:
             code: 500
             message: gagal membuat service baru
+            data: null
+    200UpdateServiceSuccessful:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+              data:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  user_id:
+                    type: integer
+                  title:
+                    type: string
+                  description:
+                    type: string
+                  price:
+                    type: integer
+                  image:
+                    type: string
+            example:
+              code: 200
+              message: sukses memperbarui data service
+              data:
+                id: 1
+                user_id: 1
+                title: Regular Cleaning Plus
+                description: Layanan cuci sepatu reguler plus
+                price: 20000
+                image: https://foo.com/sneakers.jpg
+    500UpdateServiceInternalServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+              data:
+                type: object
+          example:
+            code: 500
+            message: tidak ada data service yang diperbarui
             data: null
     201CreateNewPaymentMethodSuccessful:
       description: OK
@@ -2758,7 +2776,20 @@ components:
         code: 400
         message: input dari user tidak sesuai, title, description, atau price tidak boleh kosong
         data: null
-    400CreateNewServiceValidationError1:
+    400UpdateServiceBindError:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        data:
+          type: object
+      example:
+        code: 400
+        message: input dari user tidak sesuai
+        data: null
+    400ServiceValidationError1:
       type: object
       properties:
         code:
@@ -2771,7 +2802,7 @@ components:
         code: 400
         message: 'input title tidak sesuai (alfanumerik; tanpa simbol; boleh ada spasi di antara kata; total karakter: maksimal 30;)\ncontoh: \"Service 1\"'
         data: null
-    400CreateNewServiceValidationError2:
+    400ServiceValidationError2:
       type: object
       properties:
         code:

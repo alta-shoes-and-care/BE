@@ -524,70 +524,7 @@ paths:
         - bearerAuth: []
       responses:
         200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  code:
-                    type: integer
-                  message:
-                    type: string
-                  data:
-                    type: object
-                    properties:
-                      id:
-                        type: integer
-                      user_id:
-                        type: integer
-                      service_id:
-                        type: integer
-                      service_title:
-                        type: string
-                      price:
-                        type: integer
-                      qty:
-                        type: integer
-                      payment_method_id:
-                        type: integer
-                      payment_method_name:
-                        type: string
-                      date:
-                        type: string
-                        format: date
-                      address:
-                        type: string
-                      city:
-                        type: string
-                      phone:
-                        type: string
-                      order_status:
-                        type: string
-                        enum: [pending, accepted, rejected, cancel, on process, delivering, done]
-                      is_paid:
-                        type: boolean
-                      url:
-                        type: string
-                example:
-                  code: 200
-                  message: sukses mendapatkan detail order
-                  data:
-                    id: 1
-                    user_id: 1
-                    service_id: 1
-                    service_title: Regular Cleaning
-                    price: 20000
-                    qty: 2
-                    payment_method_id: 1
-                    payment_method_name: Gopay
-                    date: "2022-03-06"
-                    address: Jl. Soedirman No. 13
-                    city: Bandung
-                    phone: "081123456789"
-                    order_status: accepted
-                    is_paid: true
-                    url: http://www.midtrans.com/blabla
+          $ref: '#/components/responses/200GetOrderDetailsSuccessful'
         401:
           description: Access token is missing, invalid or expired
           content:
@@ -597,22 +534,7 @@ paths:
                   - $ref: '#/components/schemas/401UnauthorizedError'
                   - $ref: '#/components/schemas/401ExpiredToken'
         500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  code:
-                    type: integer
-                  message:
-                    type: string
-                  data:
-                    type: object
-              example:
-                code: 500
-                message: gagal mendapatkan detail order
-                data: null
+          $ref: '#/components/responses/500GetOrderDetailsInternalServerError'
   /orders/paid/{id}:
     put:
       summary: Mengubah status pembayaran menjadi paid
@@ -2567,6 +2489,101 @@ components:
           example:
             code: 500
             message: tidak terdapat order sama sekali
+            data: null
+    200GetOrderDetailsSuccessful:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+              data:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  user_id:
+                    type: integer
+                  user_name:
+                    type: string
+                  service_id:
+                    type: integer
+                  service_title:
+                    type: string
+                  price:
+                    type: integer
+                  qty:
+                    type: integer
+                  payment_method_id:
+                    type: integer
+                  payment_method_name:
+                    type: string
+                  date:
+                    type: string
+                    format: date
+                  address:
+                    type: string
+                  city:
+                    type: string
+                  phone:
+                    type: string
+                  status:
+                      type: string
+                      enum: [pending, accepted, rejected, cancel, on process, delivering, done]
+                  is_paid:
+                    type: boolean
+                  has_refunded:
+                    type: boolean
+                  created_at:
+                    type: string
+                    format: date-time
+                  url:
+                    type: string
+                  total:
+                    type: integer
+            example:
+              code: 200
+              message: sukses mendapatkan detail order
+              data:
+                id: 1
+                user_id: 1
+                user_name: Ucup
+                service_id: 1
+                service_title: Regular Cleaning
+                price: 20000
+                qty: 2
+                payment_method_id: 1
+                payment_method_name: Gopay
+                date: "2022-03-06"
+                address: Jl. Soedirman No. 13
+                city: Bandung
+                phone: "085000000000"
+                order_status: pending
+                is_paid: false
+                has_refunded: false
+                created_at: "2022-03-06 13:00:00"
+                url: http://foo.com/blabla1
+                total: 40000
+    500GetOrderDetailsInternalServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+              data:
+                type: object
+          example:
+            code: 500
+            message: gagal mendapatkan detail order
             data: null
     200GetAllReviewsSuccessful:
       description: OK

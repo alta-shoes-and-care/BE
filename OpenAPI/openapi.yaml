@@ -535,6 +535,50 @@ paths:
                   - $ref: '#/components/schemas/401ExpiredToken'
         500:
           $ref: '#/components/responses/500GetOrderDetailsInternalServerError'
+  /orders/check-payment/{id}:
+    put:
+      summary: Mengecek status pembayaran dari order
+      tags:
+        - Orders
+      parameters:
+        - name: id
+          in: path
+          description: ID order hasil generate dari sistem
+          required: true
+          schema:
+            type: integer
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/200CheckPaymentSettlement'
+                  - $ref: '#/components/schemas/200CheckPaymentPending'
+                  - $ref: '#/components/schemas/200CheckPaymentCancelOrDeny'
+                  - $ref: '#/components/schemas/200CheckPaymentChallenge'
+                  - $ref: '#/components/schemas/200CheckPaymentAccept'
+        401:
+          description: Access token is missing, invalid or expired
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/401UnauthorizedError'
+                  - $ref: '#/components/schemas/401ExpiredToken'
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/500CheckPaymentInternalServerErrorSetPaid'
+                  - $ref: '#/components/schemas/500CheckPaymentInternalServerErrorSetCancel'
+                  - $ref: '#/components/schemas/500CheckPaymentInternalServerErrorMidtrans1'
+                  - $ref: '#/components/schemas/500CheckPaymentInternalServerErrorMidtrans2'
   /orders/paid/{id}:
     put:
       summary: Mengubah status pembayaran menjadi paid
@@ -2985,6 +3029,246 @@ components:
         code: 400
         message: gagal mendapatkan link pembayaran
         data: null
+    200CheckPaymentPending:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        data:
+          type: object
+      example:
+        code: 200
+        message: pembayaran tertunda
+        data: null
+    200CheckPaymentSettlement:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            id:
+              type: integer
+            user_id:
+              type: integer
+            user_name:
+              type: string
+            service_id:
+              type: integer
+            service_title:
+              type: string
+            price:
+              type: integer
+            qty:
+              type: integer
+            payment_method_id:
+              type: integer
+            payment_method_name:
+              type: string
+            date:
+              type: string
+              format: date
+            address:
+              type: string
+            city:
+              type: string
+            phone:
+              type: string
+            status:
+                type: string
+                enum: [pending, accepted, rejected, cancel, on process, delivering, done]
+            is_paid:
+              type: boolean
+            has_refunded:
+              type: boolean
+            created_at:
+              type: string
+              format: date-time
+            url:
+              type: string
+            total:
+              type: integer
+      example:
+        code: 200
+        message: sukses menjadikan status pembayaran menjadi paid
+        data:
+          id: 1
+          user_id: 1
+          user_name: Ucup
+          service_id: 1
+          service_title: Regular Cleaning
+          price: 20000
+          qty: 2
+          payment_method_id: 1
+          payment_method_name: Gopay
+          date: "2022-03-06"
+          address: Jl. Soedirman No. 13
+          city: Bandung
+          phone: "085000000000"
+          order_status: pending
+          is_paid: true
+          has_refunded: false
+          created_at: "2022-03-06 13:00:00"
+          url: http://foo.com/blabla1
+          total: 40000
+    200CheckPaymentCancelOrDeny:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            id:
+              type: integer
+            user_id:
+              type: integer
+            user_name:
+              type: string
+            service_id:
+              type: integer
+            service_title:
+              type: string
+            price:
+              type: integer
+            qty:
+              type: integer
+            payment_method_id:
+              type: integer
+            payment_method_name:
+              type: string
+            date:
+              type: string
+              format: date
+            address:
+              type: string
+            city:
+              type: string
+            phone:
+              type: string
+            status:
+                type: string
+                enum: [pending, accepted, rejected, cancel, on process, delivering, done]
+            is_paid:
+              type: boolean
+            has_refunded:
+              type: boolean
+            created_at:
+              type: string
+              format: date-time
+            url:
+              type: string
+            total:
+              type: integer
+      example:
+        code: 200
+        message: sukses mengubah status order menjadi cancel
+        data:
+          id: 1
+          user_id: 1
+          user_name: Ucup
+          service_id: 1
+          service_title: Regular Cleaning
+          price: 20000
+          qty: 2
+          payment_method_id: 1
+          payment_method_name: Gopay
+          date: "2022-03-06"
+          address: Jl. Soedirman No. 13
+          city: Bandung
+          phone: "085000000000"
+          order_status: cancel
+          is_paid: false
+          has_refunded: false
+          created_at: "2022-03-06 13:00:00"
+          url: http://foo.com/blabla1
+          total: 40000
+    200CheckPaymentChallenge:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        data:
+          type: object
+      example:
+        code: 200
+        message: 'status transaksi: status challenge'
+        data: null
+    200CheckPaymentAccept:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        data:
+          type: object
+      example:
+        code: 200
+        message: 'status transaksi: status accept'
+        data: null
+    500CheckPaymentInternalServerErrorMidtrans1:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        data:
+          type: object
+      example:
+        code: 500
+        message: gagal mengecek status pembayaran midtrans
+        data: null
+    500CheckPaymentInternalServerErrorMidtrans2:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        data:
+          type: object
+      example:
+        code: 500
+        message: respon status transaksi midtrans kosong
+        data: null
+    500CheckPaymentInternalServerErrorSetPaid:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        data:
+          type: object
+      example:
+        code: 500
+        message: gagal mengubah status pembayaran menjadi paid
+        data: null
+    500CheckPaymentInternalServerErrorSetCancel:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        data:
+          type: object
+      example:
+        code: 500
+        message: gagal mengubah status order menjadi cancel oleh admin
+        data: null
+
   securitySchemes:
     bearerAuth:
       type: http

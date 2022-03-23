@@ -221,6 +221,16 @@ paths:
         500:
           $ref: '#/components/responses/500UpdateUserInternalServerError'
   /services:
+    get:
+      summary: Dapatkan semua service
+      tags:
+        - Services
+      responses:
+        200:
+          $ref: '#/components/responses/200GetAllServicesSuccessful'
+        500:
+          $ref: '#/components/responses/500GetAllServicesInternalServerError'
+  /services/jwt:
     post:
       summary: Tambahkan service baru
       tags:
@@ -282,80 +292,6 @@ paths:
           $ref: '#/components/responses/413CreateNewServiceRequestEntityTooLarge'
         500:
           $ref: '#/components/responses/500CreateNewServiceInternalServerError'
-    get:
-      summary: Dapatkan semua service
-      tags:
-        - Services
-      responses:
-        200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  code:
-                    type: integer
-                  message:
-                    type: string
-                  data:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        id:
-                          type: integer
-                        user_id:
-                          type: integer
-                        title:
-                          type: string
-                        description:
-                          type: string
-                        price:
-                          type: integer
-                        image:
-                          type: string
-                example:
-                  code: 200
-                  message: sukses mendapatkan semua service
-                  data:
-                    - id: 1
-                      user_id: 1
-                      title: Regular Cleaning
-                      description: Layanan cuci sepatu reguler
-                      price: 20000
-                      image: https://awsucup.s3.ap-southeast-1.amazonaws.com/sneakers.jpg
-                    - id: 2
-                      user_id: 1
-                      title: Premium Cleaning
-                      description: Layanan cuci sepatu premium
-                      price: 30000
-                      image: https://awsucup.s3.ap-southeast-1.amazonaws.com/sneakers2.jpg
-        401:
-          description: Access token is missing, invalid or expired
-          content:
-            application/json:
-              schema:
-                oneOf:
-                  - $ref: '#/components/schemas/401UnauthorizedError'
-                  - $ref: '#/components/schemas/401ExpiredToken'
-        500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  code:
-                    type: integer
-                  message:
-                    type: string
-                  data:
-                    type: object
-              example:
-                code: 500
-                message: tidak terdapat service sama sekali
-                data: null
   /services/{id}:
     get:
       summary: Dapatkan detail service
@@ -2293,6 +2229,67 @@ components:
           example:
             code: 500
             message: tidak ada perubahan pada data user
+            data: null
+    200GetAllServicesSuccessful:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+              data:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    user_id:
+                      type: integer
+                    title:
+                      type: string
+                    description:
+                      type: string
+                    price:
+                      type: integer
+                    image:
+                      type: string
+            example:
+              code: 200
+              message: sukses mendapatkan semua service
+              data:
+                - id: 1
+                  user_id: 1
+                  title: Regular Cleaning
+                  description: Layanan cuci sepatu reguler
+                  price: 20000
+                  image: https://foo.com/sneakers.jpg
+                - id: 2
+                  user_id: 1
+                  title: Premium Cleaning
+                  description: Layanan cuci sepatu premium
+                  price: 30000
+                  image: https://foo.com/sneakers2.jpg
+    500GetAllServicesInternalServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+              message:
+                type: string
+              data:
+                type: object
+          example:
+            code: 500
+            message: tidak terdapat service sama sekali
             data: null
     201CreateNewServiceSuccessful:
       description: OK

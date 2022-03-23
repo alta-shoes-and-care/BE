@@ -496,6 +496,8 @@ paths:
                           type: integer
                         user_id:
                           type: integer
+                        user_name:
+                          type: string
                         service_id:
                           type: integer
                         service_title:
@@ -542,7 +544,7 @@ paths:
                       phone: "081123456789"
                       order_status: accepted
                       is_paid: true
-                      url: http://www.midtrans.com/blabla
+                      url: http://www.foo.com/blabla
                     - id: 2
                       user_id: 2
                       service_id: 1
@@ -557,7 +559,7 @@ paths:
                       phone: "081123456788"
                       order_status: accepted
                       is_paid: true
-                      url: http://www.midtrans.com/blabla2
+                      url: http://www.foo.com/blabla2
         401:
           description: Access token is missing, invalid or expired
           content:
@@ -2465,7 +2467,7 @@ components:
                     type: string
                   date:
                     type: string
-                    format: date-time
+                    format: date
                   address:
                     type: string
                   city:
@@ -2477,6 +2479,11 @@ components:
                       enum: [pending, accepted, rejected, cancel, on process, delivering, done]
                   is_paid:
                     type: boolean
+                  has_refunded:
+                    type: boolean
+                  created_at:
+                    type: string
+                    format: date-time
                   url:
                     type: string
                   total:
@@ -2494,13 +2501,15 @@ components:
                 qty: 2
                 payment_method_id: 1
                 payment_method_name: Gopay
-                date: "2022-03-06 13:00:00"
+                date: "2022-03-06"
                 address: Jl. Soedirman No. 13
                 city: Bandung
                 phone: "081123456789"
                 order_status: pending
                 is_paid: false
-                url: http://foo.com/blabla
+                has_refunded: false
+                created_at: "2022-03-06 13:00:00"
+                url: http://foo.com/blabla1
                 total: 40000
     500CreateNewOrderInternalServerError:
       description: Internal Server Error

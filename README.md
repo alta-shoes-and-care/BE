@@ -45,7 +45,7 @@
     <p style="text-align:left">
         This application was made using the Go language and several Go libraries such as GORM, Echo.
         For unit testing we used Testify library to ensure that our application works properly.
-        We used Okteto platform to deploy our application.
+        We used Okteto cloud to deploy our application.
         So that this project can be maintained in the future, we implemented a layered architecture.
     </p>
 </div>

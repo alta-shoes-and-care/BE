@@ -51,8 +51,31 @@
 </div>
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-# High Level Architecture
-![High Level Architecture](images/HLA-updated.jpeg)
+# Documentation
+<details>
+    <summary>ERD</summary>
+    <div align="center">
+        <a href="images/erd.jpg">
+            <img src="images/erd.jpg" alt="ERD">
+        </a>
+        <h3 align="center">
+            High Level Architecture
+        </h3>
+    </div>
+</details>
+
+<details>
+    <summary>High Level Architecture</summary>
+    <div align="center">
+        <a href="images/HLA-updated.jpeg">
+            <img src="images/HLA-updated.jpeg" alt="High Level Architecture">
+        </a>
+        <h3 align="center">
+            High Level Architecture
+        </h3>
+    </div>
+</details>
+
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 # Project Structure
@@ -97,6 +120,7 @@ BE
 │   │   └── hash
 │   │       └── hash.go
 │   ├── middlewares
+│   │   ├── bodyLimiter.go
 │   │   ├── jwtAuth.go
 │   │   └── jwtMiddleware.go
 │   ├── mocks
@@ -128,7 +152,8 @@ BE
 │   └── user
 │       └── user.go
 ├── ERD
-│   └── erd.drawio
+│   ├── erd.drawio
+│   └── erd.png
 ├── external
 │   ├── aws-s3
 │   │   ├── aws-s3.go
@@ -137,7 +162,11 @@ BE
 │       ├── interface.go
 │       └── midtrans-pay.go
 ├── images
+│   ├── coverage-1.png
+│   ├── coverage-2.png
+│   ├── erd.jpg
 │   ├── HLA-updated.jpeg
+│   ├── shoes-service-station-cancel.png
 │   └── shoes-service-station.png
 ├── OpenAPI
 │   └── openapi.yaml
@@ -183,6 +212,7 @@ BE
 │       └── user.go
 ├── utils
 │   └── mysqldriver.go
+├── .env
 ├── .gitignore
 ├── app-pod.yaml
 ├── coverage.out
@@ -192,15 +222,19 @@ BE
 ├── go.sum
 ├── main.go
 ├── README.md
+└── secret.yaml
 ```
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 # Unit Test
+<details>
+    <summary>Results</summary>
+
 ![Testing Coverage - 1](images/coverage-1.png)
 ![Testing Coverage - 1](images/coverage-2.png)
-<p align="right">(<a href="#top">back to top</a>)</p>
 
-# How to Contribute
+Unit Testing Coverage 100%
+</details>
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 # Contacts

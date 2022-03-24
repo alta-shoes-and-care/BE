@@ -297,7 +297,7 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/400CreateNewServiceBindError'
+                  - $ref: '#/components/schemas/400CreateNewOrderBindErrorOrEmptyFields'
                   - $ref: '#/components/schemas/400ServiceValidationError1'
                   - $ref: '#/components/schemas/400ServiceValidationError2'
                   - $ref: '#/components/schemas/400ServiceImageReadFileError'

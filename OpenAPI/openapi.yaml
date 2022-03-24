@@ -741,6 +741,33 @@ paths:
                   - $ref: '#/components/schemas/401ExpiredToken'
         500:
           $ref: '#/components/responses/500SetOrderDoneInternalServerError'
+  /orders/refund/{id}:
+    put:
+      summary: Mengubah status refund menjadi true
+      tags:
+        - Orders
+      parameters:
+        - name: id
+          in: path
+          description: ID order hasil generate dari sistem
+          required: true
+          schema:
+            type: integer
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          $ref: '#/components/responses/200SetOrderRefundSuccesful'
+        401:
+          description: Access token is missing, invalid or expired
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/401UnauthorizedError'
+                  - $ref: '#/components/schemas/401ExpiredToken'
+        500:
+          $ref: '#/components/responses/500SetOrderRefundInternalServerError'
   /payments:
     post:
       summary: Tambahkan payment method baru

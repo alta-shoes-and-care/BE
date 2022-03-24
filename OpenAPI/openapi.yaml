@@ -121,7 +121,7 @@ paths:
       parameters:
         - name: id
           in: path
-          description: ID service hasil generate dari sistem
+          description: ID user hasil generate dari sistem
           required: true
           schema:
             type: integer
@@ -141,9 +141,16 @@ paths:
         500:
           $ref: '#/components/responses/500GetUserByIDInternalServerError'
     delete:
-      summary: Menghapus data user
+      summary: Menghapus data user berdasarkan ID
       tags:
         - Users
+      parameters:
+        - name: id
+          in: path
+          description: ID user hasil generate dari sistem
+          required: true
+          schema:
+            type: integer
       security:
         - bearerAuth: []
       responses:

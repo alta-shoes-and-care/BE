@@ -313,13 +313,6 @@ paths:
       summary: Memperbarui data service berdasarkan id
       tags:
         - Services
-      parameters:
-        - name: id
-          in: path
-          description: ID service hasil generate dari sistem
-          required: true
-          schema:
-            type: integer
       security:
         - bearerAuth: []
       requestBody:

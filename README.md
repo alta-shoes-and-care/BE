@@ -3,8 +3,8 @@
 <div>
     <!-- Project Logo -->
     <div align="center">
-        <a href="images/shoes-service-station-cancel.png">
-            <img src="images/shoes-service-station-cancel.png" alt="Shoes Service Station Logo" width="400">
+        <a href="images/shoes-service-station.png">
+            <img src="images/shoes-service-station.png" alt="Shoes Service Station Logo" width="400">
         </a>
         <h3 align="center">
             Shoes Service Station
@@ -79,6 +79,9 @@
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 # Project Structure
+<details>
+    <summary>Details</summary>
+
 ```
 BE
 ├── configs
@@ -152,8 +155,7 @@ BE
 │   └── user
 │       └── user.go
 ├── ERD
-│   ├── erd.drawio
-│   └── erd.png
+│   └── erd.drawio
 ├── external
 │   ├── aws-s3
 │   │   ├── aws-s3.go
@@ -166,7 +168,6 @@ BE
 │   ├── coverage-2.png
 │   ├── erd.jpg
 │   ├── HLA-updated.jpeg
-│   ├── shoes-service-station-cancel.png
 │   └── shoes-service-station.png
 ├── OpenAPI
 │   └── openapi.yaml
@@ -224,6 +225,8 @@ BE
 ├── README.md
 └── secret.yaml
 ```
+
+</details>
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 # Unit Test

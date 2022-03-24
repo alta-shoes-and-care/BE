@@ -118,6 +118,13 @@ paths:
       summary: Dapatkan detail user
       tags:
         - Users
+      parameters:
+        - name: id
+          in: path
+          description: ID service hasil generate dari sistem
+          required: true
+          schema:
+            type: integer
       security:
         - bearerAuth: []
       responses:

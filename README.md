@@ -36,8 +36,17 @@
 <!-- Project Description -->
 <div>
     <p style="text-align:left">
-        Nowadays, some people are very busy and don't even have time to clean their shoes.
-        Therefore we need a platform that is able to connect customers with shoes washing service provider.
+        Shoes Service Station is a web platform that makes it easy for people who want to treat their shoes, especially to clean them.
+        They can order these services online from us (as business owners).
+        First we as admins make a list of services that can be ordered by customers.
+        After that the customers can choose the service and order it.
+        If the order is completed, it will be delivered to the customer's address.
+    </p>
+    <p style="text-align:left">
+        This application was made using the Go language and several Go libraries such as GORM, Echo.
+        For unit testing we used Testify library to ensure that our application works properly.
+        We used Okteto platform to deploy our application.
+        So that this project can be maintained in the future, we implemented a layered architecture.
     </p>
 </div>
 <p align="right">(<a href="#top">back to top</a>)</p>

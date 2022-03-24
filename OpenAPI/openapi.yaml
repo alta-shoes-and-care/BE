@@ -676,70 +676,7 @@ paths:
         - bearerAuth: []
       responses:
         200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  code:
-                    type: integer
-                  message:
-                    type: string
-                  data:
-                    type: object
-                    properties:
-                      id:
-                        type: integer
-                      user_id:
-                        type: integer
-                      service_id:
-                        type: integer
-                      service_title:
-                        type: string
-                      price:
-                        type: integer
-                      qty:
-                        type: integer
-                      payment_method_id:
-                        type: integer
-                      payment_method_name:
-                        type: string
-                      date:
-                        type: string
-                        format: date
-                      address:
-                        type: string
-                      city:
-                        type: string
-                      phone:
-                        type: string
-                      order_status:
-                        type: string
-                        enum: [pending, accepted, rejected, cancel, on process, delivering, done]
-                      is_paid:
-                        type: boolean
-                      url:
-                        type: string
-                example:
-                  code: 200
-                  message: sukses mengubah status order menjadi delivering
-                  data:
-                    id: 1
-                    user_id: 1
-                    service_id: 1
-                    service_title: Regular Cleaning
-                    price: 20000
-                    qty: 2
-                    payment_method_id: 1
-                    payment_method_name: Gopay
-                    date: "2022-03-06"
-                    address: Jl. Soedirman No. 13
-                    city: Bandung
-                    phone: "081123456789"
-                    order_status: delivering
-                    is_paid: true
-                    url: http://www.midtrans.com/blabla
+          $ref: '#/components/responses/200SetOrderDeliveringSuccesful'
         401:
           description: Access token is missing, invalid or expired
           content:
@@ -749,22 +686,7 @@ paths:
                   - $ref: '#/components/schemas/401UnauthorizedError'
                   - $ref: '#/components/schemas/401ExpiredToken'
         500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  code:
-                    type: integer
-                  message:
-                    type: string
-                  data:
-                    type: object
-              example:
-                code: 500
-                message: gagal mengubah status order menjadi delivering
-                data: null
+          $ref: '#/components/responses/500SetOrderDeliveringInternalServerError'
   /orders/cancel/{id}:
     put:
       summary: Mengubah status order menjadi cancel
@@ -781,70 +703,7 @@ paths:
         - bearerAuth: []
       responses:
         200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  code:
-                    type: integer
-                  message:
-                    type: string
-                  data:
-                    type: object
-                    properties:
-                      id:
-                        type: integer
-                      user_id:
-                        type: integer
-                      service_id:
-                        type: integer
-                      service_title:
-                        type: string
-                      price:
-                        type: integer
-                      qty:
-                        type: integer
-                      payment_method_id:
-                        type: integer
-                      payment_method_name:
-                        type: string
-                      date:
-                        type: string
-                        format: date
-                      address:
-                        type: string
-                      city:
-                        type: string
-                      phone:
-                        type: string
-                      order_status:
-                        type: string
-                        enum: [pending, accepted, rejected, cancel, on process, delivering, done]
-                      is_paid:
-                        type: boolean
-                      url:
-                        type: string
-                example:
-                  code: 200
-                  message: sukses mengubah status order menjadi cancel
-                  data:
-                    id: 1
-                    user_id: 1
-                    service_id: 1
-                    service_title: Regular Cleaning
-                    price: 20000
-                    qty: 2
-                    payment_method_id: 1
-                    payment_method_name: Gopay
-                    date: "2022-03-06"
-                    address: Jl. Soedirman No. 13
-                    city: Bandung
-                    phone: "081123456789"
-                    order_status: cancel
-                    is_paid: false
-                    url: http://www.midtrans.com/blabla
+          $ref: '#/components/responses/200SetOrderCancelSuccesful'
         401:
           description: Access token is missing, invalid or expired
           content:
@@ -854,22 +713,7 @@ paths:
                   - $ref: '#/components/schemas/401UnauthorizedError'
                   - $ref: '#/components/schemas/401ExpiredToken'
         500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  code:
-                    type: integer
-                  message:
-                    type: string
-                  data:
-                    type: object
-              example:
-                code: 500
-                message: gagal mengubah status order menjadi cancel
-                data: null
+          $ref: '#/components/responses/500SetOrderCancelInternalServerError'
   /orders/done/{id}:
     put:
       summary: Mengubah status order menjadi done
@@ -886,70 +730,7 @@ paths:
         - bearerAuth: []
       responses:
         200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  code:
-                    type: integer
-                  message:
-                    type: string
-                  data:
-                    type: object
-                    properties:
-                      id:
-                        type: integer
-                      user_id:
-                        type: integer
-                      service_id:
-                        type: integer
-                      service_title:
-                        type: string
-                      price:
-                        type: integer
-                      qty:
-                        type: integer
-                      payment_method_id:
-                        type: integer
-                      payment_method_name:
-                        type: string
-                      date:
-                        type: string
-                        format: date
-                      address:
-                        type: string
-                      city:
-                        type: string
-                      phone:
-                        type: string
-                      order_status:
-                        type: string
-                        enum: [pending, accepted, rejected, cancel, on process, delivering, done]
-                      is_paid:
-                        type: boolean
-                      url:
-                        type: string
-                example:
-                  code: 200
-                  message: sukses mengubah status order menjadi done
-                  data:
-                    id: 1
-                    user_id: 1
-                    service_id: 1
-                    service_title: Regular Cleaning
-                    price: 20000
-                    qty: 2
-                    payment_method_id: 1
-                    payment_method_name: Gopay
-                    date: "2022-03-06"
-                    address: Jl. Soedirman No. 13
-                    city: Bandung
-                    phone: "081123456789"
-                    order_status: done
-                    is_paid: true
-                    url: http://www.midtrans.com/blabla
+          $ref: '#/components/responses/200SetOrderDoneSuccesful'
         401:
           description: Access token is missing, invalid or expired
           content:
@@ -959,22 +740,7 @@ paths:
                   - $ref: '#/components/schemas/401UnauthorizedError'
                   - $ref: '#/components/schemas/401ExpiredToken'
         500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  code:
-                    type: integer
-                  message:
-                    type: string
-                  data:
-                    type: object
-              example:
-                code: 500
-                message: gagal mengubah status order menjadi done
-                data: null
+          $ref: '#/components/responses/500SetOrderDoneInternalServerError'
   /payments:
     post:
       summary: Tambahkan payment method baru

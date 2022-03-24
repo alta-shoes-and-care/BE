@@ -3,8 +3,8 @@
 <div>
     <!-- Project Logo -->
     <div align="center">
-        <a href="images/shoes-service-station-cancel.png">
-            <img src="images/shoes-service-station-cancel.png" alt="Shoes Service Station Logo" width="400">
+        <a href="images/shoes-service-station.png">
+            <img src="images/shoes-service-station.png" alt="Shoes Service Station Logo" width="400">
         </a>
         <h3 align="center">
             Shoes Service Station
@@ -36,17 +36,67 @@
 <!-- Project Description -->
 <div>
     <p style="text-align:left">
-        Nowadays, some people are very busy and don't even have time to clean their shoes.
-        Therefore we need a platform that is able to connect customers with shoes washing service provider.
+        Shoes Service Station is a web platform that makes it easy for people who want to treat their shoes, especially to clean them.
+        They can order these services online from us (as business owners).
+        First we as admins make a list of services that can be ordered by customers.
+        After that the customers can choose the service and order it.
+        If the order is completed, it will be delivered to the customer's address.
+    </p>
+    <p style="text-align:left">
+        This application was made using the Go language and several Go libraries such as GORM, Echo.
+        For unit testing we used Testify library to ensure that our application works properly.
+        We used Okteto cloud to deploy our application.
+        So that this project can be maintained in the future, we implemented a layered architecture.
+    </p>
+    <p style="text-align:left">
+        Don't forget to check our Front-End and Quality Engineering repositories as well:
+        <ul>
+            <li><a href="https://github.com/alta-shoes-and-care/FE">Front End Repository</a></li>
+            <li><a href="https://github.com/alta-shoes-and-care/QE-API_Automation">Quality Engineering API Automation Repository</a></li>
+            <li><a href="https://github.com/alta-shoes-and-care/QE-WEB_Automation">Quality Engineering Web Automation Repository</a></li>
+        </ul>
     </p>
 </div>
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-# High Level Architecture
-![High Level Architecture](images/HLA-updated.jpeg)
+# Documentation
+<details>
+    <summary>ERD</summary>
+    <div align="center">
+        <a href="images/erd.jpg">
+            <img src="images/erd.jpg" alt="ERD">
+        </a>
+        <h3 align="center">
+            High Level Architecture
+        </h3>
+    </div>
+</details>
+
+<details>
+    <summary>High Level Architecture</summary>
+    <div align="center">
+        <a href="images/HLA-updated.jpeg">
+            <img src="images/HLA-updated.jpeg" alt="High Level Architecture">
+        </a>
+        <h3 align="center">
+            High Level Architecture
+        </h3>
+    </div>
+</details>
+
+<details>
+    <summary>OpenAPI</summary>
+    <div align="center">
+        <a href="https://app.swaggerhub.com/apis/ynwahid/ide/1.1.0"><h3 align="center">SwaggerHub</h3></a>
+    </div>
+</details>
+
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 # Project Structure
+<details>
+    <summary>Details</summary>
+
 ```
 BE
 ├── configs
@@ -88,6 +138,7 @@ BE
 │   │   └── hash
 │   │       └── hash.go
 │   ├── middlewares
+│   │   ├── bodyLimiter.go
 │   │   ├── jwtAuth.go
 │   │   └── jwtMiddleware.go
 │   ├── mocks
@@ -128,6 +179,9 @@ BE
 │       ├── interface.go
 │       └── midtrans-pay.go
 ├── images
+│   ├── coverage-1.png
+│   ├── coverage-2.png
+│   ├── erd.jpg
 │   ├── HLA-updated.jpeg
 │   └── shoes-service-station.png
 ├── OpenAPI
@@ -174,6 +228,7 @@ BE
 │       └── user.go
 ├── utils
 │   └── mysqldriver.go
+├── .env
 ├── .gitignore
 ├── app-pod.yaml
 ├── coverage.out
@@ -183,15 +238,21 @@ BE
 ├── go.sum
 ├── main.go
 ├── README.md
+└── secret.yaml
 ```
+
+</details>
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 # Unit Test
+<details>
+    <summary>Results</summary>
+
 ![Testing Coverage - 1](images/coverage-1.png)
 ![Testing Coverage - 1](images/coverage-2.png)
-<p align="right">(<a href="#top">back to top</a>)</p>
 
-# How to Contribute
+Unit Testing Coverage 100%
+</details>
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 # Contacts

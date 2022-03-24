@@ -757,7 +757,13 @@ paths:
         - bearerAuth: []
       responses:
         200:
-          $ref: '#/components/responses/200SetOrderRefundSuccesful'
+          description: OK
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/200SetOrderRefundSuccesfulRejected'
+                  - $ref: '#/components/schemas/200SetOrderRefundSuccesfulCancel'
         401:
           description: Access token is missing, invalid or expired
           content:
@@ -2574,84 +2580,6 @@ components:
             code: 500
             message: gagal mengubah status order menjadi done
             data: null
-    200SetOrderRefundSuccesful:
-      description: OK
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-              message:
-                type: string
-              data:
-                type: object
-                properties:
-                  id:
-                    type: integer
-                  user_id:
-                    type: integer
-                  user_name:
-                    type: string
-                  service_id:
-                    type: integer
-                  service_title:
-                    type: string
-                  price:
-                    type: integer
-                  qty:
-                    type: integer
-                  payment_method_id:
-                    type: integer
-                  payment_method_name:
-                    type: string
-                  date:
-                    type: string
-                    format: date
-                  address:
-                    type: string
-                  city:
-                    type: string
-                  phone:
-                    type: string
-                  status:
-                      type: string
-                      enum: [pending, accepted, rejected, cancel, on process, delivering, done]
-                  is_paid:
-                    type: boolean
-                  has_refunded:
-                    type: boolean
-                  created_at:
-                    type: string
-                    format: date-time
-                  url:
-                    type: string
-                  total:
-                    type: integer
-            example:
-              code: 200
-              message: sukses mengubah status refund menjadi true
-              data:
-                id: 1
-                user_id: 1
-                user_name: Ucup
-                service_id: 1
-                service_title: Regular Cleaning
-                price: 20000
-                qty: 2
-                payment_method_id: 1
-                payment_method_name: Gopay
-                date: "2022-03-06"
-                address: Jl. Soedirman No. 13
-                city: Bandung
-                phone: "085000000000"
-                order_status: cancel
-                is_paid: true
-                has_refunded: true
-                created_at: "2022-03-06 13:00:00"
-                url: http://foo.com/blabla1
-                total: 40000
     500SetOrderRefundInternalServerError:
       description: Internal Server Error
       content:
@@ -3482,6 +3410,154 @@ components:
         code: 500
         message: gagal mengubah status order menjadi cancel oleh admin
         data: null
+    200SetOrderRefundSuccesfulRejected:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            id:
+              type: integer
+            user_id:
+              type: integer
+            user_name:
+              type: string
+            service_id:
+              type: integer
+            service_title:
+              type: string
+            price:
+              type: integer
+            qty:
+              type: integer
+            payment_method_id:
+              type: integer
+            payment_method_name:
+              type: string
+            date:
+              type: string
+              format: date
+            address:
+              type: string
+            city:
+              type: string
+            phone:
+              type: string
+            status:
+                type: string
+                enum: [pending, accepted, rejected, cancel, on process, delivering, done]
+            is_paid:
+              type: boolean
+            has_refunded:
+              type: boolean
+            created_at:
+              type: string
+              format: date-time
+            url:
+              type: string
+            total:
+              type: integer
+      example:
+        code: 200
+        message: sukses mengubah status refund menjadi true
+        data:
+          id: 1
+          user_id: 1
+          user_name: Ucup
+          service_id: 1
+          service_title: Regular Cleaning
+          price: 20000
+          qty: 2
+          payment_method_id: 1
+          payment_method_name: Gopay
+          date: "2022-03-06"
+          address: Jl. Soedirman No. 13
+          city: Bandung
+          phone: "085000000000"
+          order_status: rejected
+          is_paid: true
+          has_refunded: true
+          created_at: "2022-03-06 13:00:00"
+          url: http://foo.com/blabla1
+          total: 40000
+    200SetOrderRefundSuccesfulCancel:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            id:
+              type: integer
+            user_id:
+              type: integer
+            user_name:
+              type: string
+            service_id:
+              type: integer
+            service_title:
+              type: string
+            price:
+              type: integer
+            qty:
+              type: integer
+            payment_method_id:
+              type: integer
+            payment_method_name:
+              type: string
+            date:
+              type: string
+              format: date
+            address:
+              type: string
+            city:
+              type: string
+            phone:
+              type: string
+            status:
+                type: string
+                enum: [pending, accepted, rejected, cancel, on process, delivering, done]
+            is_paid:
+              type: boolean
+            has_refunded:
+              type: boolean
+            created_at:
+              type: string
+              format: date-time
+            url:
+              type: string
+            total:
+              type: integer
+      example:
+        code: 200
+        message: sukses mengubah status refund menjadi true
+        data:
+          id: 1
+          user_id: 1
+          user_name: Ucup
+          service_id: 1
+          service_title: Regular Cleaning
+          price: 20000
+          qty: 2
+          payment_method_id: 1
+          payment_method_name: Gopay
+          date: "2022-03-06"
+          address: Jl. Soedirman No. 13
+          city: Bandung
+          phone: "085000000000"
+          order_status: cancel
+          is_paid: true
+          has_refunded: true
+          created_at: "2022-03-06 13:00:00"
+          url: http://foo.com/blabla1
+          total: 40000
   securitySchemes:
     bearerAuth:
       type: http

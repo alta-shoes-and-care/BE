@@ -2476,21 +2476,9 @@ components:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              code:
-                type: integer
-              message:
-                type: string
-              data:
-                type: object
-          example:
-            code: 500
-            message:
-              oneOf:
-                - gagal mengubah status order menjadi cancel oleh user
-                - gagal mengubah status order menjadi cancel oleh admin
-            data: null
+            oneOf:
+              - $ref: '#/components/schemas/500SetOrderCancelInternalServerErrorUser'
+              - $ref: '#/components/schemas/500SetOrderCancelInternalServerErrorAdmin'
     200SetOrderDoneSuccesful:
       description: OK
       content:
@@ -3468,7 +3456,32 @@ components:
           created_at: "2022-03-06 13:00:00"
           url: http://foo.com/blabla1
           total: 40000
-
+    500SetOrderCancelInternalServerErrorUser:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        data:
+          type: object
+      example:
+        code: 500
+        message: gagal mengubah status order menjadi cancel oleh user
+        data: null
+    500SetOrderCancelInternalServerErrorAdmin:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        data:
+          type: object
+      example:
+        code: 500
+        message: gagal mengubah status order menjadi cancel oleh admin
+        data: null
   securitySchemes:
     bearerAuth:
       type: http

@@ -2468,82 +2468,9 @@ components:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              code:
-                type: integer
-              message:
-                type: string
-              data:
-                type: object
-                properties:
-                  id:
-                    type: integer
-                  user_id:
-                    type: integer
-                  user_name:
-                    type: string
-                  service_id:
-                    type: integer
-                  service_title:
-                    type: string
-                  price:
-                    type: integer
-                  qty:
-                    type: integer
-                  payment_method_id:
-                    type: integer
-                  payment_method_name:
-                    type: string
-                  date:
-                    type: string
-                    format: date
-                  address:
-                    type: string
-                  city:
-                    type: string
-                  phone:
-                    type: string
-                  status:
-                      type: string
-                      enum: [pending, accepted, rejected, cancel, on process, delivering, done]
-                  is_paid:
-                    type: boolean
-                  has_refunded:
-                    type: boolean
-                  created_at:
-                    type: string
-                    format: date-time
-                  url:
-                    type: string
-                  total:
-                    type: integer
-            example:
-              code: 200
-              message:
-                oneOf:
-                - sukses mengubah status order menjadi cancel oleh user
-                - sukses mengubah status order menjadi cancel oleh admin
-              data:
-                id: 1
-                user_id: 1
-                user_name: Ucup
-                service_id: 1
-                service_title: Regular Cleaning
-                price: 20000
-                qty: 2
-                payment_method_id: 1
-                payment_method_name: Gopay
-                date: "2022-03-06"
-                address: Jl. Soedirman No. 13
-                city: Bandung
-                phone: "085000000000"
-                order_status: cancel
-                is_paid: true
-                has_refunded: false
-                created_at: "2022-03-06 13:00:00"
-                url: http://foo.com/blabla1
-                total: 40000
+            oneOf:
+              - $ref: '#/components/schemas/200SetOrderCancelSuccesfulUser'
+              - $ref: '#/components/schemas/200SetOrderCancelSuccesfulAdmin'
     500SetOrderCancelInternalServerError:
       description: Internal Server Error
       content:
@@ -3393,6 +3320,155 @@ components:
         code: 500
         message: gagal mengubah status order menjadi cancel oleh admin
         data: null
+    200SetOrderCancelSuccesfulUser:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            id:
+              type: integer
+            user_id:
+              type: integer
+            user_name:
+              type: string
+            service_id:
+              type: integer
+            service_title:
+              type: string
+            price:
+              type: integer
+            qty:
+              type: integer
+            payment_method_id:
+              type: integer
+            payment_method_name:
+              type: string
+            date:
+              type: string
+              format: date
+            address:
+              type: string
+            city:
+              type: string
+            phone:
+              type: string
+            status:
+                type: string
+                enum: [pending, accepted, rejected, cancel, on process, delivering, done]
+            is_paid:
+              type: boolean
+            has_refunded:
+              type: boolean
+            created_at:
+              type: string
+              format: date-time
+            url:
+              type: string
+            total:
+              type: integer
+      example:
+        code: 200
+        message: sukses mengubah status order menjadi cancel oleh user
+        data:
+          id: 1
+          user_id: 1
+          user_name: Ucup
+          service_id: 1
+          service_title: Regular Cleaning
+          price: 20000
+          qty: 2
+          payment_method_id: 1
+          payment_method_name: Gopay
+          date: "2022-03-06"
+          address: Jl. Soedirman No. 13
+          city: Bandung
+          phone: "085000000000"
+          order_status: cancel
+          is_paid: true
+          has_refunded: false
+          created_at: "2022-03-06 13:00:00"
+          url: http://foo.com/blabla1
+          total: 40000
+    200SetOrderCancelSuccesfulAdmin:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            id:
+              type: integer
+            user_id:
+              type: integer
+            user_name:
+              type: string
+            service_id:
+              type: integer
+            service_title:
+              type: string
+            price:
+              type: integer
+            qty:
+              type: integer
+            payment_method_id:
+              type: integer
+            payment_method_name:
+              type: string
+            date:
+              type: string
+              format: date
+            address:
+              type: string
+            city:
+              type: string
+            phone:
+              type: string
+            status:
+                type: string
+                enum: [pending, accepted, rejected, cancel, on process, delivering, done]
+            is_paid:
+              type: boolean
+            has_refunded:
+              type: boolean
+            created_at:
+              type: string
+              format: date-time
+            url:
+              type: string
+            total:
+              type: integer
+      example:
+        code: 200
+        message: sukses mengubah status order menjadi cancel oleh user
+        data:
+          id: 1
+          user_id: 1
+          user_name: Ucup
+          service_id: 1
+          service_title: Regular Cleaning
+          price: 20000
+          qty: 2
+          payment_method_id: 1
+          payment_method_name: Gopay
+          date: "2022-03-06"
+          address: Jl. Soedirman No. 13
+          city: Bandung
+          phone: "085000000000"
+          order_status: cancel
+          is_paid: true
+          has_refunded: false
+          created_at: "2022-03-06 13:00:00"
+          url: http://foo.com/blabla1
+          total: 40000
+
   securitySchemes:
     bearerAuth:
       type: http

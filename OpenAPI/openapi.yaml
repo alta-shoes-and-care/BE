@@ -15,10 +15,10 @@ tags:
     description: Operasi tentang users
   - name: Services
     description: Operasi tentang services
-  - name: Orders
-    description: Operasi tentang orders
   - name: Payment Methods
     description: Operasi tentang payment method
+  - name: Orders
+    description: Operasi tentang orders
   - name: Reviews
     description: Operasi tentang reviews
 paths:

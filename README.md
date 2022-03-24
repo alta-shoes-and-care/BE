@@ -48,6 +48,14 @@
         We used Okteto cloud to deploy our application.
         So that this project can be maintained in the future, we implemented a layered architecture.
     </p>
+    <p style="text-align:left">
+        Don't forget to check our Front-End and Quality Engineering repositories as well:
+        <ul>
+            <li><a href="https://github.com/alta-shoes-and-care/FE">Front End Repository</a></li>
+            <li><a href="https://github.com/alta-shoes-and-care/QE-API_Automation">Quality Engineering API Automation Repository</a></li>
+            <li><a href="https://github.com/alta-shoes-and-care/QE-WEB_Automation">Quality Engineering Web Automation Repository</a></li>
+        </ul>
+    </p>
 </div>
 <p align="right">(<a href="#top">back to top</a>)</p>
 

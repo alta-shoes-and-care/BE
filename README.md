@@ -3,7 +3,7 @@
 <div>
     <!-- Project Logo -->
     <div align="center">
-        <a href="images/shoes-service-station.png" target="_blank" rel="noopener noreferrer">
+        <a href="images/shoes-service-station.png">
             <img src="images/shoes-service-station.png" alt="Shoes Service Station Logo" width="400">
         </a>
         <h3 align="center">
@@ -51,9 +51,9 @@
     <p style="text-align:left">
         Don't forget to check our Front-End and Quality Engineering repositories as well:
         <ul>
-            <li><a href="https://github.com/alta-shoes-and-care/FE" target="_blank" rel="noopener noreferrer">Front End Repository</a></li>
-            <li><a href="https://github.com/alta-shoes-and-care/QE-API_Automation" target="_blank" rel="noopener noreferrer">Quality Engineering API Automation Repository</a></li>
-            <li><a href="https://github.com/alta-shoes-and-care/QE-WEB_Automation" target="_blank" rel="noopener noreferrer">Quality Engineering Web Automation Repository</a></li>
+            <li><a href="https://github.com/alta-shoes-and-care/FE">Front End Repository</a></li>
+            <li><a href="https://github.com/alta-shoes-and-care/QE-API_Automation">Quality Engineering API Automation Repository</a></li>
+            <li><a href="https://github.com/alta-shoes-and-care/QE-WEB_Automation">Quality Engineering Web Automation Repository</a></li>
         </ul>
     </p>
 </div>
@@ -88,7 +88,7 @@
     <summary>OpenAPI</summary>
     <div align="center">
         <h3 align="center">
-            <a href="https://app.swaggerhub.com/apis/ynwahid/ide/1.1.0" target="_blank" rel="noopener noreferrer">SwaggerHub</a>
+            <a href="https://app.swaggerhub.com/apis/ynwahid/ide/1.1.0">SwaggerHub</a>
         </h3>
     </div>
 </details>

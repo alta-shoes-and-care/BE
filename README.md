@@ -87,7 +87,9 @@
 <details>
     <summary>OpenAPI</summary>
     <div align="center">
-        <a href="https://app.swaggerhub.com/apis/ynwahid/ide/1.1.0"><h3 align="center">SwaggerHub</h3></a>
+        <h3 align="center">
+            <a href="https://app.swaggerhub.com/apis/ynwahid/ide/1.1.0">SwaggerHub</a>
+        </h3>
     </div>
 </details>
 
